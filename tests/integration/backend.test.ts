@@ -90,6 +90,24 @@ test('analytics requires explicit consent, signed landing session, dedupes event
  await getPool().query('DELETE FROM analytics_events WHERE session_id=$1', [readback.rows[0].session_id]);
  await getPool().query('DELETE FROM analytics_sessions WHERE id=$1', [readback.rows[0].session_id]);
 });
+test('report session bootstrap records no landing denominator and accepts consented report events', async () => {
+ const { POST: eventPost } = await import('@/app/api/events/route');
+ const start = { eventId: randomUUID(), name: 'session_start', adVariant: 'a', consent: true };
+ expect((await eventPost(request({ ...start, consent: false }))).status).toBe(422);
+ const response = await eventPost(request(start)); expect(response.status).toBe(200);
+ const cookie = response.headers.get('set-cookie')!.split(';')[0];
+ const id = cookie.split('=')[1].split('.')[0]; ownSessions.push(id);
+ const report = { ...start, eventId: randomUUID(), name: 'report_viewed' };
+ expect((await eventPost(request(report, { cookie }))).status).toBe(200);
+ expect((await eventPost(request({ ...report, eventId: randomUUID(), pathname: '/report?email=private' }, { cookie }))).status).toBe(422);
+ expect((await getPool().query('SELECT name FROM analytics_events WHERE session_id=$1 ORDER BY created_at', [id])).rows).toEqual([{ name: 'session_start' }, { name: 'report_viewed' }]);
+ // Returning to the actual landing route is counted once, in the same session.
+ const landing = { ...start, eventId: randomUUID(), name: 'landing_view' };
+ expect((await eventPost(request(landing, { cookie }))).status).toBe(200);
+ expect((await eventPost(request({ ...landing, eventId: randomUUID() }, { cookie }))).status).toBe(200);
+ expect((await getPool().query("SELECT event_id FROM analytics_events WHERE session_id=$1 AND name='landing_view'", [id])).rowCount).toBe(1);
+});
+
 test('lead capture with an unrevoked cookie requires current consent, including receipt replay', async () => {
  const { POST: eventPost } = await import('@/app/api/events/route');
  const landing = await eventPost(request({ eventId: randomUUID(), name: 'landing_view', adVariant: 'a', consent: true }));
@@ -108,6 +126,57 @@ test('lead capture with an unrevoked cookie requires current consent, including 
  expect((await POST(request(body, { cookie, 'X-Analytics-Consent': 'false' }))).status).toBe(200);
  expect((await getPool().query('SELECT * FROM analytics_events WHERE event_id=$1', [body.attemptId])).rowCount).toBe(0);
 });
+test.each(['unmeasured', 'other-session'] as const)('receipt replay cannot attribute an originally %s capture to the current session', async original => {
+ const { POST: eventPost } = await import('@/app/api/events/route');
+ async function startSession() {
+  const response = await eventPost(request({ eventId: randomUUID(), name: 'landing_view', adVariant: 'a', consent: true }));
+  expect(response.status).toBe(200);
+  const cookie = response.headers.get('set-cookie')!.split(';')[0];
+  ownSessions.push(cookie.split('=')[1].split('.')[0]);
+  return cookie;
+ }
+ const originalCookie = original === 'other-session' ? await startSession() : null;
+ const body = payload({ email: `replay-attribution-${original}-${run}@example.invalid` });
+ const initial = await POST(request(body, originalCookie ? { cookie: originalCookie, 'X-Analytics-Consent': 'true' } : {}));
+ expect(initial.status).toBe(200);
+ const receipt = (await getPool().query('SELECT analytics_session_id FROM submission_receipts WHERE attempt_id=$1', [body.attemptId])).rows;
+ expect(receipt).toEqual([{ analytics_session_id: originalCookie?.split('=')[1].split('.')[0] ?? null }]);
+ // Simulate a missed best-effort success write after the original commit.
+ await getPool().query('DELETE FROM analytics_events WHERE event_id=$1', [body.attemptId]);
+ const currentCookie = await startSession();
+ const replay = await POST(request(body, { cookie: currentCookie, 'X-Analytics-Consent': 'true' }));
+ expect(replay.status).toBe(200); expect(token(replay)).toBe(token(initial));
+ expect((await getPool().query('SELECT analytics_session_id FROM submission_receipts WHERE attempt_id=$1', [body.attemptId])).rows).toEqual(receipt);
+ expect((await getPool().query('SELECT session_id FROM analytics_events WHERE event_id=$1', [body.attemptId])).rows).toEqual([]);
+});
+
+test.each(['active', 'revoked', 'expired'] as const)('same-session receipt recovery respects %s session validity and current consent', async state => {
+ const { POST: eventPost } = await import('@/app/api/events/route');
+ const landing = await eventPost(request({ eventId: randomUUID(), name: 'landing_view', adVariant: 'b', consent: true }));
+ expect(landing.status).toBe(200);
+ const cookie = landing.headers.get('set-cookie')!.split(';')[0];
+ const sessionId = cookie.split('=')[1].split('.')[0]; ownSessions.push(sessionId);
+ const body = payload({ email: `same-session-recovery-${state}-${run}@example.invalid` });
+ const first = await POST(request(body, { cookie, 'X-Analytics-Consent': 'true' })); expect(first.status).toBe(200);
+ await getPool().query('DELETE FROM analytics_events WHERE event_id=$1', [body.attemptId]);
+ expect((await POST(request(body, { cookie, 'X-Analytics-Consent': 'false' }))).status).toBe(200);
+ expect((await getPool().query('SELECT event_id FROM analytics_events WHERE event_id=$1', [body.attemptId])).rowCount).toBe(0);
+ if (state === 'revoked') await getPool().query('UPDATE analytics_sessions SET revoked=true WHERE id=$1', [sessionId]);
+ if (state === 'expired') await getPool().query("UPDATE analytics_sessions SET expires_at=now()-interval '1 second' WHERE id=$1", [sessionId]);
+ for (let i=0;i<2;i++) {
+  const replay = await POST(request(body, { cookie, 'X-Analytics-Consent': 'true' }));
+  expect(replay.status).toBe(200); expect(token(replay)).toBe(token(first));
+ }
+ // The final insert re-checks validity even if a session is withdrawn after request validation.
+ if (state !== 'active') {
+  const { recordLeadSuccess } = await import('@/lib/db/analytics');
+  await recordLeadSuccess(body.attemptId, sessionId, true);
+ }
+ const measured = await getPool().query('SELECT session_id,ad_variant,is_new_lead FROM analytics_events WHERE event_id=$1', [body.attemptId]);
+ expect(measured.rows).toEqual(state === 'active' ? [{ session_id: sessionId, ad_variant: 'b', is_new_lead: true }] : []);
+ expect((await getPool().query('SELECT analytics_session_id FROM submission_receipts WHERE attempt_id=$1', [body.attemptId])).rows).toEqual([{ analytics_session_id: sessionId }]);
+});
+
 test('database outage returns honest 503 without minting a report cookie', async () => {
  const url = process.env.DATABASE_URL;
  await closePool(); process.env.DATABASE_URL = 'postgresql://postgres@127.0.0.1:1/etf_radar_test';

@@ -14,7 +14,9 @@ export async function POST(request: Request) {
   const analyticsConsent = request.headers.get('X-Analytics-Consent') === 'true';
   if (analyticsConsent) try { sessionId = await validSession(request); } catch { /* Analytics must not block capture. */ }
   const result = await captureLead(parsed.data, sessionId);
-  if (analyticsConsent && sessionId) try { await recordLeadSuccess(parsed.data.attemptId, sessionId, result.isNewLead); } catch { /* Durable lead success is independent of measurement. */ }
+  // A retry may recover measurement only for the receipt's original, still-current session.
+  // Never retroactively measure an unconsented capture or transfer it to a new session.
+  if (analyticsConsent && sessionId && result.sessionId === sessionId) try { await recordLeadSuccess(parsed.data.attemptId, result.sessionId, result.isNewLead); } catch { /* Durable lead success is independent of measurement. */ }
   const response = NextResponse.json({ ok: true, reportUrl: '/report' }, { headers: { 'Cache-Control': 'private, no-store' } });
   response.cookies.set('etf_report', result.token, { httpOnly: true, sameSite: 'lax', secure: config.origin.startsWith('https:'), path: '/report', maxAge: 86400 });
   return response;

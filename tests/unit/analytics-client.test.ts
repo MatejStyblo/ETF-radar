@@ -17,6 +17,46 @@ function withdrawInOtherTab() {
  const event = Object.assign(new Event('storage'), { key: 'etf-radar-measurement', newValue: 'denied' });
  browser.dispatchEvent(event);
 }
+test('report-only initialization establishes consented measurement without a landing view', async () => {
+ storage.set('etf-radar-measurement', 'allowed');
+ const client = await import('@/lib/analytics/client');
+ client.initializeMeasurement(undefined, 'report');
+ await client.track('report_viewed');
+ const events = fetchMock.mock.calls.map(([, options]) => JSON.parse(options.body));
+ expect(events.map(event => event.name)).toEqual(['session_start', 'report_viewed']);
+ expect(events.every(event => Object.keys(event).sort().join(',') === 'adVariant,consent,eventId,name')).toBe(true);
+});
+
+test.each(['unset', 'denied'] as const)('report initialization with %s preference sends nothing before opt-in', async preference => {
+ if (preference === 'denied') storage.set('etf-radar-measurement', 'denied');
+ const client = await import('@/lib/analytics/client');
+ client.initializeMeasurement(undefined, 'report');
+ await client.track('report_viewed');
+ expect(fetchMock.mock.calls.filter(([, options]) => options.method === 'POST')).toHaveLength(0);
+ client.setMeasurement(true); await client.track('report_viewed');
+ expect(fetchMock.mock.calls.filter(([, options]) => options.method === 'POST').map(([, options]) => JSON.parse(options.body).name)).toEqual(['session_start', 'report_viewed']);
+});
+
+test('report session renewal never emits landing_view', async () => {
+ storage.set('etf-radar-measurement', 'allowed');
+ const client = await import('@/lib/analytics/client');
+ client.initializeMeasurement(undefined, 'report'); await client.track('report_viewed');
+ fetchMock.mockClear(); fetchMock.mockResolvedValueOnce(new Response(null, { status: 401 }));
+ await client.track('report_downloaded'); await client.track('report_viewed');
+ expect(fetchMock.mock.calls.map(([, options]) => JSON.parse(options.body).name)).toEqual(['report_downloaded', 'session_start', 'report_viewed']);
+});
+
+test('report-to-landing navigation emits the actual landing view and preserves landing events', async () => {
+ storage.set('etf-radar-measurement', 'allowed');
+ const client = await import('@/lib/analytics/client');
+ client.initializeMeasurement(undefined, 'report'); await client.track('report_viewed');
+ fetchMock.mockClear();
+ client.initializeMeasurement('b', 'landing'); await client.track('comparison_started');
+ client.initializeMeasurement('b', 'landing'); await client.track('calculator_interaction');
+ expect(fetchMock.mock.calls.map(([, options]) => JSON.parse(options.body).name)).toEqual(['landing_view', 'comparison_started', 'calculator_interaction']);
+ expect(fetchMock.mock.calls.every(([, options]) => JSON.parse(options.body).adVariant === 'b')).toBe(true);
+});
+
 test('failed revocation remains pending and retries without resuming denied measurement', async () => {
  vi.useFakeTimers();
  const client = await import('@/lib/analytics/client');
