@@ -56,3 +56,16 @@ Playwright Chromium poté provedl bez interceptů skutečné vyplnění emailu a
 - Testovací lead, report, receipt a jeho rate-limit bucket následně odstraněny.
 
 Tím je lokální společný happy path ověřen; předchozí označení tohoto toku jako neověřeného výše zachycuje dřívější stav. Lighthouse a externí deployment nadále nejsou ověřeny. Lokální identita správce je pouze testovací, nikoli produkční.
+
+## Závěrečné dokončení testovacího zadání, 10. října 2026
+
+Uživatel upřesnil pouze testovací provoz a jméno `Matěj STýblo`; deployment je mimo rozsah. README, ANALYTICS, autentický redigovaný session export a podrobný QA report jsou součástí repozitáře.
+
+- Typecheck, lint a produkční build prošly. Unit: **26 passed**; skutečné PostgreSQL integration: **25 passed**.
+- Standardní browser suite: **19 passed / 2 skipped** (live flow se bez explicitního opt-in nezapisuje do DB).
+- `LIVE_FUNNEL=1 LIVE_FUNNEL_DATABASE_URL=postgres://postgres@127.0.0.1:55439/etf_radar_test PLAYWRIGHT_BASE_URL=http://127.0.0.1:3103 npx playwright test tests/e2e/live-funnel.spec.ts --workers=1`: **2 passed**, bez interceptů. Souhlasící mobilní cesta má **13 skutečně uložených událostí**, odmítnutá desktopová cesta doručí report s **0 events**. Exact-row readback a vlastní cleanup jsou součástí testu.
+- Nové CSP/favicon browser testy nejprve selhaly; po `jitless` konfiguraci Zod bez uvolnění produkční CSP a přidání ikony prošly.
+- Přidané analytics regrese ověřují report bootstrap bez false landing eventu a zachování původní session při replayi. Live assertion původních 12 events selhal po rozšíření taxonomie; po explicitním zahrnutí technického `session_start` prošel s 13 events.
+- Mobilní Lighthouse po opravách: **99 Performance / 100 Accessibility / 100 Best Practices / 100 SEO**, LCP **2,2 s**, TBT **60 ms**, CLS **0**, bez console errors a inspector issues. Dřívější výsledky jsou zachovány v QA reportu, nejde o průměr ani garanci hostovaného výkonu.
+
+Prostředí, limity (zejména pouze lokální audit, nikoli Safari/real-device/screen-reader certifikace), skutečné příkazy a raw artifact paths viz `docs/QA_FINAL.md`. Nasazení ani reálná reklamní kampaň neproběhly.
