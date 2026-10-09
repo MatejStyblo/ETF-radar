@@ -18,7 +18,7 @@ Rozhodnutí jako konverzní hypotéza 2–5 %, audience motivation, expected A/B
 
 ## Autentické konverzační exporty
 
-Aktuální `session_search` během vývoje nevrátil žádné uložené session records. To neprokazuje, že desktop log neexistuje; nelze z toho vytvořit autentický export rodičovské konverzace. Nepíšeme proto rekonstrukci chat historie do `ai-log/`.
+Původní lookup během vývoje nevrátil uložené session records. Pozdější skutečný `hermes sessions list --workspace ETF-radar --limit 5` již našel aktuální session `20261009_171555_dc5d1e`. Pomocí `hermes sessions export ai-log/hermes-session.jsonl --format jsonl --session-id 20261009_171555_dc5d1e --redact --yes` byl vytvořen autentický lokální snapshot rodičovské konverzace. Export obsahuje jeden JSONL session record se skutečným polem `messages`; není to rekonstruovaný chat ani Claude Code log. JSON byl programově parsován a kontrola potenciálních hesel v PostgreSQL URL a literal serverových secrets nenašla shody. Export obsahuje dosavadní historii, nikoli budoucí zprávy; před veřejným sdílením je stále nutná kontrola osobních a lokálních údajů.
 
 Ověřeno pomocí skutečného `hermes sessions export --help`:
 
@@ -27,4 +27,4 @@ Ověřeno pomocí skutečného `hermes sessions export --help`:
 3. Pro Markdown export: `hermes sessions export ai-log/ --format md --session-id <SKUTECNE_ID> --redact --lineage logical`.
 4. Před sdílením ručně zkontrolovat osobní údaje, credentials a unrelated context. Nikdy nepoužít upload/public/delete-after-verified bez oprávnění.
 
-ID je viditelně placeholder pro skutečné ID; není vyrobená identita session. Genuinní runtime delegation transcript lze uchovat jako dílčí agentový záznam a výslovně odlišit od plného parent exportu. Finální odevzdání má obsahovat skutečný dostupný export; jeho absence je dokumentační limitation, nikoliv vyplněná falešným přepisem.
+ID v ukázkových příkazech je viditelně placeholder; skutečný export výše používá ověřené session ID. Genuinní runtime delegation transcript lze uchovat jako dílčí agentový záznam a výslovně odlišit od rodičovského exportu. Export nepublikujeme externě; jeho snapshot lze při finálním odevzdání obnovit stejným příkazem.
