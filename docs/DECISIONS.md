@@ -10,6 +10,8 @@ Datum: 9. října 2026. Stav rozhodnutí: navržené pro implementaci, není-li 
 
 ## D02 — Úzká nabídka místo seznamu všech ETF
 
+**Upřesnění rozsahu od uživatele, 9. října 2026:** projekt je výhradně testovací hiring assignment a nebude skutečně komerčně provozován. Jméno pro testovací konfiguraci je přesně `Matěj STýblo`. Kontakt `test@example.invalid` je výslovně nefunkční testovací hodnota, nikoli skutečný email uživatele. Používat syntetická testovací data; žádné skutečné kampaně, marketingové rozesílky ani nasazení. Produkční právní schválení a skutečná identita obchodního provozovatele nejsou součástí aktuálního dokončení; níže uvedené launch gates jsou podmínky pouze pro případnou budoucí změnu rozsahu, ne tvrzení připravenosti ke komerčnímu spuštění. Funkční persistence, výpočty, report a ochrana dat musí přesto zůstat skutečné a otestované.
+
 **Rozhodnutí:** P0 porovná dvojici ze tří fondů S&P 500, zaměřenou na průběžné náklady. Publikum a motivace jsou hypotézy ze zadání, ne provedený kvalitativní výzkum. Nasdaq-100 až P1 po ověření dat.
 
 **Proč:** jedna srozumitelná otázka přináší návštěvníkovi hodnotu a udržuje výpočet ve srovnatelném rámci. Nezavádíme vlastní ranking ani doporučení „kupte fond X“. Stejný index neznamená totožné právní, daňové, likviditní nebo distribuční vlastnosti; UI je musí vysvětlit.
