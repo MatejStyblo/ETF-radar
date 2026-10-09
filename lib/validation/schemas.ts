@@ -1,6 +1,9 @@
 import { z } from "zod";
 import type { Scenario } from "@/lib/calculations/project";
 
+// Do not trigger Zod's dynamic Function capability probe under production CSP.
+z.config({ jitless: true });
+
 export const DEFAULT_SCENARIO: Scenario = { initial: 100000, monthly: 3000, years: 20, grossReturnPct: 5 };
 export const scenarioSchema = z.object({
   initial: z.number().finite().min(0).max(100000000),
