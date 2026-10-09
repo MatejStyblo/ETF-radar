@@ -1,0 +1,31 @@
+import {test,expect} from '@playwright/test';
+import {readFile} from 'node:fs/promises';
+import AxeBuilder from '@axe-core/playwright';
+import {createElement} from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {buildReport} from '../../lib/report/model';
+import {ReportView} from '../../components/report/report-view';
+for(const width of [375,1440])test(`report layout ${width} is readable and accessible`,async({page},testInfo)=>{
+ const report=buildReport({initial:120000,monthly:2500,years:17,grossReturnPct:4},['spy','cspx'],'2026-10-09T12:00:00Z');
+ const html=renderToStaticMarkup(createElement(ReportView,{report}));
+ const css=(await readFile(new URL('../../app/globals.css',import.meta.url),'utf8')).replace('@import "tailwindcss";','');
+ await page.setViewportSize({width,height:812});
+ await page.setContent(`<html lang="cs"><head><title>ETF report layout test</title><style>${css}</style></head><body><main id="main">${html}</main></body></html>`);
+ await page.getByText('Rok po roce — 17 let vašeho scénáře').click();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+ expect((await new AxeBuilder({page}).analyze()).violations).toEqual([]);
+ await page.screenshot({path:testInfo.outputPath(`etf-report-${width}.png`),fullPage:true});
+});
+test('report renders personal scenario, honest metadata, all horizons and annual table',async()=>{
+ const report=buildReport({initial:120000,monthly:2500,years:17,grossReturnPct:4},['spy','cspx'],'2026-10-09T12:00:00Z');
+ const html=renderToStaticMarkup(createElement(ReportView,{report}));
+ expect(html).toContain('Vaše ETF srovnání');
+ expect(html).toContain('London Stock Exchange');
+ expect(html).toContain('NYSE Arca');
+ expect(html).toContain('neověřeno');
+ for(const horizon of [5,10,17,20,30])expect(html).toContain(`data-horizon="${horizon}"`);
+ expect(html).toContain('Rok po roce');
+ expect(html).toContain('Checklist před nákupem');
+ expect(html).toContain('/report/download');
+ for(const assumption of report.assumptions)expect(html).toContain(assumption.replaceAll('&','&amp;'));
+});

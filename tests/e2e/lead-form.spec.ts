@@ -1,0 +1,51 @@
+import { test,expect } from '@playwright/test';
+test('expired report response resets only the attempt while preserving all form inputs',async({page})=>{
+ const bodies:Record<string,unknown>[]=[];
+ await page.route('**/api/leads',async route=>{bodies.push(route.request().postDataJSON());await route.fulfill({status:bodies.length===1?410:503,json:{ok:false,code:bodies.length===1?'REPORT_EXPIRED':undefined,message:'Původní report vypršel. Odešlete formulář znovu.'}});});
+ await page.goto('/');
+ await page.getByLabel('Email',{exact:true}).fill('expired-ui@example.test');
+ await page.getByLabel('Chci občasné novinky o ETF emailem.').check();
+ await page.getByLabel('Počáteční vklad').fill('240000');
+ await page.getByLabel('Druhé ETF').selectOption('cspx');
+ await page.getByRole('button',{name:'Získat moje srovnání'}).click();
+ await expect(page.locator('.submit-error')).toContainText('report vypršel');
+ await expect(page.getByLabel('Email',{exact:true})).toHaveValue('expired-ui@example.test');
+ await expect(page.getByLabel('Chci občasné novinky o ETF emailem.')).toBeChecked();
+ await expect(page.getByLabel('Počáteční vklad')).toHaveValue('240000');
+ await expect(page.getByLabel('Druhé ETF')).toHaveValue('cspx');
+ await page.getByRole('button',{name:'Získat moje srovnání'}).click();
+ await expect.poll(()=>bodies.length).toBe(2);
+ expect(bodies[1].attemptId).not.toBe(bodies[0].attemptId);
+ expect({...bodies[1],attemptId:null}).toEqual({...bodies[0],attemptId:null});
+});
+
+test('422 marks the form for correction and 429 explains retry timing',async({page})=>{
+ let status=422;await page.route('**/api/leads',async route=>route.fulfill({status,headers:{'Retry-After':'60'},json:{ok:false,message:'Zkontrolujte údaje.'}}));
+ await page.goto('/');await page.getByLabel('Email',{exact:true}).fill('ui-errors@example.test');
+ await page.getByRole('button',{name:'Získat moje srovnání'}).click();
+ await expect(page.locator('.submit-error')).toContainText('Zkontrolujte email a parametry');
+ await expect(page.locator('.submit-error')).toBeFocused();
+ status=429;await page.getByRole('button',{name:'Získat moje srovnání'}).click();
+ await expect(page.locator('.submit-error')).toContainText('za 60 sekund');
+ await expect(page.getByLabel('Email',{exact:true})).toHaveValue('ui-errors@example.test');
+});
+test('email errors are accessible, failures keep retry attempt, changed payload gets new attempt',async({page})=>{
+ const bodies:Record<string,unknown>[]=[];
+ await page.route('**/api/leads',async route=>{bodies.push(route.request().postDataJSON());await route.fulfill({status:503,json:{ok:false,message:'Služba je dočasně nedostupná.'}})});
+ await page.goto('/');
+ await expect(page.getByLabel('Chci občasné novinky o ETF emailem.')).not.toBeChecked();
+ await page.getByRole('button',{name:'Získat moje srovnání'}).click();
+ await expect(page.getByText('Zadejte platný email.',{exact:true})).toBeVisible();
+ await page.getByLabel('Email',{exact:true}).fill('ui-test@example.test');
+ await page.getByRole('button',{name:'Získat moje srovnání'}).click();
+ await expect(page.getByRole('alert').filter({hasText:'dočasně nedostupná'})).toContainText('dočasně nedostupná');
+ await page.getByRole('button',{name:'Získat moje srovnání'}).click();
+ await expect.poll(()=>bodies.length).toBe(2);
+ expect(bodies[0].attemptId).toBe(bodies[1].attemptId);
+ expect(bodies[0].marketingConsent).toBe(false);
+ await page.getByLabel('Počáteční vklad').fill('200000');
+ await page.getByRole('button',{name:'Získat moje srovnání'}).click();
+ await expect.poll(()=>bodies.length).toBe(3);
+ expect(bodies[2].attemptId).not.toBe(bodies[1].attemptId);
+ expect(new URL(page.url()).pathname).toBe('/');
+});
