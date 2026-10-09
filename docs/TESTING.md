@@ -42,3 +42,17 @@ Review odhalilo dvě blokující chyby: odvolaný analytický souhlas při neús
 První pokus browser suite na portu 3102 bez konfigurace správce měl 13 pass / 4 timeouty, protože správně vypnutý capture deaktivoval formulář. Po spuštění stejného buildu s výslovnou lokální testovací konfigurací na portu 3103 prošlo všech 17 testů. Tato konfigurace není skutečná identita produkčního provozovatele.
 
 Regrese pokrývají consent header nezávislý na cookie, cross-tab withdrawal, retry neúspěšné revokace včetně reloadu, obnovení idle analytics session a `410 REPORT_EXPIRED` pro neplatný replay se zachováním vstupů. Integrační testy ověřují skutečné databázové zápisy; browser testy s intercepted lead API nejsou důkazem společného browser → DB → report happy path. Tento společný tok, Lighthouse a externí deployment zůstávají k ověření.
+
+## Skutečný browser → DB → report tok, 9. října 2026
+
+Uživatel hlásil „Uložení je nyní nedostupné“. Reprodukováno na portu 3103: HTTP 503, protože testovací UI server měl povolený formulář a testovací identitu, ale chyběla mu backendová konfigurace. PostgreSQL byla dostupná. Server na portu 3103 byl restartován se skutečným lokálním připojením do oddělené `etf_radar_test`, odpovídajícím APP_ORIGIN a runtime generovanými secrets. Žádná tajemství nebyla vypsána nebo uložena do Gitu.
+
+Playwright Chromium poté provedl bez interceptů skutečné vyplnění emailu a odeslání formuláře, redirect a download přes autorizovanou browser session:
+
+- Landing HTTP 200; skutečný browser submit HTTP 200.
+- Redirect na `/report`, viditelný „Checklist před nákupem“.
+- `/report/download` HTTP 200, HTML obsahuje checklist.
+- Readback přes parametrizované SQL: přesně jeden uložený lead pro unikátní testovací email.
+- Testovací lead, report, receipt a jeho rate-limit bucket následně odstraněny.
+
+Tím je lokální společný happy path ověřen; předchozí označení tohoto toku jako neověřeného výše zachycuje dřívější stav. Lighthouse a externí deployment nadále nejsou ověřeny. Lokální identita správce je pouze testovací, nikoli produkční.
