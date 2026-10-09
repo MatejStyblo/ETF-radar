@@ -1,0 +1,50 @@
+[
+  {
+    "command": "node --input-type=module -e 'import {Pool} from \"pg\"; const p=new Pool({connectionString:\"postgresql://postgres@127.0.0.1:55439/etf_radar_test\"}); const counts={}; for (const t of [\"leads\",\"reports\",\"submission_receipts\",\"analytics_sessions\",\"analytics_events\",\"rate_limit_buckets\"]) counts[t]=(await p.query(`SELECT count(*)::int AS n FROM ${t}`)).rows[0].n; console.log(JSON.stringify(counts)); await p.end();'",
+    "result": {
+      "output": "{\"leads\":0,\"reports\":0,\"submission_receipts\":0,\"analytics_sessions\":0,\"analytics_events\":0,\"rate_limit_buckets\":0}",
+      "exit_code": 0,
+      "error": null
+    }
+  },
+  {
+    "command": "npm run test && npm run test:integration",
+    "result": {
+      "output": "> etf-radar@0.1.0 test\n> vitest run tests/unit\n\n\n RUN  v5.0.3 /Users/matejstyblo/Desktop/moje prace/ETF-radar/.worktrees/foundation-etf-radar\n\n\n Test Files  6 passed (6)\n      Tests  15 passed (15)\n   Start at  18:10:49\n   Duration  1.02s (import 55%, tests 25%, transform 16%, worker 4%)\n\n    Isolate  6 workers spawned \u00b7 ~106ms startup each (spawn + environment, per file)\n             at least ~528ms faster with isolate: false \u2014 reuses workers across files instead of one per file\n\n\n> etf-radar@0.1.0 test:integration\n> vitest run tests/integration\n\n\n RUN  v5.0.3 /Users/matejstyblo/Desktop/moje prace/ETF-radar/.worktrees/foundation-etf-radar\n\n\n Test Files  1 passed (1)\n      Tests  15 passed (15)\n   Start at  18:10:50\n   Duration  1.08s (tests 83%, import 10%, transform 7%)",
+      "exit_code": 0,
+      "error": null
+    }
+  },
+  {
+    "command": "node --input-type=module -e 'import {Pool} from \"pg\"; const p=new Pool({connectionString:\"postgresql://postgres@127.0.0.1:55439/etf_radar_test\"}); const counts={}; for (const t of [\"leads\",\"reports\",\"submission_receipts\",\"analytics_sessions\",\"analytics_events\",\"rate_limit_buckets\"]) counts[t]=(await p.query(`SELECT count(*)::int AS n FROM ${t}`)).rows[0].n; console.log(JSON.stringify(counts)); await p.end();'",
+    "result": {
+      "output": "{\"leads\":0,\"reports\":0,\"submission_receipts\":0,\"analytics_sessions\":0,\"analytics_events\":0,\"rate_limit_buckets\":0}",
+      "exit_code": 0,
+      "error": null
+    }
+  },
+  {
+    "command": "npm run typecheck",
+    "result": {
+      "output": "> etf-radar@0.1.0 typecheck\n> tsc --noEmit\n\napp/privacy/page.tsx(7,3267): error TS17002: Expected corresponding JSX closing tag for 'Link'.",
+      "exit_code": 2,
+      "error": null
+    }
+  },
+  {
+    "command": "npx eslint lib/db lib/security app/api app/report scripts/migrate.mjs scripts/cleanup.mjs tests/integration tests/unit/backend*.test.ts",
+    "result": {
+      "output": "",
+      "exit_code": 0,
+      "error": null
+    }
+  },
+  {
+    "command": "npm run typecheck (recheck after concurrent frontend edit completed)",
+    "result": {
+      "output": "> etf-radar@0.1.0 typecheck\n> tsc --noEmit",
+      "exit_code": 0,
+      "error": null
+    }
+  }
+]
