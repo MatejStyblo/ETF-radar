@@ -249,3 +249,30 @@ Skript nemá scheduler, dry-run ani automatický export auditní evidence; datab
 - Revokace není historický výmaz; chybí consent-version/time evidence v analytics, scheduler a kompletní backup/delete workflow.
 
 Regrese a skutečný lokální DB/browser důkaz jsou v [TESTING](TESTING.md). Plánovací konverze 2–5 % a prioritní hypotézy v [README](../README.md) nejsou naměřené výsledky ani benchmark. V tomto test-only projektu nemá být žádný skutečný paid traffic nebo osobní databáze kontaktů.
+
+## Lokální dashboard
+
+`/dashboard` čte skutečná data v serverové read-only transakci. Filtry `range=7|30|90|all` (výchozí 30), `variant=all|a|b` a `page` nejsou experiment assignment. Časové okno je klouzavé od DB času načtení; denní řádky a vypsané časy používají UTC. „Všechna dostupná data“ znamená uchovanou historii po retenci, nikoli všechny návštěvy od spuštění.
+
+| Pole přehledu | Přesný význam a omezení |
+| --- | --- |
+| Měřené relace | Odlišné nerevokované relace s client `landing_view` v okně a vybrané variantě; není to unikátní člověk ani všechna návštěvnost. |
+| Unikátní kontakty | Odlišné lead ID s úspěšným receipt v okně/variantě; zahrnuje existující kontakt, který uložil další report. Nejde o všechny nově založené řádky ani ověření mailboxu. |
+| Úspěšná uložení | Počet receipts po úspěšném commitu, včetně neměřených a opakovaných captures. |
+| Konvertující relace / konverze | Odlišné relace stejné landing kohorty s měřeným server `lead_submit_success` v okně; podíl vůči měřeným relacím. Zahrnuje i capture existujícího kontaktu. Není to primární hypotéza nových leadů uvedená výše ani konverze veškeré návštěvnosti. Chybějící jmenovatel je „—“, ne 0 %. |
+| Nové měřené kontakty | Počet serverových success událostí s `is_new_lead` ve stejné kohortě; samostatně od konvertujících relací a všech kontaktů. |
+| Nové kontakty / měřené relace | Primární poměr výše definovaných nových měřených kontaktů ke stejným způsobilým landing relacím. Chybějící jmenovatel je „—“. Více nových emailů v jedné relaci může dát přes 100 %; není to podíl odlišných konvertujících relací. |
+| Marketingové kontakty | Odlišné kontakty z filtrovaných receipts s uloženým marketingovým souhlasem; ne obchodně kvalifikované osoby a ne skutečná rozesílka. |
+| Neměřená uložení | Receipts bez odpovídajícího server success eventu ve způsobilé landing kohortě; může jít o nesouhlas, ztracený event, revokaci, expiraci nebo retenci. Není to consent rejection rate. |
+
+Funnel ukazuje **distinct sessions pro každý krok v jedné kohortě**, ne počet všech eventů ani nutně postupné/klesající průchody: některé výsledky a nabídky se mohou zobrazit automaticky před vědomou interakcí. Denní relace se přiřazují podle prvního landing eventu v okně, captures podle receipt času. Denní unikátní kontakty se nemají prostě sečíst do unikátních kontaktů za celé období.
+
+Kampaně agregují `submission_receipts.attribution`: zdroj, médium, kampaň, varianta, captures a nové captures. Analytics sessions nemají úplné campaign UTM, takže dashboard **nespočítává konverzi kampaní**. Neuvedená atribuce není důkaz přímého trafficu. Měřené výběry dvojic používají skutečně zaznamenanou dvojici z client `etf_selected`; dvojice při úspěšném odeslání pochází zvlášť ze snapshotu reportu, včetně neměřených captures. Starší eventy s chybějící dvojicí se nedopočítávají z katalogu. Chybějící či expirovaný snapshot se označuje jako nedostupný, ne jako určitá dvojice ETF.
+
+Pro přehled dvojic je analytics schema doplněné o nullable `analytics_events.etf_ids TEXT[]` se dvěma odlišnými identifikátory z `spy | ivv | cspx`. Volitelný client payload `etfIds` je dovolený pouze pro `etf_selected`; pořadí dvojice se zachovává a změněný replay dostane 409. Nejde o libovolné properties, investovanou částku nebo email. Nezměněná výchozí dvojice není výběrový event, neplatný výběr stejného fondu se neměří jako platná dvojice. Starší řádky zůstávají `NULL`; migrace jim nesmí vymyslet původní výběr. Taxonomie výše popisuje původní omezený event payload před tímto dashboard rozšířením.
+
+Diagnostický výpis je nejvýše **100 nejnovějších událostí**, nikoli úplný event export. Kontakty jsou po 50 na stránku. Změna filtru a obnovení znamenají nový serverový dotaz; DB chyba zobrazí poctivou nedostupnost bez náhradních nul.
+
+Měřicí panel aktivuje klient jen na landing/report a při unmount vrací cleanup. Dashboard nemá měřicí panel. Globální storage listener může dál synchronizovat souhlas a dokončit withdrawal, ale při neaktivní měřené stránce nesmí poslat POST ani vytvořit novou landing relaci; queued a opožděná práce je generačně invalidována. Ověřeno skutečným SPA návratem do dashboardu a změnou souhlasu v jiné záložce, nejen prvním přímým načtením dashboardu.
+
+`/dashboard/export?range=…&variant=…` je CSV **kontaktů**, se stejným local-only guardem. Email je pouze v chráněném lokálním přehledu/exportu, ne v analytics eventech. Stránku ani CSV nepovolovat při deploymentu: `DASHBOARD_ENABLED=true` je jen explicitní lokální opt-in, `APP_ORIGIN` musí být HTTP loopback, `Host` přesně odpovídat a server musí naslouchat pouze na loopback. Noindex/nofollow, no-referrer a no-store nejsou autentizace; veřejný server/tunel tím bezpečný není.

@@ -127,6 +127,7 @@ Upravte ignorovaný `.env.local`, tajemství necommitujte ani nevypisujte do sd�
 | `CONTROLLER_NAME` | V `.env.example` přesně `Matěj STýblo`, jméno dodané uživatelem pro testovací projekt; není to produkční právní identita. |
 | `PRIVACY_CONTACT` | V `.env.example` `test@example.invalid`, výslovně nefunkční testovací placeholder, ne skutečný kontakt. |
 | `LEADS_ENABLED` | Výchozí `false`. `true` až se všemi předpoklady pro konkrétní prostředí. |
+| `DASHBOARD_ENABLED` | Výchozí vypnuto. Pouze lokálně explicitní `true`; `/dashboard` i CSV navíc vyžadují HTTP loopback `APP_ORIGIN` a přesně odpovídající `Host`. Není to veřejné přihlášení. |
 | `TEST_DATABASE_URL` | Uvedená v příkladu, ale **aktuální integration suite ji nečte**; přepisuje `DATABASE_URL` pevnou adresou `etf_radar_test` na portu 55439. |
 
 Pro nově zkopírovaný `.env.local` můžete obě tajemství vyplnit bez jejich výpisu následujícím příkazem. **Nespouštějte jej jako běžný restart**: přegenerování mění deduplikaci i přístup k existujícím reportům. Přepíše pouze tyto dvě položky, DB URL a flag capture si nastavte v editoru zvlášť.
@@ -159,6 +160,18 @@ npm run start -- --hostname localhost --port 3000
 
 Před změnou portu změňte i `APP_ORIGIN` a restartujte server; UI identity/env ověřte na skutečně běžícím buildu, ne pouze v souboru.
 
+## Lokální přehled skutečných dat
+
+`/dashboard` je server-renderovaný český přehled skutečně uložených PostgreSQL dat, bez simulovaných statistik. Výchozí období je 30 dní; lze zvolit 7/30/90 dní nebo všechna dosud uchovaná data, variantu A/B/všechny a stránku kontaktů. Kontakty mají stránkování po 50, diagnostický výpis nejvýše 100 nejnovějších událostí. Obnovení je obyčejné načtení ze serveru, nikoli optimistická změna čísel. Výpadek DB zobrazí nedostupnost, ne smyšlené nuly.
+
+Povolení je **jen pro vlastní lokální demo**: nastavte `DASHBOARD_ENABLED=true` v lokálním prostředí, `APP_ORIGIN` na přesný HTTP loopback origin a server přivažte na loopback. Například při `APP_ORIGIN=http://127.0.0.1:3103` použijte `npm run start -- --hostname 127.0.0.1 --port 3103` a otevřete `http://127.0.0.1:3103/dashboard`. Změna konfigurace vyžaduje restart; nový kód nejprve produkční rebuild. `localhost` a `127.0.0.1` nejsou zaměnitelné Host hodnoty. Guard vrací 404 ještě před načtením dat; forwardované hlavičky nelze použít jako náhradu lokálního Hostu.
+
+**Na jakémkoli hypotetickém deploymentu ponechte dashboard vypnutý.** Gate není autentizace uživatelů, firewall ani ochrana veřejně naslouchajícího serveru. Nevystavujte jej přes tunel/proxy a nespouštějte povolený dashboard na `0.0.0.0`. Stránka i export obsahují kontaktní emaily; noindex/nofollow a no-referrer nejsou náhradou omezení přístupu.
+
+Měřené relace nejsou všichni návštěvníci ani unikátní lidé. Primární karta **Nové kontakty / měřené relace** odpovídá výše uvedené definici nových měřených leadů ve stejné landing kohortě. Při více nových emailech v jedné relaci může tento poměr přesáhnout 100 %. Oddělená **Konverze měřených relací** počítá relace s alespoň jedním úspěšným uložením, včetně opakovaného capture existujícího kontaktu; tato metrika je nejvýše 100 %. Bez měřených landing relací se zobrazí „—“, nikoli vymyšlená konverze. Všechny captures a unikátní kontakty se zobrazují odděleně. Kampaně ukazují pouze uložené captures, ne neexistující campaign conversion rate. Výběry ETF z měřených eventů se nemíchají s dvojicemi ze snapshotů uložených reportů. Nezměněná výchozí dvojice není event výběru. Starší chybějící dvojice, expirované reporty a retence jsou výslovně přiznané; neodvozujeme historii z dnešního katalogu.
+
+Odkaz na `/dashboard/export?range=30&variant=all` exportuje filtrované kontakty do CSV se stejným lokálním guardem; export není veřejné API ani způsob obcházení stránkování v UI. CSV obsahuje emaily a nesmí se publikovat. Přesné definice a hranice jsou v [ANALYTICS](docs/ANALYTICS.md#lokální-dashboard), skutečné kontroly a opt-in příkaz v [TESTING](docs/TESTING.md#lokální-dashboard--10-října-2026).
+
 ## Testování a údržba
 
 ```sh
@@ -178,6 +191,10 @@ npm run build
 Playwright config **nespouští server**; bez `PLAYWRIGHT_BASE_URL` očekává `http://127.0.0.1:3100`. Integration suite generuje vlastní secrets/test identity a používá vlastní testovací emaily; nesmí mířit na produkci. Browser lead-form scénáře používají intercepted API responses: nepovažujte je samy za důkaz persistence.
 
 Závěrečné kontroly: typecheck/lint/build prošly, 26 unit a 25 DB integration testů prošlo. Standardní browser suite: 19 prošlo, 2 explicitně opt-in live testy byly přeskočené; při samostatném zapnutí oba skutečné DB/browser testy prošly. Consented funnel uložil přesně 13 událostí včetně reportového `session_start`; bez souhlasu se report doručil s nulou analytických událostí. Testovací řádky byly uklizeny. Mobilní Lighthouse po opravě favicon/CSP: **Performance 99, Accessibility 100, Best Practices 100, SEO 100**, LCP 2,2 s, TBT 60 ms, CLS 0. Jde o konkrétní lokální měření, ne výkon veřejného hostingu; předchozí výsledky 75/97/97 nejsou skryté. Důkazy v [TESTING](docs/TESTING.md) a [QA_FINAL](docs/QA_FINAL.md). Externí deployment nebyl proveden. Starší audit zachytil 0 production findings, ale 5 high dev findings; nejde o aktuální záruku bezchybného dependency auditu.
+
+**Aktualizace po dashboardu (10. října 2026):** nejnovější typecheck/lint/build prošly, **74 unit a 39 PostgreSQL integration testů prošlo**. Kompletní browser běh se zapnutým dashboardem a live funnelem: **23 passed / 1 skipped**; vypnutý dashboard/export a odmítnutí cizího Hostu navíc samostatně ověřeny na dočasném lokálním serveru. Skutečné nově uložené testovací kontakty a dvojice byly před vlastním scoped cleanup viditelné v přehledu/CSV; dashboard totals ověřeny nezávislým SQL, bez mockovaného úspěchu. Podrobnosti a předešlá selhání v TESTING. Dashboard má vlastní nové ověření přístupnosti/responsivity, nikoli nové Lighthouse skóre.
+
+Po opravě lifecycle regrese nalezené nezávislým review jsou aktuální výsledky **75 unit / 39 integration / 24 browser passed**, jedna disabled kontrola úmyslně přeskočena na zapnutém serveru a samostatně ověřena proti vypnutému. SPA návrat do dashboardu a souhlas změněný v jiné záložce již nevytváří falešnou landing návštěvu; předchozí mezivýsledky zůstávají v TESTING.
 
 Retenční skript je ruční, bez npm aliasu a bez scheduleru:
 
