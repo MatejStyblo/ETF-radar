@@ -120,3 +120,22 @@ test('cross-tab withdrawal stops initialized clients and invalidates queued even
  await client.track('etf_selected');
  expect(fetchMock.mock.calls.filter(([, options]) => options.method === 'POST')).toHaveLength(0);
 });
+
+test('unmounting a measured page blocks cross-tab opt-in and queued tracking until reactivated', async () => {
+ const client = await import('@/lib/analytics/client');
+ const stop = client.initializeMeasurement('b', 'landing');
+ client.setMeasurement(true); await client.track('landing_view');
+ fetchMock.mockClear();
+ const queued = client.track('calculator_interaction');
+ expect(stop).toBeTypeOf('function');
+ stop!();
+ await queued;
+ for (const next of ['denied', 'allowed']) {
+  storage.set('etf-radar-measurement', next);
+  browser.dispatchEvent(Object.assign(new Event('storage'), { key: 'etf-radar-measurement' }));
+ }
+ await client.track('etf_selected', ['cspx', 'ivv']);
+ expect(fetchMock.mock.calls.filter(([, options]) => options.method === 'POST')).toHaveLength(0);
+ client.initializeMeasurement('b', 'landing'); await client.track('calculator_interaction');
+ expect(fetchMock.mock.calls.filter(([, options]) => options.method === 'POST').map(([, options]) => JSON.parse(options.body).name)).toEqual(['landing_view','calculator_interaction']);
+});

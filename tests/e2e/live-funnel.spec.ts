@@ -20,7 +20,7 @@ test.describe('opt-in real local production funnel (no interception)', () => {
       await db.connect();
       const run = randomUUID();
       const email = `live-funnel-${run}@example.invalid`;
-      const events: { eventId: string; name: string; adVariant: string; consent: boolean }[] = [];
+      const events: { eventId: string; name: string; adVariant: string; consent: boolean; etfIds?: string[] }[] = [];
       const errors: string[] = [];
       const responses: { path: string; status: number }[] = [];
       let attemptId: string | undefined;
@@ -91,8 +91,10 @@ test.describe('opt-in real local production funnel (no interception)', () => {
           expect(stored).toHaveLength(required.length);
           expect(stored.map(row => row.name).sort()).toEqual([...required].sort());
           expect(stored.filter(row => row.source === 'server')).toEqual([expect.objectContaining({ name: 'lead_submit_success', event_id: attemptId, is_new_lead: true })]);
-          for (const event of stored) expect(Object.keys(event).sort()).toEqual(['event_id','source','session_id','name','ad_variant','is_new_lead','schema_version','created_at'].sort());
-          for (const event of events) expect(Object.keys(event).sort()).toEqual(['eventId','name','adVariant','consent'].sort());
+          for (const event of stored) expect(Object.keys(event).sort()).toEqual(['event_id','source','session_id','name','ad_variant','is_new_lead','schema_version','created_at','etf_ids'].sort());
+          for (const event of events) expect(Object.keys(event).sort()).toEqual((event.name === 'etf_selected' ? ['eventId','name','adVariant','consent','etfIds'] : ['eventId','name','adVariant','consent']).sort());
+          expect(stored.find(event => event.name === 'etf_selected')?.etf_ids).toEqual(['cspx','ivv']);
+          expect(events.find(event => event.name === 'etf_selected')?.etfIds).toEqual(['cspx','ivv']);
           expect(JSON.stringify(stored)).not.toContain(email);
           expect(JSON.stringify(stored)).not.toContain('123456');
           expect(stored.every(row => row.ad_variant === 'b')).toBe(true);
@@ -107,6 +109,24 @@ test.describe('opt-in real local production funnel (no interception)', () => {
         }
         expect(errors).toEqual([]);
         expect(responses.every(r => r.status < 400)).toBe(true);
+        if (process.env.LIVE_DASHBOARD === '1') {
+          const admin = await context.newPage();
+          try {
+            const beforeAdmin = await db.query('SELECT count(*)::int AS count FROM analytics_events WHERE session_id=$1', [rows.analytics_session_id]);
+            const response = await admin.goto('/dashboard?range=all&variant=all');
+            expect(response?.status()).toBe(200);
+            await expect(admin.getByRole('rowheader', { name: email, exact: true })).toBeVisible();
+            const totals = (await db.query('SELECT count(DISTINCT lead_id)::int AS leads,count(*)::int AS captures FROM submission_receipts')).rows[0];
+            await expect(admin.getByTestId('unique-leads')).toHaveText(new Intl.NumberFormat('cs-CZ').format(totals.leads));
+            await expect(admin.getByTestId('captures')).toHaveText(new Intl.NumberFormat('cs-CZ').format(totals.captures));
+            if (consent) await expect(admin.getByRole('region', { name: 'Dvojice z událostí — vodorovně posuvná tabulka' }).getByRole('rowheader', { name: 'CSPX / IVV', exact: true })).toBeVisible();
+            await expect(admin.getByRole('region', { name: 'Dvojice z reportů — vodorovně posuvná tabulka' }).getByRole('rowheader', { name: 'CSPX / IVV', exact: true })).toBeVisible();
+            const csv = await admin.request.get('/dashboard/export?range=all&variant=all');
+            expect(csv.status()).toBe(200);
+            expect(await csv.text()).toContain(email);
+            expect((await db.query('SELECT count(*)::int AS count FROM analytics_events WHERE session_id=$1', [rows.analytics_session_id])).rows).toEqual(beforeAdmin.rows);
+          } finally { await admin.close(); }
+        }
         const evidencePath = info.outputPath('database-evidence.json');
         await writeFile(evidencePath, JSON.stringify({ run, consent, attemptId, receipt: { lead_id: rows.lead_id, report_id: rows.report_id, analytics_session_id: rows.analytics_session_id, attribution: rows.attribution, marketing_consent: rows.marketing_consent, marketing_consent_at: rows.marketing_consent_at, is_new_lead: rows.is_new_lead }, events: stored, clientEvents: events, responses, errors }, null, 2));
         await info.attach('database-evidence.json', { path: evidencePath, contentType: 'application/json' });

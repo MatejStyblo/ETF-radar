@@ -4,9 +4,11 @@ import type { z } from 'zod';
 import type { eventSchema } from '@/lib/db/analytics';
 // Type-only import: the server module never enters the browser bundle.
 export type ClientEvent = z.infer<typeof eventSchema>['name'];
+type EtfPair = NonNullable<z.infer<typeof eventSchema>['etfIds']>;
 type Preference='unset'|'allowed'|'denied';
 export type MeasurementPage='landing'|'report';
 let page:MeasurementPage='landing';
+let active=false;let activation=0;
 const bootstrapEvent=():ClientEvent=>page==='landing'?'landing_view':'session_start';
 const KEY='etf-radar-measurement';
 let preference:Preference='unset';let variant:'a'|'b'='a';let generation=0;let ready=false;let queue=Promise.resolve();
@@ -42,28 +44,34 @@ export function measurementConsent(){
  return preference==='allowed';
 }
 export function initializeMeasurement(adVariant?:'a'|'b',currentPage:MeasurementPage='landing'){
- if(page!==currentPage){generation++;ready=false;once.clear();page=currentPage;if(preference==='allowed')void track(bootstrapEvent());}
+ const resumed=!active||page!==currentPage;
+ active=true;const currentActivation=++activation;
+ if(resumed){generation++;ready=false;once.clear();page=currentPage;}
  if(adVariant)variant=adVariant;
  try{if(localStorage.getItem(REVOCATION_KEY)==='pending'){pendingRevocation=true;queueRevocation();}}catch{}
  if(!listening){window.addEventListener('storage',event=>{if(event.key===KEY||event.key===null){try{const saved=localStorage.getItem(KEY);applyPreference(saved==='allowed'?'allowed':saved==='denied'?'denied':'unset');}catch{}}});listening=true;}
  try{const saved=localStorage.getItem(KEY);applyPreference(saved==='allowed'?'allowed':saved==='denied'?'denied':'unset');}catch{/* unavailable storage must not block the tool */}
+ if(resumed&&preference==='allowed')void track(bootstrapEvent());
+ return()=>{if(activation===currentActivation){active=false;generation++;ready=false;once.clear();}};
 }
-async function send(name:ClientEvent,epoch:number){
- if(preference!=='allowed'||epoch!==generation)return false;
- try{const response=await fetch('/api/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({eventId:crypto.randomUUID(),name,adVariant:variant,consent:true}),keepalive:true});if(response.status===401&&epoch===generation){ready=false;once.clear();}return response.ok;}catch{return false;}
+async function send(name:ClientEvent,epoch:number,etfIds?:EtfPair){
+ if(!active||preference!=='allowed'||epoch!==generation)return false;
+ try{const response=await fetch('/api/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({eventId:crypto.randomUUID(),name,adVariant:variant,consent:true,...(etfIds ? {etfIds} : {})}),keepalive:true});if(response.status===401&&epoch===generation){ready=false;once.clear();}return response.ok;}catch{return false;}
 }
-export function track(name:ClientEvent){
- if(preference!=='allowed')return Promise.resolve();
+export function track(name:ClientEvent,etfIds?:EtfPair){
+ if(!active||preference!=='allowed')return Promise.resolve();
+ if(etfIds!==undefined&&(name!=='etf_selected'||!Array.isArray(etfIds)||etfIds.length!==2||etfIds[0]===etfIds[1]||!etfIds.every(id=>['spy','ivv','cspx'].includes(id))))return Promise.resolve();
+ const pair:EtfPair|undefined=etfIds?[etfIds[0],etfIds[1]]:undefined;
  const epoch=generation;
  queue=queue.then(async()=>{
-  if(epoch!==generation||preference!=='allowed')return;
-  if(pendingRevocation){await revoke();if(pendingRevocation||epoch!==generation||preference!=='allowed')return;}
+  if(!active||epoch!==generation||preference!=='allowed')return;
+  if(pendingRevocation){await revoke();if(pendingRevocation||!active||epoch!==generation||preference!=='allowed')return;}
   const bootstrap=bootstrapEvent();
-  if(!ready){ready=await send(bootstrap,epoch);if(!ready)return;}
-  if(name!==bootstrap)await send(name,epoch);
+  if(!ready){const established=await send(bootstrap,epoch);if(!active||epoch!==generation||preference!=='allowed')return;ready=established;if(!ready)return;}
+  if(name!==bootstrap)await send(name,epoch,pair);
  }).catch(()=>{});return queue;
 }
-export function trackOnce(name:ClientEvent){if(preference!=='allowed'||once.has(name))return;once.add(name);void track(name);}
+export function trackOnce(name:ClientEvent){if(!active||preference!=='allowed'||once.has(name))return;once.add(name);void track(name);}
 export function setMeasurement(allow:boolean){
  generation++;ready=false;once.clear();preference=allow?'allowed':'denied';
  try{localStorage.setItem(KEY,preference);}catch{}
