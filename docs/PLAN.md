@@ -79,7 +79,7 @@ Jedna sdílená konfigurace propojí srovnání, kalkulaci i report. Desktop pou
 
 ## 5. Design systém a stavy
 
-Směr (schválená úprava 12. října 2026): přesný finanční pracovní nástroj se třemi hlavními barvami — tmavě modrá `#102A43`, tyrkysová `#007F78`, bílá `#FFFFFF`. Světlé odstíny modré a tyrkysové oddělují výsledky a pomocné části. Silnější úvodní nadpis, plné tyrkysové CTA, zvýrazněný modelový rozdíl, modré/tyrkysové ukazatele s popisky, vstupy a tlačítka se zaoblením 10 px. Kalkulačka zůstává blízko začátku stránky. Formulář, webový i stažený report a soukromí sdílí identitu. Tokeny a kontrastní varianty viz D13 v DECISIONS; skutečné kontroly viz TESTING.
+Směr (schválená úprava 12. října 2026): přesný finanční pracovní nástroj se třemi hlavními barvami — tmavě modrá `#0B1735`, tyrkysová `#007F78`, bílá `#FFFFFF`. Světlé odstíny modré a tyrkysové oddělují výsledky a pomocné části. Silnější úvodní nadpis, plné tyrkysové CTA, zvýrazněný modelový rozdíl, modré/tyrkysové ukazatele s popisky, vstupy a tlačítka se zaoblením 10 px. Kalkulačka zůstává blízko začátku stránky. Formulář, webový i stažený report a soukromí sdílí identitu. Tokeny a kontrastní varianty viz D13 v DECISIONS; skutečné kontroly viz TESTING.
 
 System font / lokálně hostované písmo, tabulární číslice, vyrovnané sloupce, 8px spacing základ, střídmé radius 8–12px, minimální stíny. Hierarchie: výsledek > potřebné vstupy > metodika. Žádné fotografie, dekorativní gradienty, falešné počty uživatelů, testimonials ani blikající „úspora“.
 
@@ -254,3 +254,7 @@ Deploy runbook: zvolit Postgres, nakonfigurovat TLS a pool, aplikovat migrace, v
 [5] https://uoou.gov.cz/verejnost/qa-otazky-a-odpovedi/cookies
 [6] https://www.nyse.com/regulation/exchange-traded-products
 [7] https://www.nyse.com/products/exchange-traded-products/exchange-traded-funds
+
+## Vizuální reference — dokončená návazná úprava, 12. října 2026
+
+Podle uživatelem přiloženého obrázku: desktopový dvouřádkový nadpis, jemná SVG dekorace hero, dvě samostatné zaoblené plochy a přehledné větší sazby/výsledky. Tablet a mobil používají panely pod sebou. Mini graf modelových zůstatků má společnou škálu od nuly; ilustrační poměry z předlohy nebyly převzaty jako data. Zachován celý formulářový/reportový tok.

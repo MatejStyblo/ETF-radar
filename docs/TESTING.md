@@ -137,3 +137,10 @@ Nejnovější finální výsledky po této opravě: **75 unit / 39 PostgreSQL in
 - Samostatné porovnání skutečné databázové persistence ani nový Lighthouse audit nejsou součástí této vizuální změny; předchozí výsledky nepovažujeme za nové měření.
 
 Finální `npm run build`: exit 0, Next.js úspěšně sestavil všechny routes. Doplňková kontrola soukromí na 375/768/1440 px: žádný overflow a 0 Axe violations. Klávesnice zobrazila skip link a 3px tmavě modrý focus ring; při reduced motion měl CTA přechod délku 0 s. Screenshoty landing page na všech třech šířkách a mobilního reportu vizuálně zkontrolovány.
+
+
+## Úprava podle dodané obrazové předlohy, 12. října 2026
+
+Po změně markup hero a výsledku, panelů a typografie znovu prošly `typecheck`, `lint`, 75 unit testů a všech 17 browser testů ve stejném dočasném testovacím režimu s API interception. Landing page na 375/768/1440 px bez overflow a bez Axe violations; mobilní vstup stále v prvním 812px viewportu. Webový report na 375/1440 px bez overflow a bez Axe violations. Screenshot review všech tří šířek; úvodní krajina je dekorace, mini graf zůstatků používá skutečnou společnou nulovou škálu.
+
+Finální production build podle reference: exit 0. Náhled běží přes `next start` s původní konfigurací bez QA identity. Na 375/768/1440 px po interaktivní změně vkladu výsledek přepočten, bez overflow a bez browser page errors. Finální screenshoty produkčního sestavení zkontrolovány.

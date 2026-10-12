@@ -102,6 +102,10 @@ Datum: 9. října 2026. Stav rozhodnutí: navržené pro implementaci, není-li 
 
 **Tokeny:** `--canvas` / `--surface #FFFFFF`, `--ink #102A43`, `--accent #007F78`, `--accent-hover #00665F`, `--muted #52677B`, `--line #D8E4EB`, `--control-line #7D919F`, `--soft-blue #F1F6FA`, `--soft-accent #E6F4F2`, `--track #C8DCDF`, `--radius 10px`. Panely mají 12–16 px. `--danger #A12D22` pouze pro chyby. Malý tyrkysový text na tónovaném pozadí používá tmavší `--accent-hover`, aby splnil kontrast. Focus ring je tmavě modrý. Přechody respektují reduced motion, tisk reportu zůstává úsporný.
 
+**Upřesnění podle reference, 12. října 2026:** uživatel dodal obrazovou předlohu. Desktop má 60px dvouřádkový hero, jemnou SVG krajinu bez datových os, světle tónované pozadí a dva samostatné bílé panely se zaoblením 20 px, mezerou 22 px a mírným stínem. Tmavě modrý inkoust je nyní `#0B1735`; paleta stále obsahuje pouze modrou, tyrkysovou a bílou s odstíny. Jemný tyrkysový přechod CTA, šipka doprava, větší fondové sazby a tónovaný přehled vkladů odpovídají předloze. Horní lišta prohlížeče z obrázku se do webu nekopíruje. Tablet skládá panely pod sebe; mobil zachovává kompaktní první obrazovku a 48px dotykové vstupy.
+
+**Poctivé grafy:** mini sloupce ve výsledku používají stejnou nulovou základnu a společné maximum baseline, nikoli záměrně přehnaný rozdíl z ilustrační předlohy. Při nulových vkladech jsou prázdné. Absolutní rozdíl se stále uvádí slovně a číselně; barvy a dekorace nemění výpočet.
+
 **Proč:** návštěvník musí vidět produkt, ne prezentaci. Metodika blízko výsledku, availability blízko fondu. Každá sekce musí podporovat porozumění, trust, value nebo reliability.
 
 **Acceptance:** 375/768/1440 px bez overflow, keyboard, zoom, error focus, reduced motion. Lighthouse cíle nejsou hotové skóre. UI primitives jen kde skutečně pomohou; malé vlastní SVG pro první vizualizaci.

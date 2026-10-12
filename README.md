@@ -8,7 +8,7 @@
 
 ## Vizuální identita
 
-Od 12. října 2026 stránka používá tmavě modrou, tyrkysovou a bílou. Výraznější úvod a hlavní tlačítko vedou přímo ke kalkulačce, modelový rozdíl zvýrazňuje světlý tyrkysový panel. Fondy rozlišují modré a tyrkysové ukazatele s textovými popisky. Stejné barvy má formulář, webový i stažený report a soukromí. [Tokeny a rozhodnutí](docs/DECISIONS.md#d13--vizuální-identita-má-podporovat-práci-s-čísly), [ověření](docs/TESTING.md).
+Od 12. října 2026 stránka používá tmavě modrou, tyrkysovou a bílou. Podle uživatelem dodané obrazové předlohy má desktop velký dvouřádkový nadpis, jemnou grafiku na světlém pozadí a dva samostatné zaoblené panely. Hlavní tlačítko vede přímo ke kalkulačce, modelový rozdíl zvýrazňuje světlý tyrkysový panel. Fondy rozlišují modré a tyrkysové ukazatele s textovými popisky. Stejné barvy má formulář, webový i stažený report a soukromí. [Tokeny a rozhodnutí](docs/DECISIONS.md#d13--vizuální-identita-má-podporovat-práci-s-čísly), [ověření](docs/TESTING.md).
 
 ## Pro koho a proč
 
