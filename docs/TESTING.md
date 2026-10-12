@@ -125,3 +125,15 @@ Review našlo, že po SPA návratu z landing do dashboardu zůstal globální st
 `initializeMeasurement` nyní vrací generačně chráněný cleanup, panel jej vrací z efektu; při odchodu se měření deaktivuje a queued práce invaliduje. POST/once/bootstrap vyžadují aktivní měřenou stránku. Withdrawal DELETE a retry zůstávají dostupné i při neaktivním měření; opožděný bootstrap jiné generace nesmí obnovit readiness. Po návratu na landing/report se měření aktivuje s odpovídajícím typem stránky.
 
 Nejnovější finální výsledky po této opravě: **75 unit / 39 PostgreSQL integration passed**, typecheck/lint/build prošly. Proti znovu přestavěnému a restartovanému serveru: **24 browser passed / 1 skipped**, včetně skutečného cross-tab/navigation regresního testu (GREEN) a obou browser → DB → dashboard/CSV → report flow. Samostatná disabled sada: **2 passed / 2 skipped**; oba opt-in scénáře jsou zde úmyslně vypnuté. Předchozí počty výše jsou zachované mezikroky, nikoli aktuální konečný stav.
+
+
+## Vizuální úprava, 12. října 2026
+
+- `npm run typecheck` a `npm run lint`: exit 0. `npm test`: 14 souborů, 75 testů prošlo.
+- Playwright `frontend`, `report-render`, `lead-form`, `consent`: všech 17 testů prošlo na dočasném náhledu `127.0.0.1:3101` s jedním workerem. Pro formulář byl pouze v procesu povolen testovací controller/email a LEADS_ENABLED; API požadavky formulářových testů jsou zachycené, skutečné kontakty se neukládají. Trvalá konfigurace nebyla změněna.
+- Landing page: 375/768/1440 px bez horizontálního overflow, na 375 px oba selecty a první investiční vstup v prvním viewportu 812 px. Recalculation, neplatné vstupy, stejné ETF a extrémní platné hodnoty prošly. Axe v těchto třech šířkách bez violations.
+- Webový report: layout a Axe na 375/1440 px bez violations, obsah reportu zachovaný. Chyby emailu, serverové chyby, focus na chybě, retry a analytics consent prošly.
+- První běhy odhalily vypnutý formulář v nenakonfigurovaném místním prostředí, nízký kontrast malých tyrkysových popisků na tónovaném pozadí a první investiční vstup pod mobilním viewportem. Kontrast opraven tmavší tyrkysovou pro malé popisky; mobilní rozestupy a nadpis zkompaktněny při zachování 48px vstupů a CTA. Následný celý cílený běh prošel.
+- Samostatné porovnání skutečné databázové persistence ani nový Lighthouse audit nejsou součástí této vizuální změny; předchozí výsledky nepovažujeme za nové měření.
+
+Finální `npm run build`: exit 0, Next.js úspěšně sestavil všechny routes. Doplňková kontrola soukromí na 375/768/1440 px: žádný overflow a 0 Axe violations. Klávesnice zobrazila skip link a 3px tmavě modrý focus ring; při reduced motion měl CTA přechod délku 0 s. Screenshoty landing page na všech třech šířkách a mobilního reportu vizuálně zkontrolovány.

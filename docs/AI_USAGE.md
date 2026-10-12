@@ -28,3 +28,10 @@ Ověřeno pomocí skutečného `hermes sessions export --help`:
 4. Před sdílením ručně zkontrolovat osobní údaje, credentials a unrelated context. Nikdy nepoužít upload/public/delete-after-verified bez oprávnění.
 
 ID v ukázkových příkazech je viditelně placeholder; skutečný export výše používá ověřené session ID. Genuinní runtime delegation transcript lze uchovat jako dílčí agentový záznam a výslovně odlišit od rodičovského exportu. Export nepublikujeme externě; jeho snapshot lze při finálním odevzdání obnovit stejným příkazem.
+
+
+## Codex — vizuální úprava 12. října 2026
+
+Uživatel schválil paletu modrá/tyrkysová/bílá a implementační plán. Codex upravil společné CSS tokeny, mobilní rozestupy, CTA, zvýraznění výsledků, formulář, report a jeho samostatné HTML. Finanční data a výpočetní model nebyly měněny. Ověření zahrnuje existující unit a browser testy a ruční kontrolu screenshotů. Po počátečních selháních byl opraven kontrast malých popisků a mobilní poloha vstupu; formulářové testy dostaly dočasnou procesovou konfiguraci, nikoli změnu produkčních pravidel. Podrobnosti skutečných běhů viz TESTING.
+
+Skutečné zprávy a nástrojové záznamy této Codex session jsou uchovány jako dílčí runtime snapshot `ai-log/codex-2026-10-12-visual-redesign.jsonl`; formát, rozsah a vynechané záznamy vysvětluje `ai-log/README.md`. Nejde o přepis vytvořený ze vzpomínek.

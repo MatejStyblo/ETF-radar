@@ -6,6 +6,10 @@
 
 **Stav k 9. říjnu 2026:** lokální aplikace, PostgreSQL persistence a společný browser → DB → report/download tok jsou ověřené; důkazy a rozsah testů jsou v [TESTING](docs/TESTING.md). Neproběhl externí deployment ani reklamní kampaň a nejsou cílem tohoto projektu. Uživatelem dodané testovací jméno je přesně **Matěj STýblo**; `test@example.invalid` je úmyslně nefunkční placeholder, nikoli jeho skutečný email. Nejde o produkční právní identitu. Její schválení není úkol nutný k dokončení lokálního dema; nevydáváme demo za veřejný sběr leadů.
 
+## Vizuální identita
+
+Od 12. října 2026 stránka používá tmavě modrou, tyrkysovou a bílou. Výraznější úvod a hlavní tlačítko vedou přímo ke kalkulačce, modelový rozdíl zvýrazňuje světlý tyrkysový panel. Fondy rozlišují modré a tyrkysové ukazatele s textovými popisky. Stejné barvy má formulář, webový i stažený report a soukromí. [Tokeny a rozhodnutí](docs/DECISIONS.md#d13--vizuální-identita-má-podporovat-práci-s-čísly), [ověření](docs/TESTING.md).
+
 ## Pro koho a proč
 
 Pracovní cílová skupina ze zadání: čeští retailoví investoři přibližně 25–45 let, přicházející převážně na mobilu z reklamy. Chtějí se orientovat v dlouhodobém investování, ale nemusí znát rozdíl mezi nákladem fondu, nákladem brokera, listingem a měnovou expozicí. Nejde o ověřený výsledek uživatelského výzkumu.

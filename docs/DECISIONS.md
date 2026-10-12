@@ -98,7 +98,9 @@ Datum: 9. října 2026. Stav rozhodnutí: navržené pro implementaci, není-li 
 
 ## D13 — Vizuální identita má podporovat práci s čísly
 
-**Rozhodnutí:** klidný off-white/ink/green systém, tabulární číslice, lokální font, vertikální mobilní porovnání, žádné stock photos nebo generické hero ilustrace. Jeden CTA pro aktuální fázi. Tokeny jsou návrh; kontrast a skutečné rozvržení budou měřeny a screenshot-reviewovány.
+**Rozhodnutí (aktualizace 12. října 2026):** uživatelem schválené tři hlavní barvy: tmavě modrá `#102A43`, tyrkysová `#007F78` a bílá `#FFFFFF`. Modrá tvoří strukturu a první fond; tyrkysová akce, výsledek a druhý fond. Textové popisky zůstávají, barva není jediným rozlišením. Lokální fonty, tabulární číslice, výraznější sans-serif hero, mobilní vertikální porovnání a jediný CTA pro aktuální fázi. Žádné dekorativní obrázky ani výrazné stíny. Stejná paleta platí pro formulář, report v aplikaci i stažené HTML, soukromí a interní dashboard.
+
+**Tokeny:** `--canvas` / `--surface #FFFFFF`, `--ink #102A43`, `--accent #007F78`, `--accent-hover #00665F`, `--muted #52677B`, `--line #D8E4EB`, `--control-line #7D919F`, `--soft-blue #F1F6FA`, `--soft-accent #E6F4F2`, `--track #C8DCDF`, `--radius 10px`. Panely mají 12–16 px. `--danger #A12D22` pouze pro chyby. Malý tyrkysový text na tónovaném pozadí používá tmavší `--accent-hover`, aby splnil kontrast. Focus ring je tmavě modrý. Přechody respektují reduced motion, tisk reportu zůstává úsporný.
 
 **Proč:** návštěvník musí vidět produkt, ne prezentaci. Metodika blízko výsledku, availability blízko fondu. Každá sekce musí podporovat porozumění, trust, value nebo reliability.
 

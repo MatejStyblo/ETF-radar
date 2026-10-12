@@ -79,7 +79,7 @@ Jedna sdílená konfigurace propojí srovnání, kalkulaci i report. Desktop pou
 
 ## 5. Design systém a stavy
 
-Směr: přesný finanční pracovní nástroj, ne generická SaaS šablona. Světlý neutrální podklad, tmavý inkoust, hluboká zelená pro akci; tlumená teplá barva pro upozornění. Návrh tokenů: `canvas #F6F7F3`, `surface #FFFFFF`, `ink #152923`, `muted #52625A`, `accent #145C43`, `border #D6DED7`. Kontrast těchto kombinací ještě změřit, není deklarovaným výsledkem.
+Směr (schválená úprava 12. října 2026): přesný finanční pracovní nástroj se třemi hlavními barvami — tmavě modrá `#102A43`, tyrkysová `#007F78`, bílá `#FFFFFF`. Světlé odstíny modré a tyrkysové oddělují výsledky a pomocné části. Silnější úvodní nadpis, plné tyrkysové CTA, zvýrazněný modelový rozdíl, modré/tyrkysové ukazatele s popisky, vstupy a tlačítka se zaoblením 10 px. Kalkulačka zůstává blízko začátku stránky. Formulář, webový i stažený report a soukromí sdílí identitu. Tokeny a kontrastní varianty viz D13 v DECISIONS; skutečné kontroly viz TESTING.
 
 System font / lokálně hostované písmo, tabulární číslice, vyrovnané sloupce, 8px spacing základ, střídmé radius 8–12px, minimální stíny. Hierarchie: výsledek > potřebné vstupy > metodika. Žádné fotografie, dekorativní gradienty, falešné počty uživatelů, testimonials ani blikající „úspora“.
 
