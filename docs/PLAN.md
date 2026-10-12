@@ -258,3 +258,7 @@ Deploy runbook: zvolit Postgres, nakonfigurovat TLS a pool, aplikovat migrace, v
 ## Vizuální reference — dokončená návazná úprava, 12. října 2026
 
 Podle uživatelem přiloženého obrázku: desktopový dvouřádkový nadpis, jemná SVG dekorace hero, dvě samostatné zaoblené plochy a přehledné větší sazby/výsledky. Tablet a mobil používají panely pod sebou. Mini graf modelových zůstatků má společnou škálu od nuly; ilustrační poměry z předlohy nebyly převzaty jako data. Zachován celý formulářový/reportový tok.
+
+## Graf modelového scénáře — 12. října 2026
+
+Přidán propojený graf hodnoty investice / dopadu nákladů s ročními daty stávajícího modelu, baseline, legendou, společnou nulovou škálou a přesnými hodnotami zvoleného roku. Funguje v kalkulačce i webovém reportu, myší, dotykem a klávesnicí. Vstupy a změna ETF ho okamžitě přepočítají; při neplatném scénáři zmizí. Bez nové závislosti, bez tvrzení o historických výnosech.

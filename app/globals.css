@@ -131,5 +131,57 @@ body{background:radial-gradient(ellipse at 85% 0%,var(--soft-accent),transparent
  .result-context{padding:14px}
  .difference{font-size:44px}
 }
+/* Annual projections: shared zero-based axes and keyboard/touch exploration. */
+.projection-chart{margin:24px 0;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
+.chart-heading .eyebrow{font-size:10px;color:var(--accent-hover);margin-bottom:6px}
+.chart-heading h3{font-size:17px;line-height:1.35;letter-spacing:-.025em}
+.chart-mode{display:flex;padding:4px;gap:4px;background:var(--soft-blue);border:1px solid var(--line);border-radius:12px;margin:16px 0}
+.chart-mode button{flex:1;min-width:0;min-height:44px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-size:12px;font-weight:600;padding:8px}
+.chart-mode button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px rgb(16 42 67 / .08)}
+.chart-mode button:hover{color:var(--ink)}
+.chart-legend{display:flex;flex-wrap:wrap;gap:10px 18px;font-size:11px;font-weight:600;margin-bottom:16px}
+.chart-legend>span,.chart-readout dt{display:flex;gap:6px;align-items:center}
+.chart-legend i,.chart-readout i{display:inline-block;width:14px;height:0;border-top:3px solid var(--ink);flex-shrink:0}
+.chart-legend i.chart-first,.chart-readout i.chart-first{border-top-style:dashed}
+.chart-legend i.chart-second,.chart-readout i.chart-second{border-color:var(--accent)}
+.chart-legend i.chart-baseline,.chart-readout i.chart-baseline{border-color:var(--muted);border-top-style:dotted}
+.chart-axis-unit{font-size:10px;color:var(--muted);margin-bottom:10px}
+.chart-frame{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;padding:4px 6px 26px 0}
+.chart-y-axis{display:flex;flex-direction:column;justify-content:space-between;height:210px;font-size:10px;color:var(--muted);text-align:right;line-height:1}
+.chart-y-axis span:first-child{transform:translateY(-50%)}
+.chart-y-axis span:last-child{transform:translateY(50%)}
+.chart-plot{position:relative;min-width:0;height:210px}
+.chart-plot svg{display:block;width:100%;height:100%;overflow:visible;touch-action:pan-y;cursor:crosshair}
+.chart-grid{stroke:var(--line);stroke-width:1}
+.chart-line{fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.chart-line.chart-first{stroke-dasharray:6 4}
+.chart-line.chart-second{stroke:var(--accent);stroke-width:3}
+.chart-line.chart-baseline{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:2 5}
+.chart-cursor{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 5;opacity:.5}
+.chart-point{position:absolute;width:8px;height:8px;border:2px solid var(--surface);border-radius:50%;background:var(--ink);transform:translate(-50%,-50%);pointer-events:none}
+.chart-point.chart-second{background:var(--accent)}
+.chart-point.chart-baseline{background:var(--muted)}
+.chart-x-axis{display:flex;justify-content:space-between;margin-top:10px;font-size:10px;color:var(--muted)}
+.chart-slider-label{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);margin:8px 0 0}
+.chart-slider-label strong{font-weight:600;color:var(--ink)}
+.chart-year-slider{display:block;width:100%;min-height:44px;margin:0;accent-color:var(--accent);cursor:pointer}
+.chart-readout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:6px 0 12px;padding:14px;background:var(--soft-blue);border-radius:12px}
+.chart-readout>div{min-width:0}
+.chart-readout dt{font-size:10px;color:var(--muted);white-space:nowrap}
+.chart-readout dd{margin:6px 0 0;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.025em;overflow-wrap:anywhere}
+.chart-readout>div:nth-child(2) dd{color:var(--accent-hover)}
+.projection-chart figcaption{font-size:11px;color:var(--muted);line-height:1.6}
+@media(max-width:700px){
+ .chart-heading h3{font-size:16px}
+ .chart-frame{grid-template-columns:44px minmax(0,1fr);gap:8px}
+ .chart-plot,.chart-y-axis{height:180px}
+ .chart-mode button{font-size:11px}
+ .chart-legend{gap:10px 12px}
+ .chart-readout{gap:8px;padding:12px 8px}
+ .chart-readout dt{font-size:9px;gap:4px}
+ .chart-readout i{width:10px}
+ .chart-readout dd{font-size:12px}
+}
+@media print{.projection-chart{break-inside:avoid}.chart-mode,.chart-year-slider,.chart-slider-label{display:none}.chart-readout dd{font-size:12pt}.projection-chart figcaption{font-size:10pt}}
 @media print{body{background:#fff;font-size:12pt;color:#000}.skip-link,.report-actions,.report-action-area,.report-header>.quiet-link,.measurement,.report-bottom>a{display:none!important}.personal-report{border:0;max-width:none}.report-cover,.report-section{padding:20px 0;background:#fff}.report-section-heading{break-after:avoid}.report-section-heading h2{font-size:22pt}.report-cover h1{font-size:34pt}.report-small,.report-intro,.report-assumptions li,.report-checklist li,.fund-details,.source-row,.annual-table{font-size:12pt}.fund-details th:first-child{font-size:12pt}.report-checklist li,.fund-details tr,.horizon-row{break-inside:avoid}.source-row a:after{content:" (" attr(href) ")";font-size:10pt;overflow-wrap:anywhere}.annual-detail:not([open])>*:not(summary){display:block!important}.annual-detail table{display:table!important}.annual-detail summary{font-size:16pt}.annual-table small{font-size:10pt}.report-header{padding:0 0 16px}.scenario-summary>.results{background:#fff;padding:16px 0}.report-cover>.report-small{font-size:12pt}.horizon-row{background:#fff}.horizon-value{font-size:14pt}}
 .result-sources{display:flex;gap:16px;border-top:1px solid var(--line);margin-top:18px;padding-top:12px}.result-sources a{font-size:10px;min-height:44px;display:flex;flex-direction:column;justify-content:center}.result-sources span{font-size:9px;color:var(--muted);text-decoration:none;margin-top:4px}.difference,.balance,.cost-impact strong,.baseline dd{overflow-wrap:anywhere}.result-fund{min-width:0}.balance{white-space:normal}.baseline dd{max-width:55%;text-align:right}.baseline dt{min-width:0}@media(min-width:701px){.site-header{padding:18px 32px}.intro{padding:28px 32px 26px}.intro-bottom{margin-top:16px}.fund-name{min-height:28px}.scenario{margin-top:24px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}

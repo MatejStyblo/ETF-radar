@@ -139,3 +139,10 @@ Datum: 9. října 2026. Stav rozhodnutí: navržené pro implementaci, není-li 
 [5] https://uoou.gov.cz/verejnost/qa-otazky-a-odpovedi/cookies
 [6] https://www.nyse.com/regulation/exchange-traded-products
 [7] https://www.nyse.com/products/exchange-traded-products/exchange-traded-funds
+
+
+## D17 — Přehledný graf vlastního scénáře, 12. října 2026
+
+Na výslovnou žádost uživatele doplněn graf ročního vývoje do výsledku kalkulačky i webového reportu. Dva pohledy: modelová hodnota investice (oba fondy + baseline bez nákladů) a dopad průběžných nákladů (oba fondy). Druhý pohled objasňuje rozdíly, když jsou hodnotové křivky téměř shodné. Data pocházejí přímo z `Projection.annual`, žádný nový finanční model. Všechny roky včetně roku 0 sdílí osu od nuly; pokles může klesat, nulové i podkorunové scénáře mají nenulový rozsah osy. Hodnoty jsou modelové Kč a graf není předpověď.
+
+Malé vlastní SVG s přímými ročními úsečkami a lehkým React ovládáním, bez další knihovny. Odlišné barvy a styly čar, legenda, čitelné HTML osy, přesné částky pod grafem. Myš/klepnutí vybírá rok; přístupný range umožňuje klávesnici (Home/End/šipky) a má `aria-valuetext` s částkami. Vybraný rok se při zkrácení horizontu ořízne. Neplatný scénář graf skryje spolu s výsledkem. Ve staženém script-free HTML zůstává kompletní roční tabulka; interaktivní graf je webová funkce. Nezavádíme analytické události pro každý pohyb kurzoru.

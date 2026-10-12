@@ -144,3 +144,13 @@ Finální `npm run build`: exit 0, Next.js úspěšně sestavil všechny routes.
 Po změně markup hero a výsledku, panelů a typografie znovu prošly `typecheck`, `lint`, 75 unit testů a všech 17 browser testů ve stejném dočasném testovacím režimu s API interception. Landing page na 375/768/1440 px bez overflow a bez Axe violations; mobilní vstup stále v prvním 812px viewportu. Webový report na 375/1440 px bez overflow a bez Axe violations. Screenshot review všech tří šířek; úvodní krajina je dekorace, mini graf zůstatků používá skutečnou společnou nulovou škálu.
 
 Finální production build podle reference: exit 0. Náhled běží přes `next start` s původní konfigurací bez QA identity. Na 375/768/1440 px po interaktivní změně vkladu výsledek přepočten, bez overflow a bez browser page errors. Finální screenshoty produkčního sestavení zkontrolovány.
+
+
+## Interaktivní graf, 12. října 2026
+
+- Typecheck a lint: exit 0. Unit suite: 15 souborů, 78 testů prošlo (3 nové ověřují vazbu grafu na roční model, dopad nákladů, nulové/podkorunové a klesající scénáře). Po podkorunovém hardeningu znovu prošly 3 chart testy.
+- Finální produkční sestavení: exit 0. Na dočasně povoleném testovacím formuláři a portu 3120 prošlo všech 19 cílených Playwright testů: chart, frontend, report-render, lead-form, consent. API formulářů zůstalo zachycené.
+- Nové browser testy: přesné hodnoty pro rok 0/1/konec, přepnutí na dopad nákladů, klávesnice Home/šipka, klepnutí do grafu na 375 px, zkrácení horizontu, skrytí grafu při neplatném vstupu, nulové vklady a záporný výnos.
+- Axe a overflow: landing 375/768/1440 a webový report 375/1440 bez violations/overflow. Vizuálně zkontrolované oba pohledy a mobilní graf.
+- První správný dev běh odhalil React SSR varování u SVG title (více textových children), související hydrataci a odpojení DOM při scrollu. Opraven jediným řetězcem title. Následný cílený běh 13 testů a finální produkční běh 19 testů prošly. Dřívější omyl obsazeného portu není ověření současného kódu.
+- Bez nového Lighthouse měření nebo databázové persistence testu; finanční engine se nezměnil.

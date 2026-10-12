@@ -37,3 +37,5 @@ Uživatel schválil paletu modrá/tyrkysová/bílá a implementační plán. Cod
 Skutečné zprávy a nástrojové záznamy této Codex session jsou uchovány jako dílčí runtime snapshot `ai-log/codex-2026-10-12-visual-redesign.jsonl`; formát, rozsah a vynechané záznamy vysvětluje `ai-log/README.md`. Nejde o přepis vytvořený ze vzpomínek.
 
 Návazná úprava ve stejné Codex session: uživatel dodal obrazovou předlohu. Codex přizpůsobil typografii, samostatné panely, SVG hero a výsledkový přehled. Grafické poměry z předlohy nenahradily reálná data: mini sloupce mají společnou nulovou škálu a zůstatky z existujícího modelu. Typy, lint, 75 unit testů a 17 cílených browser testů prošly.
+
+Codex doplnil na žádost uživatele interaktivní graf modelového scénáře (12. října 2026). Data používají skutečné roční hodnoty finančního jádra. Ověřena škála od nuly, nulové a záporně výnosové scénáře, klávesnice/touch a změna horizontu. První běh odhalil React SSR problém vícenásobných textových children SVG `<title>`; opraveno jediným řetězcem. Dočasně byl omylem zvolen obsazený port se starým náhledem; tento běh se nepovažuje za ověření změny. Následné běhy používají vlastní náhled na portu 3120.
