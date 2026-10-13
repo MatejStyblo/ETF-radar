@@ -107,7 +107,7 @@ body{background:radial-gradient(ellipse at 85% 0%,var(--soft-accent),transparent
  .fund-name{min-height:0}
 }
 @media(max-width:700px){
- .intro{padding-top:16px;padding-bottom:16px}
+ .intro{padding-top:12px;padding-bottom:8px}
  .intro h1{font-size:32px;line-height:1.1}
  .intro h1>span{display:inline}
  .intro-landscape{display:none}

@@ -2,11 +2,13 @@
 
 **Výhradně testovací projekt pro hiring zadání; nikdy skutečný komerční provoz ani placená kampaň.** Používejte syntetické emaily (například na `example.invalid`), nikoli osobní údaje skutečných návštěvníků.
 
-Český mobilní nástroj pro srovnání průběžných nákladů ETF na S&P 500. Návštěvník si vybere dva fondy, zadá vlastní modelovou investici a uvidí výsledek **bez registrace a bez souhlasu s měřením**. Až potom může zadat email a získat podrobnější osobní srovnání.
+Český mobilní nástroj pro izolované srovnání průběžných nákladů ETF. Výchozí dvojice STXF/STXG má primární listing na hlavním NYSE, ale sleduje odlišné indexy a strategie. Návštěvník si vybere dva fondy, zadá vlastní modelovou investici a uvidí výsledek **bez registrace a bez souhlasu s měřením**. Až potom může zadat email a získat podrobnější osobní srovnání.
 
-**Stav k 9. říjnu 2026:** lokální aplikace, PostgreSQL persistence a společný browser → DB → report/download tok jsou ověřené; důkazy a rozsah testů jsou v [TESTING](docs/TESTING.md). Neproběhl externí deployment ani reklamní kampaň a nejsou cílem tohoto projektu. Uživatelem dodané testovací jméno je přesně **Matěj STýblo**; `test@example.invalid` je úmyslně nefunkční placeholder, nikoli jeho skutečný email. Nejde o produkční právní identitu. Její schválení není úkol nutný k dokončení lokálního dema; nevydáváme demo za veřejný sběr leadů.
+**Aktuální stav k 13. říjnu 2026:** lokální aplikace, PostgreSQL persistence a společný browser → DB → report/download tok jsou ověřené; důkazy a rozsah testů jsou v [TESTING](docs/TESTING.md). Neproběhl externí deployment ani reklamní kampaň a nejsou cílem tohoto projektu. Uživatelem dodané testovací jméno je přesně **Matěj STýblo**; `test@example.invalid` je úmyslně nefunkční placeholder, nikoli jeho skutečný email. Nejde o produkční právní identitu. Její schválení není úkol nutný k dokončení lokálního dema; nevydáváme demo za veřejný sběr leadů.
 
 ## Vizuální identita
+
+**Ověřovací běh po změně na hlavní NYSE:** produkční build a 88 unit / 40 integration / 27 enabled browser testů prošly; jedna disabled kontrola byla samostatně ověřena na vypnutém serveru. Nový lokální běh na portu 3103 používá oddělenou `etf_radar_nyse_test`, nikoli původní `etf_radar_test` se dvěma starými testovacími kontakty. Původní kontakty nebyly přeneseny ani odstraněny; nový dashboard zobrazuje novou DB. Přesné podmínky, počáteční selhání a cleanup jsou v [TESTING](docs/TESTING.md#výchozí-fondy-přímo-na-nyse--13-října-2026). Nové výsledky nejsou nasazení ani naměřená reklamní konverze.
 
 Od 12. října 2026 stránka používá tmavě modrou, tyrkysovou a bílou. Podle uživatelem dodané obrazové předlohy má desktop velký dvouřádkový nadpis, jemnou grafiku na světlém pozadí a dva samostatné zaoblené panely. Hlavní tlačítko vede přímo ke kalkulačce, modelový rozdíl zvýrazňuje světlý tyrkysový panel. Fondy rozlišují modré a tyrkysové ukazatele s textovými popisky. Interaktivní graf nabízí hodnotu investice i dopad nákladů v čase, baseline bez poplatků a přesné částky po zvolení roku; vychází ze stejného modelu jako kalkulačka. Stejné barvy má formulář, webový i stažený report a soukromí. [Tokeny a rozhodnutí](docs/DECISIONS.md#d13--vizuální-identita-má-podporovat-práci-s-čísly), [ověření](docs/TESTING.md).
 
@@ -43,21 +45,25 @@ Pořadí odpovídá `app/page.tsx` a propojenému `Workspace`, nikoli všem pův
 Kompletní české texty, vizuální koncepty a cílení: [ADS](docs/ADS.md).
 
 - [Varianta A — náklady](./?ad_variant=a&utm_source=meta&utm_medium=paid_social&utm_campaign=costs_v1&utm_content=tool_a): „Malý roční poplatek. Jaký rozdíl udělá za 20 let?“
-- [Varianta B — orientace](./?ad_variant=b&utm_source=meta&utm_medium=paid_social&utm_campaign=compare_v1&utm_content=tool_b): „ETF na S&P 500 nejsou všechna stejná.“
+- [Varianta B — orientace](./?ad_variant=b&utm_source=meta&utm_medium=paid_social&utm_campaign=compare_v1&utm_content=tool_b): „ETF na NYSE nejsou všechna stejná.“
 
 Jde o relativní URL pro běžící aplikaci, nikoli veřejné deployment adresy. Parametr `ad_variant=b` mění viditelný hero a CTA; jiné hodnoty používají A. Finanční model a nabídka zůstávají stejné. Reklamní CTA A v ADS je „Porovnat náklady“, onsite CTA A je „Spočítat modelový dopad“: význam navazuje, není to doslovně stejný label. Parametrická reklama není randomizovaný onsite experiment.
 
 ## Data, zdroje a přesný rozsah NYSE
 
-Katalog v [data/etfs.ts](data/etfs.ts), verze `2026-10-09.1`, zachycuje následující údaje z issuer stránek načtených 9. října 2026. Jde o dokumentovaný snapshot, nikoli tvrzení o živých dnešních datech. Primární odkazy a evidence jednotlivých polí jsou v [DATA_SOURCES](docs/DATA_SOURCES.md#primární-evidence).
+Katalog v [data/etfs.ts](data/etfs.ts), verze `2026-10-13.1`, doplňuje STXF/STXG podle issuer stránek a factsheetů ověřených 13. října 2026; reference SPY/IVV/CSPX zachovávají svůj původní snapshot z 9. října 2026. Jde o dokumentovaný snapshot, nikoli tvrzení o živých dnešních datech. Primární odkazy a evidence jednotlivých polí jsou v [DATA_SOURCES](docs/DATA_SOURCES.md#primární-evidence).
 
 | Fond | Publikovaná roční sazba v katalogu | Přesný listing | Role a zdroj evidence |
 | --- | --- | --- | --- |
+| STXF — Strive 500 ETF | Expense Ratio 0,0545 % | NYSE | Hlavní výběr; [NYSE_VERIFICATION](docs/NYSE_VERIFICATION.md) |
+| STXG — Strive 1000 Growth ETF | Expense Ratio 0,18 % | NYSE | Hlavní výběr; [NYSE_VERIFICATION](docs/NYSE_VERIFICATION.md) |
 | SPY — State Street SPDR S&P 500 ETF Trust | Gross Expense Ratio 0,0945 % | NYSE Arca, USD | Americká reference; DATA_SOURCES, zdroj [1] |
 | IVV — iShares Core S&P 500 ETF | Expense Ratio 0,03 % | NYSE Arca, USD | Americká reference; DATA_SOURCES, zdroj [2] |
 | CSPX — iShares Core S&P 500 UCITS ETF USD (Acc) | TER 0,07 % | London Stock Exchange, USD | Evropský akumulační UCITS doplněk; DATA_SOURCES, zdroj [3] |
 
-**NYSE Arca není hlavní trh NYSE.** Pro SPY/IVV používáme transparentně označenou pracovní interpretaci rodiny trhů NYSE, zdůvodněnou v [DECISIONS D03](docs/DECISIONS.md#d03--přiznaná-odchylka-nyse--nyse-arca) a oficiálními NYSE odkazy v DATA_SOURCES. Pokud zadání vyžaduje striktně hlavní NYSE, tato podmínka není splněná. CSPX na LSE není NYSE-listed a do této dvojice amerických referencí jej nezapočítáváme.
+**Výchozí STXF/STXG splňují striktní primární listing NYSE.** Volby jsou oddělené jako „NYSE — hlavní výběr“, „NYSE Arca — reference“ a „Evropský UCITS doplněk (LSE)“. SPY/IVV nejsou hlavní NYSE, CSPX na LSE není NYSE-listed. Dřívější pracovní NYSE-family interpretaci D03 nahrazuje novější rozhodnutí D18; staré report snapshoty se nemění. Důkazy listingu, aktuálních tickerů a sazeb: [NYSE_VERIFICATION](docs/NYSE_VERIFICATION.md).
+
+STXF: Bloomberg US Large Cap Index; STXG: Bloomberg US 1000 Growth Total Return Index. Starší prospekt STXF používá název Bloomberg 500 Index; poznámka v katalogu neslibuje nezávisle ověřenou totožnost názvů. Výchozí dvojice není S&P 500 ani stejný index. Stejný modelový hrubý výnos slouží **pouze k izolaci nákladů**, nikoli jako odhad stejného očekávaného výnosu či rizika, porovnání výkonnosti nebo doporučení.
 
 Dostupnost u konkrétního českého brokera a příslušný KID nejsou ověřeny; ani UCITS není záruka dostupnosti. Kontext PRIIPs má v DATA_SOURCES primární zdroj Evropské komise, nikoli broker-specific potvrzení. Chybějící metadata zůstávají `null`: IVV ISIN, SPY/IVV domicil a měna share class, AUM všech fondů. Obchodní měna není měnová expozice. Rozdílné názvy zveřejněných sazeb nepovažujeme za identické regulatorní definice.
 
@@ -217,7 +223,7 @@ Uživatel výslovně určil, že projekt zůstane testovací a nikdy nebude skut
 
 1. Získat zvláštní oprávnění k deploymentu a přístup k projektu; zvolit spravovaný PostgreSQL a cílový Vercel projekt/doménu. Žádné veřejné URL ani vytvořený projekt nyní netvrdíme.
 2. Potvrdit skutečnou identitu správce, privacy kontakt, účel uchovávání emailu, právní základ, zpracovatele, marketingový/odvolávací proces a schválenou notice. Předstartovní `/privacy` není hotové právní posouzení. Dokud chybí, ponechat veřejný capture vypnutý.
-3. Revalidovat ETF dokumenty/KID a viditelné údaje. Potvrdit NYSE-family scope s hodnotitelem, pokud vyžaduje přísný main-market výklad.
+3. Revalidovat ETF dokumenty/KID a viditelné údaje. Ověřit, že zvolené hlavní fondy stále mají primární listing NYSE; reference Arca/LSE nezapočítávat jako hlavní NYSE.
 4. Nakonfigurovat vlastní DB s TLS a zálohami; ověřit connection string a kompatibilitu poolu `pg` s limitem poskytovatele a serverless instancemi. Server používá Node runtime, nikoli Edge. Preview musí používat izolovanou DB a nesmí sbírat skutečné leady bez schválení.
 5. V chráněném prostředí proti **cílové** DB spustit `npm run db:migrate` s bezpečně vloženou `DATABASE_URL`. Nepoužívat lokální trust autentizaci. Migrace nejsou součástí build scriptu.
 6. Nastavit server env z tabulky; `APP_ORIGIN` musí odpovídat skutečnému HTTPS hostu. Secrets odděleně v hostingu, žádná tajemství v repozitáři. Ověřit i build/runtime rendering identity. Rotace dedupe secretu mění emailové klíče; rotace token secretu invaliduje přístupy — potřebuje samostatný plán.
@@ -229,7 +235,7 @@ Uživatel výslovně určil, že projekt zůstane testovací a nikdy nebude skut
 
 ## Známé limity a AI
 
-- Jen tři ETF stejného indexu; žádná garance dostupnosti ani striktní splnění hlavního NYSE. Chybějící metadata a manuální aktualizace jsou přiznané.
+- Pět ETF: výchozí STXF/STXG na hlavním NYSE s odlišnými indexy, SPY/IVV jako reference na NYSE Arca a CSPX jako evropský UCITS doplněk na LSE. Dostupnost českému retailu není ověřena. Chybějící metadata a manuální aktualizace jsou přiznané.
 - Pouze testovací identita **Matěj STýblo** a nefunkční `test@example.invalid`; bez skutečné produkční identity a bez komerčního zpracování. Není to lokální blocker, ale jasná hranice použití.
 - Analytics je souhlasový vzorek, bez celkových návštěv, úplného consent rate, experiment assignments a přesného report-to-capture linkage; UTM jsou na receipts, nikoli session/event tabulkách. Report bootstrap nově nezvětšuje landing denominator a replay nepřenese success do jiné session; původní receipt zůstává autoritou atribuce. Podrobnosti v ANALYTICS.
 - Žádné ověření mailboxu, email delivery, marketingové rozesílání či self-service výmaz. Rate limits nejsou úplná anti-spam ochrana; CSP nonce hardening, cron a backup deletion proces chybí.

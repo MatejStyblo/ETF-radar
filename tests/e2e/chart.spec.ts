@@ -1,13 +1,14 @@
 import { test, expect } from '@playwright/test';
 import { project } from '../../lib/calculations/project';
 import { money } from '../../lib/format';
+import { DEFAULT_ETF_PAIR, getEtf } from '../../data/etfs';
 
 test('chart explores real annual values by keyboard and switches to costs', async ({ page }) => {
   await page.goto('/');
   const readout = page.getByTestId('chart-readout');
   const slider = page.getByRole('slider', { name: 'Rok v grafu' });
   const scenario = { initial: 100000, monthly: 3000, years: 20, grossReturnPct: 5 };
-  const first = project(scenario, .0945);
+  const first = project(scenario, getEtf(DEFAULT_ETF_PAIR[0]).chargePct);
   await expect(readout).toContainText(money(first.balance));
   await slider.focus(); await page.keyboard.press('Home');
   await expect(slider).toHaveValue('0');

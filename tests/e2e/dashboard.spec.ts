@@ -94,7 +94,7 @@ test.describe('opt-in read-only dashboard on a real local server', () => {
   test('returning from landing to dashboard never tracks cross-tab opt-in', async ({ page, context }) => {
     const database = new URL(databaseUrl ?? '');
     expect(['localhost', '127.0.0.1', '[::1]']).toContain(database.hostname);
-    expect(database.pathname).toBe('/etf_radar_test');
+    expect(['/etf_radar_test', '/etf_radar_nyse_test']).toContain(database.pathname);
     await context.addInitScript(() => localStorage.setItem('etf-radar-measurement', 'denied'));
     const posts: string[] = [];
     page.on('request', request => {
@@ -147,7 +147,7 @@ test.describe('opt-in read-only dashboard on a real local server', () => {
     expect(['localhost', '127.0.0.1', '[::1]']).toContain(origin.hostname);
     const database = new URL(databaseUrl ?? '');
     expect(['localhost', '127.0.0.1', '[::1]']).toContain(database.hostname);
-    expect(database.pathname).toBe('/etf_radar_test');
+    expect(['/etf_radar_test', '/etf_radar_nyse_test']).toContain(database.pathname);
     const db = new Client({ connectionString: databaseUrl });
     await db.connect();
     try {

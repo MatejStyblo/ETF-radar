@@ -9,13 +9,15 @@ const origin = process.env.PLAYWRIGHT_BASE_URL;
 const connectionString = process.env.LIVE_FUNNEL_DATABASE_URL;
 test.describe('opt-in real local production funnel (no interception)', () => {
   test.skip(!enabled, 'Requires LIVE_FUNNEL=1 and an explicitly named local test database.');
-  for (const consent of [true, false]) {
-    test(`${consent ? 'consented mobile' : 'denied desktop'} acquisition → saved lead → report download`, async ({ page, context }, info) => {
+  for (const {consent,primary} of [{consent:true,primary:false},{consent:false,primary:false},{consent:true,primary:true}]) {
+    const pair = primary ? ['stxf','stxg'] : ['cspx','ivv'];
+    const pairLabel = primary ? 'STXF / STXG' : 'CSPX / IVV';
+    test(`${primary?'primary NYSE ':''}${consent ? 'consented mobile' : 'denied desktop'} acquisition → saved lead → report download`, async ({ page, context }, info) => {
       test.setTimeout(60000);
       expect(origin).toBe('http://127.0.0.1:3103');
       const url = new URL(connectionString ?? '');
       expect(['127.0.0.1', 'localhost']).toContain(url.hostname);
-      expect(url.pathname).toBe('/etf_radar_test');
+      expect(['/etf_radar_test', '/etf_radar_nyse_test']).toContain(url.pathname);
       const db = new Client({ connectionString });
       await db.connect();
       const run = randomUUID();
@@ -40,7 +42,14 @@ test.describe('opt-in real local production funnel (no interception)', () => {
         await page.getByRole('button', { name: consent ? 'Povolit' : 'Odmítnout', exact: true }).click();
         if (consent) await expect.poll(() => responses.filter(r => r.path === '/api/events' && r.status === 200).length).toBeGreaterThan(0);
         await page.getByRole('link', { name: 'Porovnat ETF' }).click();
-        await page.getByLabel('První ETF', { exact: true }).selectOption('cspx');
+        if(primary) {
+          await expect(page.getByRole('combobox',{name:'První ETF',exact:true})).toHaveValue('stxf');
+          await expect(page.getByRole('combobox',{name:'Druhé ETF',exact:true})).toHaveValue('stxg');
+          await expect(page.locator('.workspace-inputs .availability').first()).toContainText('Odlišné indexy a strategie');
+        } else {
+          await page.getByRole('combobox',{name:'Druhé ETF',exact:true}).selectOption('ivv');
+          await page.getByRole('combobox',{name:'První ETF',exact:true}).selectOption('cspx');
+        }
         const before = await page.getByTestId('model-difference').textContent();
         await page.getByLabel('Počáteční vklad', { exact: true }).fill('123456');
         await page.getByLabel('Počáteční vklad', { exact: true }).press('Tab');
@@ -68,9 +77,10 @@ test.describe('opt-in real local production funnel (no interception)', () => {
         await download.saveAs(downloadedPath);
         const html = await readFile(downloadedPath, 'utf8');
         expect(html).toContain('123');
-        expect(html).toContain('CSPX');
+        for(const id of pair) expect(html).toContain(id.toUpperCase());
+        if(primary) expect(html).toContain('Odlišné indexy');
         expect(html).not.toContain(email);
-        const required = ['landing_view', 'session_start', 'primary_cta_click', 'comparison_started', 'etf_selected', 'calculator_interaction', 'results_viewed', 'lead_offer_viewed', 'lead_form_started', 'lead_submit_attempt', 'lead_submit_success', 'report_viewed', 'report_downloaded'];
+        const required = ['landing_view', 'session_start', 'primary_cta_click', 'comparison_started', 'etf_selected', 'calculator_interaction', 'results_viewed', 'lead_offer_viewed', 'lead_form_started', 'lead_submit_attempt', 'lead_submit_success', 'report_viewed', 'report_downloaded'].filter(name=>!primary||name!=='etf_selected');
         let receipt: Record<string, unknown>;
         await expect.poll(async () => {
           const result = await db.query('SELECT r.attempt_id,r.lead_id,r.report_id,r.is_new_lead,r.attribution,r.analytics_session_id,l.marketing_consent,l.marketing_consent_at,l.privacy_notice_version,l.created_at,p.snapshot FROM submission_receipts r JOIN leads l ON l.id=r.lead_id JOIN reports p ON p.id=r.report_id WHERE r.attempt_id=$1 AND l.email=$2', [attemptId, email]);
@@ -85,16 +95,18 @@ test.describe('opt-in real local production funnel (no interception)', () => {
         expect(rows.marketing_consent_at).toBeNull();
         expect(rows.attribution).toEqual({ ad_variant: 'b', utm_source: 'qa', utm_medium: 'browser', utm_campaign: run, utm_content: 'live_funnel' });
         expect(rows.snapshot.scenario.initial).toBe(123456);
-        expect(rows.snapshot.etfs.map((e: { id: string }) => e.id)).toEqual(['cspx', 'ivv']);
+        expect(rows.snapshot.etfs.map((e: { id: string }) => e.id)).toEqual(pair);
         const stored = (await db.query('SELECT * FROM analytics_events WHERE session_id=$1 OR event_id=$2', [rows.analytics_session_id, attemptId])).rows;
         if (consent) {
-          expect(stored).toHaveLength(required.length);
-          expect(stored.map(row => row.name).sort()).toEqual([...required].sort());
+          expect(stored.filter(event=>event.name==='etf_selected')).toHaveLength(primary?0:2);
+          expect(events.filter(event=>event.name==='etf_selected').map(event=>event.etfIds)).toEqual(primary?[]:[['stxf','ivv'],pair]);
+          expect(stored.filter(event=>event.name!=='etf_selected')).toHaveLength(required.filter(name=>name!=='etf_selected').length);
+          expect([...new Set(stored.map(row => row.name))].sort()).toEqual([...required].sort());
           expect(stored.filter(row => row.source === 'server')).toEqual([expect.objectContaining({ name: 'lead_submit_success', event_id: attemptId, is_new_lead: true })]);
           for (const event of stored) expect(Object.keys(event).sort()).toEqual(['event_id','source','session_id','name','ad_variant','is_new_lead','schema_version','created_at','etf_ids'].sort());
           for (const event of events) expect(Object.keys(event).sort()).toEqual((event.name === 'etf_selected' ? ['eventId','name','adVariant','consent','etfIds'] : ['eventId','name','adVariant','consent']).sort());
-          expect(stored.find(event => event.name === 'etf_selected')?.etf_ids).toEqual(['cspx','ivv']);
-          expect(events.find(event => event.name === 'etf_selected')?.etfIds).toEqual(['cspx','ivv']);
+          if(!primary) expect(stored.filter(event => event.name === 'etf_selected').at(-1)?.etf_ids).toEqual(pair);
+          if(!primary) expect(events.filter(event => event.name === 'etf_selected').at(-1)?.etfIds).toEqual(pair);
           expect(JSON.stringify(stored)).not.toContain(email);
           expect(JSON.stringify(stored)).not.toContain('123456');
           expect(stored.every(row => row.ad_variant === 'b')).toBe(true);
@@ -119,8 +131,8 @@ test.describe('opt-in real local production funnel (no interception)', () => {
             const totals = (await db.query('SELECT count(DISTINCT lead_id)::int AS leads,count(*)::int AS captures FROM submission_receipts')).rows[0];
             await expect(admin.getByTestId('unique-leads')).toHaveText(new Intl.NumberFormat('cs-CZ').format(totals.leads));
             await expect(admin.getByTestId('captures')).toHaveText(new Intl.NumberFormat('cs-CZ').format(totals.captures));
-            if (consent) await expect(admin.getByRole('region', { name: 'Dvojice z událostí — vodorovně posuvná tabulka' }).getByRole('rowheader', { name: 'CSPX / IVV', exact: true })).toBeVisible();
-            await expect(admin.getByRole('region', { name: 'Dvojice z reportů — vodorovně posuvná tabulka' }).getByRole('rowheader', { name: 'CSPX / IVV', exact: true })).toBeVisible();
+            if (consent&&!primary) await expect(admin.getByRole('region', { name: 'Dvojice z událostí — vodorovně posuvná tabulka' }).getByRole('rowheader', { name: pairLabel, exact: true })).toBeVisible();
+            await expect(admin.getByRole('region', { name: 'Dvojice z reportů — vodorovně posuvná tabulka' }).getByRole('rowheader', { name: pairLabel, exact: true })).toBeVisible();
             const csv = await admin.request.get('/dashboard/export?range=all&variant=all');
             expect(csv.status()).toBe(200);
             expect(await csv.text()).toContain(email);

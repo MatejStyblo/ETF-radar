@@ -4,22 +4,22 @@ Stav: připravené reklamní koncepty, žádná kampaň neběžela, žádný roz
 
 ## A — Náklady, které se projeví v čase
 
-- **Primary text:** „Roční náklad ETF bývá malé číslo. Jeho modelový dopad za dlouhý horizont už tak malý být nemusí. Porovnejte dva fondy S&P 500, nastavte vlastní vklad a podívejte se na rozdíl. Výpočet bez registrace.“
+- **Primary text:** „Roční náklad ETF bývá malé číslo. Jeho modelový dopad za dlouhý horizont už tak malý být nemusí. Porovnejte průběžné náklady dvou fondů na hlavním NYSE, nastavte vlastní vklad a podívejte se na rozdíl. Výpočet bez registrace.“
 - **Headline:** „Malý roční poplatek. Jaký rozdíl udělá za 20 let?“
 - **Description:** „Vlastní scénář. Ověřené zdroje. Jasné předpoklady.“
 - **CTA:** „Porovnat náklady“.
-- **Visual:** zobrazení skutečného pracovního nástroje SPY/IVV se sazbami z katalogu a viditelným označením NYSE Arca. Žádný předem „vydělaný“ obnos, žebříček vítězů nebo fiktivní performance graf.
+- **Visual:** zobrazení skutečného pracovního nástroje STXF/STXG se sazbami z katalogu a viditelným označením NYSE a upozorněním na odlišné indexy. Žádný předem „vydělaný“ obnos, žebříček vítězů nebo fiktivní performance graf.
 - **Audience rationale:** pracovní segment dlouhodobých českých investorů, kteří rozumějí pravidelnému vkladu, ale nepřevádějí malé roční náklady na dlouhý horizont. Jde o hypotézu, ne o výsledek výzkumu.
 - **Message match:** `/?ad_variant=a&utm_source=meta&utm_medium=paid_social&utm_campaign=costs_v1&utm_content=tool_a` → přesně tento headline nad skutečným srovnáním; základní výpočet zůstane veřejný.
-- **Financial qualifier:** hypotetický model dopadu průběžných nákladů, nikoliv všechny skutečné náklady, forecast nebo garantovaná úspora. Dostupnost ETF u českého brokera neověřena.
+- **Financial qualifier:** hypotetický model dopadu průběžných nákladů, nikoliv všechny skutečné náklady, forecast nebo garantovaná úspora. Stejný hrubý výnos slouží pouze k izolaci nákladů; nejde o porovnání výkonnosti, stejného očekávaného výnosu nebo rizika ani doporučení. Dostupnost ETF u českého brokera a PRIIPs KID neověřeny. Primární evidence: [NYSE_VERIFICATION](NYSE_VERIFICATION.md), [DATA_SOURCES](DATA_SOURCES.md).
 
 ## B — Méně zmatku při srovnávání
 
-- **Primary text:** „SPY, IVV, evropská UCITS varianta: podobný index neznamená stejné ETF. Srovnejte průběžné náklady, nakládání s výnosy a přesný listing. Nejdřív si fondy prohlédněte, až potom řešte kontakt.“
-- **Headline:** „ETF na S&P 500 nejsou všechna stejná.“
+- **Primary text:** „STXF a STXG: hlavní NYSE, ale odlišné indexy a strategie. Srovnejte průběžné náklady, nakládání s výnosy a přesný listing. Nejdřív si fondy prohlédněte, až potom řešte kontakt.“
+- **Headline:** „ETF na NYSE nejsou všechna stejná.“
 - **Description:** „Porovnání fondů a nákladů bez hledání v několika dokumentech.“
 - **CTA:** „Porovnat ETF“.
-- **Visual:** výřez skutečné srovnávací tabulky / mobilního srovnání. US reference NYSE Arca a evropský UCITS doplněk na LSE vizuálně oddělit. Žádný nákupní pokyn.
+- **Visual:** výřez skutečné srovnávací tabulky / mobilního srovnání. Hlavní výběr STXF/STXG na NYSE, reference SPY/IVV na NYSE Arca a evropský UCITS doplněk CSPX na LSE vizuálně oddělit. Žádný nákupní pokyn.
 - **Audience rationale:** investor orientující se v tickerech a rozhodující se, co má před investicí ověřit. Motivace přehlednost, nikoliv výnos; hypotéza pro test.
 - **Message match:** `/?ad_variant=b&utm_source=meta&utm_medium=paid_social&utm_campaign=compare_v1&utm_content=tool_b` → stejný headline B a CTA „Porovnat ETF“, stejná funkční workspace a stejný transparentní výpočet.
 

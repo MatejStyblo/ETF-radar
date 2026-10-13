@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 test('ad B matches both headline and comparison action', async ({page})=>{
  await page.goto('/?ad_variant=b');
- await expect(page.getByRole('heading',{level:1})).toHaveText('ETF na S&P 500 nejsou všechna stejná.');
+ await expect(page.getByRole('heading',{level:1})).toHaveText('ETF na NYSE nejsou všechna stejná.');
  await expect(page.getByRole('link',{name:'Porovnat ETF'})).toBeVisible();
 });
 test('invalid inputs hide old result and decimal comma is accepted',async({page})=>{
@@ -32,7 +32,7 @@ for (const width of [375,768,1440]) test(`responsive ${width}: no overflow and u
 });
 
 test('same fund is rejected and the selectors describe the problem',async({page})=>{
- await page.goto('/');await page.getByLabel('Druhé ETF').selectOption('spy');
+ await page.goto('/');const first=await page.getByRole('combobox',{name:'První ETF',exact:true}).inputValue();await page.getByRole('combobox',{name:'Druhé ETF',exact:true}).selectOption(first);
  await expect(page.getByTestId('model-difference')).toHaveCount(0);
  await expect(page.getByLabel('Druhé ETF')).toHaveAttribute('aria-invalid','true');
  await expect(page.getByLabel('Druhé ETF')).toHaveAttribute('aria-describedby','etf-pair-error');
@@ -50,13 +50,13 @@ test('large valid scenario remains within mobile viewport',async({page})=>{
 test('public comparison shows real funds and recalculates without email', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Malý roční poplatek. Jaký rozdíl udělá za 20 let?');
-  await expect(page.getByLabel('První ETF')).toHaveValue('spy');
-  await expect(page.getByLabel('Druhé ETF')).toHaveValue('ivv');
+  await expect(page.getByLabel('První ETF')).toHaveValue('stxf');
+  await expect(page.getByLabel('Druhé ETF')).toHaveValue('stxg');
   const result = page.getByTestId('model-difference');
   await expect(result).toBeVisible();
   const before = await result.textContent();
   await page.getByLabel('Počáteční vklad').fill('250000');
   await expect(result).not.toHaveText(before!);
   await page.getByLabel('Druhé ETF').selectOption('cspx');
-  await expect(page.getByText('London Stock Exchange', { exact: true })).toBeVisible();
+  await expect(page.locator('.fund .venue').filter({hasText:'London Stock Exchange'})).toBeVisible();
 });

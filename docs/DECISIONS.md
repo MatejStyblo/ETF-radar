@@ -1,5 +1,7 @@
 # ETF Radar — rozhodnutí a předpoklady
 
+**Aktuální revize 13. října 2026:** D18 níže nahrazuje původní výběr v D02 a pracovní interpretaci NYSE-family v D03. Původní rozhodnutí ponechána jako historický kontext, nikoliv aktuální scope.
+
 Datum: 9. října 2026. Stav rozhodnutí: navržené pro implementaci, není-li uvedeno jinak. Výchozí specifikace: přečtený nadřazený `AGENTS.md`, přiložené zadání a příkaz `/plan`. Akceptační důkazy a pořadí práce jsou v `PLAN.md`.
 
 ## D01 — Rozsah tohoto kroku a repository pravidla
@@ -146,3 +148,11 @@ Datum: 9. října 2026. Stav rozhodnutí: navržené pro implementaci, není-li 
 Na výslovnou žádost uživatele doplněn graf ročního vývoje do výsledku kalkulačky i webového reportu. Dva pohledy: modelová hodnota investice (oba fondy + baseline bez nákladů) a dopad průběžných nákladů (oba fondy). Druhý pohled objasňuje rozdíly, když jsou hodnotové křivky téměř shodné. Data pocházejí přímo z `Projection.annual`, žádný nový finanční model. Všechny roky včetně roku 0 sdílí osu od nuly; pokles může klesat, nulové i podkorunové scénáře mají nenulový rozsah osy. Hodnoty jsou modelové Kč a graf není předpověď.
 
 Malé vlastní SVG s přímými ročními úsečkami a lehkým React ovládáním, bez další knihovny. Odlišné barvy a styly čar, legenda, čitelné HTML osy, přesné částky pod grafem. Myš/klepnutí vybírá rok; přístupný range umožňuje klávesnici (Home/End/šipky) a má `aria-valuetext` s částkami. Vybraný rok se při zkrácení horizontu ořízne. Neplatný scénář graf skryje spolu s výsledkem. Ve staženém script-free HTML zůstává kompletní roční tabulka; interaktivní graf je webová funkce. Nezavádíme analytické události pro každý pohyb kurzoru.
+
+## D18 — Dva fondy přímo na hlavním NYSE, 13. října 2026
+
+**Nahrazuje D02/D03:** na výslovný pokyn uživatele je výchozí dvojice STXF (Strive 500 ETF) / STXG (Strive 1000 Growth ETF), oba s primárním listingem NYSE. SPY/IVV zůstávají volitelné reference na NYSE Arca, CSPX oddělený evropský UCITS doplněk na LSE. Žádná výměna nebo přepočet starších uložených snapshotů. Jde stále výhradně o lokální testovací projekt, bez publikace nebo reklamní kampaně.
+
+**Indexy a trade-off:** aktuální factsheet STXF uvádí Bloomberg US Large Cap Index, STXG Bloomberg US 1000 Growth Total Return Index. Starší prospekt STXF uvádí Bloomberg 500 Index; rozdíl názvů je přiznán v `indexNote`, nezávislou totožnost názvů netvrdíme. Volba striktního NYSE znamená odlišné indexy a strategie, nikoliv stejné S&P 500. Stejný hypotetický hrubý výnos izoluje pouze nákladový dopad: není srovnáním skutečné výkonnosti, stejného očekávaného výnosu či rizika, ani doporučením. UI toto vysvětluje přímo u výběru i výsledku; nadpis o stejném indexu používá jen pro skutečně shodné indexy vybraných fondů.
+
+**Data:** roční sazby 0,0545 % / 0,18 % jsou z ověřených emitentských zdrojů. Primární evidence listingu, aktuálních tickerů, indexů a sazeb je v [NYSE_VERIFICATION](NYSE_VERIFICATION.md) a [DATA_SOURCES](DATA_SOURCES.md). ISIN, AUM nebo dostupnost českému retailu nedoplňujeme odhadem; PRIIPs KID a brokera je nutné ověřit. Doklady testů vznikají jen skutečným spuštěním, toto rozhodnutí nepředstírá browser/DB ověření nové dvojice.
