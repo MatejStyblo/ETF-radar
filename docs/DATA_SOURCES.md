@@ -1,6 +1,17 @@
 # Datové zdroje a metodika ETF katalogu
 
-Načtení veřejných issuer stránek: 9. října 2026. Datum načtení není datum vydání dokumentu. Versionovaný katalog: `data/etfs.ts`, aktuální identifikátor `2026-10-09.1`.
+Základní reference SPY/IVV/CSPX byly načteny 9. října 2026; nové hlavní NYSE fondy STXF/STXG 13. října 2026. Datum načtení není datum vydání dokumentu. Versionovaný katalog: `data/etfs.ts`, aktuální identifikátor `2026-10-13.1`. Podrobné nové ověření, emitentské odkazy, factsheety a prospekt jsou v [NYSE_VERIFICATION](NYSE_VERIFICATION.md).
+
+## Hlavní výběr přímo na NYSE — 13. října 2026
+
+| Fond | Doložený primární listing a sazba | Index / hranice evidence |
+| --- | --- | --- |
+| STXF — Strive 500 ETF | NYSE, Expense Ratio 0,0545 % | Aktuální web a factsheet: Bloomberg US Large Cap Index (B500T). Starší prospekt uvádí Bloomberg 500 Index; poznámka je i v katalogu/reportu. Není to S&P 500. |
+| STXG — Strive 1000 Growth ETF | NYSE, Expense Ratio 0,18 % | Bloomberg US 1000 Growth Total Return Index (B1000GT), odlišná růstová strategie. |
+
+Obě burzy a sazby jsou doložené skutečně staženými emitentskými stránkami a factsheety s daty k 30. červnu 2026; [doklady a zdroje](NYSE_VERIFICATION.md#sources). Změna STRV → STXF od 8. června 2026 je ověřená, starý ticker není samostatný fond. Konkrétní ISIN, domicil a obchodní měna nových fondů nejsou doložené a zůstávají neověřené; AUM záměrně nepřebíráme. Distribuce jsou emitentem očekávané čtvrtletně, nikoli garantované.
+
+STXF/STXG jsou výchozí hlavní dvojice. Různé indexy nedovolují tvrdit stejné skutečné riziko/výnos; společný zadaný hrubý výnos izoluje pouze modelový dopad nákladů. Staré reference zůstávají oddělené a historické reportové snapshoty se nepřepisují.
 
 ## Primární evidence
 
@@ -12,7 +23,7 @@ Načtení veřejných issuer stránek: 9. října 2026. Datum načtení není da
 | Evropská komise PRIIPs | Kontext KID, nikoliv potvrzení dostupnosti konkrétního ETF u konkrétního brokera.[4] |
 | NYSE regulatorní a ETF stránky | Důvod pro explicitní pracovní interpretaci NYSE-family v ETF zadání.[6][7] |
 
-SPY/IVV nikdy neoznačovat jako main-market NYSE listing. NYSE-family interpretace je obhajitelná; úmysl hodnotitele nelze dovodit s jistotou. CSPX je oddělený evropský UCITS doplněk, nikoliv NYSE-listed ETF.
+SPY/IVV nikdy neoznačovat jako main-market NYSE listing. Původní pracovní NYSE-family interpretace byla nahrazena hlavním výběrem STXF/STXG přímo na NYSE; SPY/IVV jsou nadále výslovné NYSE Arca reference. CSPX je oddělený evropský UCITS doplněk, nikoliv NYSE-listed ETF.
 
 ## Neověřená pole a omezení
 

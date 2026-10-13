@@ -1,6 +1,7 @@
 "use client";
 // Only this allowlisted envelope leaves the browser. Never add arbitrary properties.
 import type { z } from 'zod';
+import { ETF_IDS } from '@/data/etfs';
 import type { eventSchema } from '@/lib/db/analytics';
 // Type-only import: the server module never enters the browser bundle.
 export type ClientEvent = z.infer<typeof eventSchema>['name'];
@@ -60,7 +61,7 @@ async function send(name:ClientEvent,epoch:number,etfIds?:EtfPair){
 }
 export function track(name:ClientEvent,etfIds?:EtfPair){
  if(!active||preference!=='allowed')return Promise.resolve();
- if(etfIds!==undefined&&(name!=='etf_selected'||!Array.isArray(etfIds)||etfIds.length!==2||etfIds[0]===etfIds[1]||!etfIds.every(id=>['spy','ivv','cspx'].includes(id))))return Promise.resolve();
+ if(etfIds!==undefined&&(name!=='etf_selected'||!Array.isArray(etfIds)||etfIds.length!==2||etfIds[0]===etfIds[1]||!etfIds.every(id=>ETF_IDS.includes(id))))return Promise.resolve();
  const pair:EtfPair|undefined=etfIds?[etfIds[0],etfIds[1]]:undefined;
  const epoch=generation;
  queue=queue.then(async()=>{

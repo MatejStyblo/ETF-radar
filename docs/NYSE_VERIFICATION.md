@@ -25,7 +25,7 @@ STXG používá růstový index a není zaměnitelný s širokým large-cap inde
 
 ## Produktové rozhodnutí a hranice modelu
 
-Plánovaný hlavní výběr je STXF/STXG, protože jejich primární NYSE listing je doložený. SPY/IVV zůstávají oddělené reference na NYSE Arca; CSPX zůstává oddělený evropský UCITS doplněk na LSE. Nejde o tvrzení, že NYSE Arca nebo LSE jsou hlavní NYSE.
+Hlavní výběr je STXF/STXG, protože jejich primární NYSE listing je doložený. SPY/IVV zůstávají oddělené reference na NYSE Arca; CSPX zůstává oddělený evropský UCITS doplněk na LSE. Nejde o tvrzení, že NYSE Arca nebo LSE jsou hlavní NYSE.
 
 Výpočet má i nadále porovnávat **pouze modelový dopad ročních nákladů při stejném zadaném hrubém výnosu**. Rozdílné indexy musí být viditelné před formulářem, u výsledku i v reportu. Nelze tvrdit stejnou skutečnou výkonnost či riziko, očekávané překonání druhého fondu ani doporučovat levnější fond jako lepší investici.
 

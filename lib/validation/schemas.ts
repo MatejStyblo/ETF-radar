@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ETF_IDS } from "@/data/etfs";
 import type { Scenario } from "@/lib/calculations/project";
 
 // Do not trigger Zod's dynamic Function capability probe under production CSP.
@@ -11,7 +12,7 @@ export const scenarioSchema = z.object({
   years: z.number().int().min(1).max(50),
   grossReturnPct: z.number().finite().min(-50).max(30),
 }).strict();
-export const etfIdSchema = z.enum(["spy", "ivv", "cspx"]);
+export const etfIdSchema = z.enum(ETF_IDS);
 export const etfPairSchema = z.tuple([etfIdSchema, etfIdSchema]).refine(([a, b]) => a !== b, "Zvolte dva různé fondy.");
 const campaignValue = z.string().max(64).regex(/^[a-zA-Z0-9_-]*$/);
 export const attributionSchema = z.object({ ad_variant: z.enum(["a", "b"]).default("a"), utm_source: campaignValue.optional(), utm_medium: campaignValue.optional(), utm_campaign: campaignValue.optional(), utm_content: campaignValue.optional() }).strict();

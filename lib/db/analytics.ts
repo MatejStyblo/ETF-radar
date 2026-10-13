@@ -1,10 +1,11 @@
 import 'server-only';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
+import { etfPairSchema } from '@/lib/validation/schemas';
 import { getPool } from './pool';
 import { HttpError } from '@/lib/security/http';
 import { readSession } from '@/lib/security/analytics';
-export const eventSchema = z.object({ eventId: z.uuid(), name: z.enum(['session_start','landing_view','primary_cta_click','comparison_started','etf_selected','calculator_interaction','results_viewed','lead_offer_viewed','lead_form_started','lead_submit_attempt','lead_submit_error','report_viewed','report_downloaded']), adVariant: z.enum(['a','b']), consent: z.literal(true), etfIds: z.tuple([z.enum(['spy','ivv','cspx']), z.enum(['spy','ivv','cspx'])]).optional() }).strict().refine(event => !event.etfIds || (event.name === 'etf_selected' && event.etfIds[0] !== event.etfIds[1]), { path: ['etfIds'], message: 'Pouze výběr dvou různých ETF smí obsahovat dvojici fondů.' });
+export const eventSchema = z.object({ eventId: z.uuid(), name: z.enum(['session_start','landing_view','primary_cta_click','comparison_started','etf_selected','calculator_interaction','results_viewed','lead_offer_viewed','lead_form_started','lead_submit_attempt','lead_submit_error','report_viewed','report_downloaded']), adVariant: z.enum(['a','b']), consent: z.literal(true), etfIds: etfPairSchema.optional() }).strict().refine(event => !event.etfIds || (event.name === 'etf_selected' && event.etfIds[0] !== event.etfIds[1]), { path: ['etfIds'], message: 'Pouze výběr dvou různých ETF smí obsahovat dvojici fondů.' });
 export async function validSession(request: Request): Promise<string | null> {
  const id = readSession(request);
  if (!id) return null;

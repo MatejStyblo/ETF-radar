@@ -25,9 +25,12 @@ export const CHECKLIST = [
   "Zvažte velikost fondu, likviditu a tracking difference z datovaných zdrojů; zde je nehodnotíme.",
   "Ověřte, zda horizont a riziko odpovídají vašim potřebám; náš scénář nedoporučuje konkrétní nákup.",
 ];
+export function indexComparisonWarning(etfs: readonly [Etf, Etf]): string | null {
+  return etfs[0].index === etfs[1].index ? null : "Odlišné indexy: fondy mají odlišné složení a expozici. Stejný hypotetický hrubý výnos slouží pouze k izolaci nákladů, neznamená stejné skutečné výnosy ani stejné riziko; nižší náklad neznamená nejlepší fond.";
+}
 export function buildReport(scenario: Scenario, ids: [EtfId, EtfId], generatedAt = new Date().toISOString()): PersonalReport {
   scenarioSchema.parse(scenario); etfPairSchema.parse(ids);
   const etfs: [Etf, Etf] = [getEtf(ids[0]), getEtf(ids[1])];
   const calculate = (years: number): [Projection, Projection] => [project({ ...scenario, years }, etfs[0].chargePct), project({ ...scenario, years }, etfs[1].chargePct)];
-  return { version: DATA_VERSION, generatedAt, scenario: { ...scenario }, etfs, selected: calculate(scenario.years), horizons: [...new Set([5, 10, 20, 30, scenario.years])].sort((a, b) => a - b).map((years) => ({ years, results: calculate(years) })), checklist: [...CHECKLIST], assumptions: [...ASSUMPTIONS] };
+  return { version: DATA_VERSION, generatedAt, scenario: { ...scenario }, etfs, selected: calculate(scenario.years), horizons: [...new Set([5, 10, 20, 30, scenario.years])].sort((a, b) => a - b).map((years) => ({ years, results: calculate(years) })), checklist: [...CHECKLIST], assumptions: [...ASSUMPTIONS, ...[indexComparisonWarning(etfs)].filter((note): note is string => note !== null), ...etfs.flatMap(fund => fund.indexNote ? [`${fund.ticker}: ${fund.indexNote}`] : [])] };
 }
