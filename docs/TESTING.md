@@ -154,3 +154,27 @@ Finální production build podle reference: exit 0. Náhled běží přes `next 
 - Axe a overflow: landing 375/768/1440 a webový report 375/1440 bez violations/overflow. Vizuálně zkontrolované oba pohledy a mobilní graf.
 - První správný dev běh odhalil React SSR varování u SVG title (více textových children), související hydrataci a odpojení DOM při scrollu. Opraven jediným řetězcem title. Následný cílený běh 13 testů a finální produkční běh 19 testů prošly. Dřívější omyl obsazeného portu není ověření současného kódu.
 - Bez nového Lighthouse měření nebo databázové persistence testu; finanční engine se nezměnil.
+
+## Výchozí fondy přímo na NYSE — 13. října 2026
+
+- Nezávislé read-only precommit review prošlo bez bezpečnostních nebo logických blockerů; znovu ověřilo 88 unit testů, non-incremental typecheck, lint a diff check. Neblokující návrhy: přesnější rozlišení právních entit emitenta/sub-advisera a samostatný serializovaný historický snapshot fixture.
+- Před implementací ověřeny emitentské stránky, aktuální factsheety a prospekt. Citation ledger: 5 registrovaných zdrojů s ověřenými doslovnými evidencemi, `NYSE_VERIFICATION.md` prošel `verify --strict --evidence`. STXF/STXG mají doložený primární listing NYSE; SPY/IVV zůstávají oddělené NYSE Arca reference. Rozdílné indexy nesmí implikovat stejnou skutečnou výkonnost/riziko.
+- Delegované RED → GREEN kontroly: nové lookupy, validace pěti ID, client/server event dvojice, report assumptions a script-free HTML, výchozí UI a shoda reklamy B. Finanční výpočet se nezměnil; staré snapshoty a referenční páry jsou podporované.
+- Rodičovské quality gates: **88 unit / 40 PostgreSQL integration passed**, typecheck/lint/production build exit 0.
+- Původní server už neběžel, jednorázové klíče nebyly uchované a staré reporty již expirovaly. Dotaz na převod původních testovacích klíčů nebyl zodpovězen, proto se původní záznamy nepřeváděly ani nemažou. Vytvořena oddělená lokální `etf_radar_nyse_test`, provedeny migrace a readback. Nová testovací runtime konfigurace je mimo repo, soubor s oprávněním 0600; původní `.env`/credentials se nečetly ani neměnily a tajemství nejsou v commitech/log výstupech.
+- První scratch launcher selhal na named importu `Pool` z CommonJS entry; žádný server/DB ještě nebyl vytvořen a první browser běh proto skončil connection refused. Opraven default import, server ověřen HTTP 200 před dalšími běhy.
+- Skutečný browser tok nové hlavní NYSE dvojice prošel bez API interception: formulář → PostgreSQL snapshot STXF/STXG → report → HTML download → dashboard/CSV. Unchanged default nevytváří falešný `etf_selected`; změna obou referenčních selektorů legitimně vytvoří dvě výběrové události. Consented i denied CSPX/IVV flow zachovány. Vlastní testovací záznamy scoped cleanup odstranil a ověřil.
+- Browser QA odhalila nedostatečný kontrast `dash-local` po dřívější teal změně (4,31:1) a počáteční vklad pod prvním 812px viewportem po delších NYSE metadatech. Opraven kontrast pomocí `accent-hover`; u selektorů zůstává krátké upozornění na odlišné indexy, plné vysvětlení je u výsledku/reportu a dostupnostní disclaimer před formulářem. Mobilní mezery zkráceny, nikoli test oslaben. Finální skutečný bounding box počátečního vstupu končí na y=808,34375 při šířce 375 px; oba selektory také v prvním viewportu. Bez document overflow.
+- Finální enabled browser suite: **27 passed / 1 skipped** proti produkčnímu buildu na `http://127.0.0.1:3103`. Přeskočen je pouze disabled dashboard test, samostatně ověřen na dočasném vypnutém serveru: **2 passed / 2 skipped**. Axe landing 375/768/1440, report 375/1440 a dashboard bez violations. Bez nového Lighthouse skóre; historický audit nelze vydávat za audit nového katalogu/UI.
+- Konečný readback: původní `etf_radar_test` stále **2 kontakty / 2 odlišné emaily**, izolovaná `etf_radar_nyse_test` po cleanup **0 kontaktů**. Dashboard tohoto ověřovacího běhu ukazuje izolovanou DB, nikoli sloučenou historii původních kontaktů. Žádný deployment ani push.
+
+Reprodukovatelný enabled browser příkaz pro tento izolovaný server:
+
+```sh
+LIVE_DASHBOARD=1 \
+LIVE_DASHBOARD_DATABASE_URL=postgresql://postgres@127.0.0.1:55439/etf_radar_nyse_test \
+LIVE_FUNNEL=1 \
+LIVE_FUNNEL_DATABASE_URL=postgresql://postgres@127.0.0.1:55439/etf_radar_nyse_test \
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:3103 \
+npx playwright test --workers=1
+```

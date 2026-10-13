@@ -156,3 +156,13 @@ New mobile Lighthouse audit completed at `2026-10-09T22:10:22.956Z` (October 10,
 The runtime now displays the user-supplied exact test name `Matěj STýblo` and deliberately nonfunctional `test@example.invalid`. It is a test-only assignment, not commercial contact processing, and deployment is explicitly excluded.
 
 The final audit is also preserved in repository files `docs/qa/lighthouse-mobile-final.json` and `docs/qa/lighthouse-mobile-final.html`; it does not depend on scratch retention. These are actual Lighthouse artifacts, not reconstructed summaries.
+
+## Primary NYSE verification — October 13, 2026
+
+The formerly unresolved strict-NYSE scope is now addressed by the default STXF/STXG pair, with issuer pages, actual factsheets and supplemented prospectus evidence in `NYSE_VERIFICATION.md`. This does not relabel optional SPY/IVV Arca or CSPX LSE references. Distinct index/strategy disclosures appear before lead capture and in both report modes; the common gross-return assumption isolates fees, not expected performance.
+
+Latest parent results: **88 unit / 40 PostgreSQL integration passed**, typecheck/lint/build passed; actual enabled browser suite **27 passed / 1 skipped**, disabled dashboard suite **2 passed / 2 skipped**. The new primary pair and both legacy consent/no-consent flows completed real browser → DB → report/download → dashboard/CSV checks with scoped cleanup. No successful API response was fabricated. No new Lighthouse audit was run.
+
+Mobile longer fund metadata initially pushed the first investment input below the first screen; the actual unchanged 375×812 assertion caught this. Compact immediate risk wording, availability details before the form and reduced mobile whitespace restored the complete first input at y=808.34375. Dashboard accent-label contrast failure was fixed; final axe checks passed. Actual mobile screenshot inspected, no horizontal overflow.
+
+Runtime uses separate local `etf_radar_nyse_test` because the old server and its transient keys were no longer available. Original `etf_radar_test` contacts remain untouched; readback still shows two distinct stored contacts. The isolated DB contains zero contacts after scoped test cleanup. The current dashboard is not a merged view of those databases. Private local runtime settings are not in the repository. See `TESTING.md` for exact commands, initial launcher failure and intermediate QA failures. No deployment or advertising campaign occurred.
