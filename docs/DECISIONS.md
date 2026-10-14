@@ -174,3 +174,7 @@ Celá aplikace zahrnuje chráněný dashboard: explicitní vzdálený režim, HT
 ## D22 — Produkční větev devel
 
 Uživatel výslovně požaduje automatickou aktualizaci veřejného webu při pushi do devel. Proto devel slouží jako Vercel Production branch pro tento testovací projekt, bez ohledu na konvenční název větve. Vytvořena z aktuálního ověřeného HEAD, nikoli ze staršího remote main. Main se nepřepisuje, nevynucuje se force push. Stávající Git integrace obstará build/deploy a atomické přepnutí aliasu; další CI služba není nutná.
+
+## D23 — Nepřihlášený dashboard vede na login
+
+Přímý /dashboard na správném HTTPS hostu nyní vrací redirect na /dashboard/login, pokud je remote přihlášení dostupné a chybí session. Původní 404 byla pro správce matoucí. Změna neodkrývá kontakty: redirect předchází filtru/DB čtení a export bez session zůstává 404. Vypnutý režim/cizí host se neoznamují přesměrováním.

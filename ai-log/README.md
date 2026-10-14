@@ -14,3 +14,5 @@ Postup a současné omezení viz `docs/AI_USAGE.md`. Snapshot nezahrnuje zprávy
 `codex-2026-10-14-vercel.jsonl` je skutečný dílčí runtime snapshot žádosti o Vercel a následných dostupných uživatelských/asistentských zpráv včetně potvrzení loginu/podmínek. Bez tool calls/outputs, bez reasoning a bez credential obsahu. Aktivní závěrečný turn nemusí být úplný. Není rekonstruovaný ani Claude Code export.
 
 `codex-2026-10-14-devel.jsonl`: dílčí skutečné runtime user/assistant message záznamy od požadavku na push → deployment z devel. Neobsahuje tool calls/outputs ani reasoning; aktivní závěrečný turn nemusí být úplný. Není rekonstruovaný přepis.
+
+`codex-2026-10-14-dashboard-login.jsonl`: skutečné dílčí runtime message záznamy od hlášení 404 na dashboardu. Uživatelské/asistentské zprávy bez tool calls, výstupů a reasoning; aktuální závěrečná odpověď nemusí být v snapshotu.

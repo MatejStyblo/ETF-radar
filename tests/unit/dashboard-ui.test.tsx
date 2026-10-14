@@ -3,12 +3,13 @@ import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { renderToStaticMarkup } from 'react-dom/server';
 const root = fileURLToPath(new URL('../..', import.meta.url)).replace(/\/$/, '');
-const mocks = vi.hoisted(() => ({ allowed: vi.fn(), data: vi.fn(), parse: vi.fn(), headers: vi.fn() }));
+const mocks = vi.hoisted(() => ({ allowed: vi.fn(), login: vi.fn(), data: vi.fn(), parse: vi.fn(), headers: vi.fn() }));
 vi.mock('next/headers', () => ({ headers: mocks.headers }));
-vi.mock('next/navigation', () => ({ notFound: () => { throw new Error('NOT_FOUND'); } }));
+vi.mock('next/navigation', () => ({ notFound: () => { throw new Error('NOT_FOUND'); }, redirect: (path: string) => { throw new Error(`REDIRECT:${path}`); } }));
+vi.mock('@/lib/dashboard/auth', () => ({ dashboardLoginAvailable: mocks.login }));
 vi.mock('@/lib/dashboard/access', () => ({ dashboardAccessAllowed: mocks.allowed }));
 vi.mock('@/lib/dashboard/data', () => ({ getDashboardData: mocks.data, parseDashboardFilter: mocks.parse }));
-beforeEach(() => { vi.clearAllMocks(); mocks.headers.mockResolvedValue(new Headers({ host: 'localhost:3103' })); mocks.allowed.mockReturnValue(false); });
+beforeEach(() => { vi.clearAllMocks(); mocks.headers.mockResolvedValue(new Headers({ host: 'localhost:3103' })); mocks.allowed.mockReturnValue(false); mocks.login.mockReturnValue(false); });
 const fixture = {
  generatedAt: '2026-10-10T08:00:00Z', filter: { range: '30', variant: 'all', page: 1 },
  overview: { measuredSessions: 137, uniqueLeads: 19, captures: 23, marketingLeads: 4, measuredNewLeads: 7, convertedSessions: 6, unmeasuredCaptures: 16, conversionPct: 4.38 },
@@ -20,6 +21,11 @@ async function render() {
  return renderToStaticMarkup(await Page({ searchParams: Promise.resolve({ range: '30', variant: 'all' }) }));
 }
 describe('dashboard SSR guard', () => {
+ test('remote visitors without a session reach login before any contact data is read', async () => {
+  mocks.login.mockReturnValue(true);
+  await expect(render()).rejects.toThrow('REDIRECT:/dashboard/login');
+  expect(mocks.data).not.toHaveBeenCalled();expect(mocks.parse).not.toHaveBeenCalled();
+ });
  test('shows the primary new-lead ratio separately from sessions with repeat captures', async () => {
   mocks.allowed.mockReturnValue(true); mocks.parse.mockReturnValue(fixture.filter);
   mocks.data.mockResolvedValue({ ...fixture, overview: { ...fixture.overview, measuredSessions: 4, measuredNewLeads: 1, convertedSessions: 2, conversionPct: 50 } });

@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { headers } from 'next/headers';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { dashboardAccessAllowed } from '@/lib/dashboard/access';
+import { dashboardLoginAvailable } from '@/lib/dashboard/auth';
 import { DashboardLogoutButton } from '@/components/dashboard/logout-button';
 import { getDashboardData, parseDashboardFilter } from '@/lib/dashboard/data';
 import type { DashboardFilter } from '@/lib/dashboard/types';
@@ -39,7 +40,11 @@ function DataTable({ label, columns, children, empty }: { label: string; columns
   </div>;
 }
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<QueryParams> }) {
-  if (!dashboardAccessAllowed(await headers())) notFound();
+  const requestHeaders = await headers();
+  if (!dashboardAccessAllowed(requestHeaders)) {
+    if (dashboardLoginAvailable(requestHeaders)) redirect('/dashboard/login');
+    notFound();
+  }
   const requestedFilter = parseDashboardFilter(await searchParams);
   let data: Awaited<ReturnType<typeof getDashboardData>>;
   try {

@@ -282,3 +282,7 @@ Vercel milník dokončen: Hobby projekt, Neon Free, migrace, server secrets a p�
 Uživatel požaduje, aby push do devel aktualizoval veřejnou aplikaci. Ověřeno propojení GitHub MatejStyblo/ETF-radar a zapnuté Git deploys; dosavadní productionBranch je main, na GitHubu existuje pouze main. Vytvořit devel z aktuálního ověřeného stavu, nastavit Production branch na devel, pushnout bez force a ověřit skutečný automatický production build a přiřazení veřejného aliasu. Není potřeba GitHub Actions ani kopírování secrets do Gitu.
 
 Automatické nasazení potvrzeno: Git build z devel přešel do READY a veřejný alias ukazuje na jeho deployment ID. Zbývající dokumentační commit projde týmž automatickým tokem; ruční deploy pro tento milník nebyl použit.
+
+## Přímý vstup do dashboardu — 14. října 2026
+
+Uživatel narazil na 404 na veřejném /dashboard. Příčinou je záměrný auth guard, nikoli nefunkční DB. Upravit pouze vstupní UX: ve správně nakonfigurovaném remote režimu nepřihlášeného přesměrovat na /dashboard/login před načtením dat. Export, vypnutý režim a cizí Host stále 404. Ověřit SSR guard test, build a Git deploy z devel.

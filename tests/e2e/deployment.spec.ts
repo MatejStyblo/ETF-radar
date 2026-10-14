@@ -17,7 +17,9 @@ test('deployed HTTPS app saves a real lead, delivers report and protects dashboa
  const email=`${campaign}@example.invalid`;
  const sessions:string[]=[];
  try {
-  for(const path of ['/dashboard','/dashboard/export'])expect((await context.request.get(base+path)).status()).toBe(404);
+  const unauthenticated=await context.request.get(base+'/dashboard',{maxRedirects:0});
+  expect(unauthenticated.status()).toBe(307);expect(unauthenticated.headers().location).toBe('/dashboard/login');
+  expect((await context.request.get(base+'/dashboard/export')).status()).toBe(404);
   const rejected=await context.request.post(base+'/api/admin/session',{headers:{Origin:base},data:{key:'wrong'}});
   expect(rejected.status()).toBe(401);expect(rejected.headers()['set-cookie']).toBeUndefined();
   const crossSite=await context.request.post(base+'/api/admin/session',{headers:{Origin:'https://evil.invalid'},data:{key:'wrong'}});
