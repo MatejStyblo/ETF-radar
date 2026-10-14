@@ -14,7 +14,7 @@ test('public default is the primary NYSE pair with grouped exact venues and imme
  const html = renderToStaticMarkup(<Workspace attribution={{ ad_variant: 'a' }} privacy={{ name: null, contact: null, enabled: false }}/>);
  expect(html).toMatch(/value="stxf" selected/);
  expect(html).toMatch(/value="stxg" selected/);
- for (const text of ['NYSE — hlavní výběr','NYSE Arca — reference','Evropský UCITS doplněk (LSE)','STXF','STXG','PRIIPs','Odlišné indexy a strategie','pouze k izolaci nákladů','nejde o porovnání výkonnosti']) expect(html).toContain(text);
+ for (const text of ['NYSE — hlavní výběr','NYSE Arca — reference','Evropský UCITS doplněk (LSE)','STXF','STXG','Odlišné indexy a strategie','pouze k izolaci nákladů','nejde o porovnání výkonnosti']) expect(html).toContain(text);
  expect(html).not.toContain('Dva fondy. Jeden index.');
  expect(html).not.toContain('SPY a IVV jsou');
 });

@@ -107,3 +107,7 @@ Na žádost uživatele odstraněn drobný odstavec s indexem, distribucí a obch
 ## Zkrácení upozornění u selektorů — 14. října 2026
 
 Na žádost uživatele odstraněn samostatný odstavec o odlišných indexech pod výběrem fondů. Stejné vysvětlení zůstává přímo u výsledku, v metodice a reportu; výpočet ani data se nemění. Existující live-funnel kontrola ověřuje zbývající upozornění u výsledku.
+
+## Zkrácení dolního popisku kalkulačky — 14. října 2026
+
+Na žádost uživatele odstraněn odstavec s listingy a dostupností/KID pod vstupy kalkulačky. Listingy zůstávají u fondů a v selektorech; informace o dostupnosti a KID zůstávají v reportu a dokumentaci. Finanční data, výpočet a formulář se nemění. Existující UI test byl sladěn s odstraněním tohoto popisku.
