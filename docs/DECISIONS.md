@@ -223,4 +223,4 @@ Přímý /dashboard na správném HTTPS hostu nyní vrací redirect na /dashboar
 
 ## D21 — neutrální testovací označení
 
-Veřejný popis repozitáře popisuje produkt bez kontextu výběrového řízení. Web a dokumentace používají označení testovací verze/projekt. Jde o úpravu prezentace, nikoli změnu účelu zpracování dat nebo spuštění komerčního provozu.
+Veřejný popis repozitáře popisuje samotný produkt. Web a dokumentace používají označení testovací verze/projekt. Jde o úpravu prezentace, nikoli změnu účelu zpracování dat nebo spuštění komerčního provozu.
