@@ -47,7 +47,7 @@ test('measurement starts only after explicit opt-in; revoke stops it',async({pag
  await expect.poll(()=>events.length).toBeGreaterThan(0);expect(events[0].name).toBe('landing_view');
  await page.getByLabel('Počáteční vklad').fill('300000');await page.getByLabel('Počáteční vklad').blur();
  await expect.poll(()=>events.some(e=>e.name==='calculator_interaction')).toBe(true);
- for(const event of events)expect(Object.keys(event).sort()).toEqual(['adVariant','consent','eventId','name']);
+ for(const event of events)expect(Object.keys(event).sort()).toEqual(event.name==='landing_view'?['acquisition','adVariant','consent','eventId','name']:['adVariant','consent','eventId','name']);
  await page.getByRole('button',{name:'Odvolat',exact:true}).click();await expect.poll(()=>deleted).toBe(1);
  const count=events.length;await page.getByLabel('Druhé ETF').selectOption('cspx');await page.waitForTimeout(300);expect(events.length).toBe(count);
  expect(await page.evaluate(()=>localStorage.getItem('etf-radar-measurement'))).toBe('denied');

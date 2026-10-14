@@ -43,3 +43,7 @@ Codex doplnil na žádost uživatele interaktivní graf modelového scénáře (
 ## Codex — zdroje návštěv a neodeslané formuláře (14. října 2026)
 
 Na přímý požadavek uživatele Codex rozšířil existující lokální dashboard a opt-in analytics, bez externí služby či deploymentu. Přidal acquisition migraci, sanitizaci UTM/referrer hostname, přehled měřené landing kohorty a potvrzených DB uložení. Zdůrazněn rozdíl relace/člověk a aktivní návštěvy/neodeslané formuláře. Při práci původní Python příkaz selhal, protože Python není na PATH; žádné soubory jím nebyly změněny, úpravy provedeny přes apply_patch a Node. Pro browser QA bylo nutné nainstalovat odpovídající Playwright Chromium; původní dostupný build neodpovídal runneru a nešel spustit. Skutečné výsledky viz TESTING. Export této session je dílčí runtime záznam, nikoli rekonstruovaný rozhovor.
+
+## Codex — cookie lišta (14. října 2026)
+
+Na výslovný požadavek uživatele vznikla viditelná spodní nemodální lišta nad stávajícím consent API; bez změny právního režimu nebo automatického povolení měření. Při vizuální kontrole mobilního screenshotu byl odhalen překryv vývojového Next indikátoru s tlačítkem, proto přesunut do pravého horního rohu. Existující browser test obálky událostí byl aktualizován na acquisition pole z předchozí změny; schéma aplikace se v tomto kroku neměnilo. Podrobné výsledky v TESTING.

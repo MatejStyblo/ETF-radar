@@ -196,3 +196,9 @@ npx playwright test tests/e2e/traffic.spec.ts --workers=1
 ```
 
 Integrace navíc ověřují nezávislost na best-effort success eventu, opakovaná uložení jedné relace, nerevokovanou kohortu a filtry, hostname referrer fallback, aktivní návštěvu, neměnnost prvního zdroje, odmítnutý souhlas a legacy záznamy.
+
+## Viditelná cookie lišta — 14. října 2026
+
+Na stejném lokálním Windows/Node/PostgreSQL prostředí: **92 unit testů, typecheck, lint a produkční build prošly**. Cílená browser sada consent + cookie-banner + frontend + lead-form: **16 passed**. Obsahuje kontrolu absence eventů před opt-in, zapamatování odmítnutí po reloadu, změnu volby, focus při otevření/zavření, Escape, odvolání mezi záložkami, server failure/retry a dostupnost kalkulačky/formuláře. Nová lišta kontrolována na 375×812 a 1280×812, stejná šířka voleb, bez horizontálního overflow, axe bez violations; celostránkový axe frontend test prošel na 375/768/1440. Screenshoty vizuálně zkontrolovány, původní překryv Next indikátoru s mobilní volbou odstraněn přesunem indikátoru.
+
+Po produkčním buildu a změně pozice indikátoru znovu cíleně spuštěny nové cookie-banner testy a skutečný traffic test: **3 passed**. Traffic test bez API interceptů potvrzuje 2 návštěvy / 1 reálně uložený kontakt / 1 zatím neodeslaný formulář / 50 % a odstraňuje jen své testovací řádky. Nejde o nových 19 unikátních browser testů: dva cookie testy byly opakované kvůli vizuální opravě. Backend ani migrace nebyly v této úpravě měněny, kompletní integrační sada proto nebyla znovu spouštěna. Žádné nové skóre Lighthouse se netvrdí.

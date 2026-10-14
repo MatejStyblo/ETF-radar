@@ -266,3 +266,7 @@ Přidán propojený graf hodnoty investice / dopadu nákladů s ročními daty s
 ## Návštěvnost a neodeslané formuláře — 14. října 2026
 
 Na žádost uživatele rozšířit stávající opt-in měření: uložit při prvním landing eventu relace validované UTM a pouze externí referrer hostname; přidat aditivní migraci, agregaci stejné landing kohorty a dashboard zdrojů / zahájení / úspěšných uložení / dosud neodeslaných formulářů. Probíhající návštěvy odlišit; úspěch odvodit od durable receipt, nikoli pouze best-effort success eventu. Ověřit unit, PostgreSQL integrace, browser cestu, build a stávající funnel. Bez měření před souhlasem, bez IP/fingerprintu či zpětného domýšlení historie.
+
+## Viditelná cookie lišta — 14. října 2026
+
+Na výslovný požadavek uživatele nahradit první volbu ve spodní sekci pevnou spodní lištou na landing page/reportu. Zachovat opt-in API, stejné možnosti povolit/odmítnout, zapamatování, odvolání a souhlas mezi záložkami. Po volbě schovat lištu, ponechat trvalé nastavení v původní sekci. Bez zablokování stránky; zkontrolovat mobil, klávesnici, souhlas a stávající acquisition cestu.

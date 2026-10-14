@@ -246,3 +246,7 @@ AI použití a skutečné chyby/opravy popisuje [AI_USAGE](docs/AI_USAGE.md). Po
 ## Návštěvnost a dokončení formuláře (14. října 2026)
 
 Lokální `/dashboard` nyní obsahuje „Návštěvy a kontaktní formulář“: měřené návštěvy, zahájení formuláře, potvrzená uložení kontaktu, návštěvy zatím bez odeslání a jejich aktivní podmnožinu, včetně rozpisu podle zdroje, média, kampaně a varianty. Zdroj návštěvy je z UTM, případně externí referrer domény. Měření běží pouze se souhlasem a neidentifikuje unikátní lidi. Obnovení stránky v relaci nezvyšuje počet návštěv. Chybějící zdroj ani neodeslaný formulář neprokazují přímý příchod nebo odchod. Nová migrace `005.sql` je potřeba i při aktualizaci existující databáze (`node --env-file=.env.local scripts/migrate.mjs`). Detail a rozdíl proti starším eventovým kartám: docs/ANALYTICS.md, poslední sekce.
+
+### Viditelný souhlas s měřením
+
+Při první návštěvě se zobrazuje spodní cookie lišta s rovnocenným Povolit/Odmítnout. Nezakrývá web modálním pozadím a neblokuje kalkulačku. Po volbě se skryje a preference zůstává uložená. Dole na stránce je Změnit nastavení cookies a pro povolené měření také Odvolat. Bez souhlasu se analytické události ani zdroje návštěv neodesílají.
