@@ -1,0 +1,41 @@
+{
+  "checks": 36,
+  "failures": [
+    {
+      "name": "375: runtime errors",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'Failed to load resource: the server responded with a status of 403 (Forbidden)'\n+ ]\n- []\n"
+    },
+    {
+      "name": "390: runtime errors",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'Failed to load resource: the server responded with a status of 403 (Forbidden)'\n+ ]\n- []\n"
+    },
+    {
+      "name": "768: runtime errors",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'Failed to load resource: the server responded with a status of 403 (Forbidden)'\n+ ]\n- []\n"
+    },
+    {
+      "name": "1440: runtime errors",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'Failed to load resource: the server responded with a status of 403 (Forbidden)'\n+ ]\n- []\n"
+    },
+    {
+      "name": "API rejects invalid email",
+      "status": "FAIL",
+      "message": "Expected values to be strictly equal:\n\n403 !== 422\n"
+    },
+    {
+      "name": "API rejects client fee injection",
+      "status": "FAIL",
+      "message": "Expected values to be strictly equal:\n\n403 !== 422\n"
+    },
+    {
+      "name": "API rejects analytics no consent",
+      "status": "FAIL",
+      "message": "Expected values to be strictly equal:\n\n403 !== 422\n"
+    }
+  ],
+  "output": "docs/qa/final-audit/local-demo-browser"
+}

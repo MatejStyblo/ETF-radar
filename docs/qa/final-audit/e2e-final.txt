@@ -1,0 +1,46 @@
+
+> etf-radar@0.1.0 test:e2e
+> playwright test --workers=1 --output=.vercel/final-audit-enabled-artifacts
+
+
+Running 32 tests using 1 worker
+
+(node:9528) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\e2e\consent.spec.ts:2:1 › failed withdrawal never blocks capture and submits current consent independently of cookies (1.5s)
+  ok  2 tests\e2e\consent.spec.ts:22:1 › withdrawal synchronizes already initialized tabs (677ms)
+  ok  3 tests\e2e\consent.spec.ts:41:1 › measurement starts only after explicit opt-in; revoke stops it (951ms)
+  ok  4 tests\e2e\cookie-banner.spec.ts:5:2 › cookie banner is visible, accessible and remembers reversible choices at 375px (1.4s)
+  ok  5 tests\e2e\cookie-banner.spec.ts:5:2 › cookie banner is visible, accessible and remembers reversible choices at 1280px (1.2s)
+  -   6 tests\e2e\dashboard.spec.ts:10:1 › dashboard and contact export are unavailable without local opt-in
+  ok  7 tests\e2e\dashboard.spec.ts:19:1 › a nonlocal Host cannot expose the dashboard or CSV even when enabled (29ms)
+  ok  8 tests\e2e\dashboard.spec.ts:94:3 › opt-in read-only dashboard on a real local server › returning from landing to dashboard never tracks cross-tab opt-in (746ms)
+  ok  9 tests\e2e\dashboard.spec.ts:143:3 › opt-in read-only dashboard on a real local server › SSR totals match PostgreSQL; filters, CSV, responsive tables and accessibility work (3.2s)
+  ok 10 tests\e2e\frontend.spec.ts:3:1 › ad B matches both headline and comparison action (286ms)
+  ok 11 tests\e2e\frontend.spec.ts:8:1 › invalid inputs hide old result and decimal comma is accepted (341ms)
+  ok 12 tests\e2e\frontend.spec.ts:19:37 › responsive 375: no overflow and usable first screen (1.0s)
+  ok 13 tests\e2e\frontend.spec.ts:19:37 › responsive 768: no overflow and usable first screen (953ms)
+  ok 14 tests\e2e\frontend.spec.ts:19:37 › responsive 1440: no overflow and usable first screen (1.0s)
+  ok 15 tests\e2e\frontend.spec.ts:34:1 › same fund is rejected and the selectors describe the problem (299ms)
+  ok 16 tests\e2e\frontend.spec.ts:41:1 › large valid scenario remains within mobile viewport (317ms)
+  ok 17 tests\e2e\frontend.spec.ts:50:1 › public comparison shows real funds and recalculates without email (346ms)
+  ok 18 tests\e2e\chart.spec.ts:6:1 › chart explores real annual values by keyboard and switches to costs (1.8s)
+  ok 19 tests\e2e\chart.spec.ts:27:1 › mobile taps select years; zero and negative-return scenarios stay readable (394ms)
+  ok 20 tests\e2e\lead-form.spec.ts:2:1 › expired report response resets only the attempt while preserving all form inputs (2.8s)
+  ok 21 tests\e2e\lead-form.spec.ts:22:1 › 422 marks the form for correction and 429 explains retry timing (1.8s)
+  ok 22 tests\e2e\lead-form.spec.ts:32:1 › email errors are accessible, failures keep retry attempt, changed payload gets new attempt (1.9s)
+  ok 23 tests\e2e\live-funnel.spec.ts:15:5 › opt-in real local production funnel (no interception) › consented mobile acquisition → saved lead → report download (2.8s)
+  ok 24 tests\e2e\live-funnel.spec.ts:15:5 › opt-in real local production funnel (no interception) › denied desktop acquisition → saved lead → report download (3.0s)
+  ok 25 tests\e2e\live-funnel.spec.ts:15:5 › opt-in real local production funnel (no interception) › primary NYSE consented mobile acquisition → saved lead → report download (2.7s)
+  ok 26 tests\e2e\report-render.spec.ts:8:31 › report layout 375 is readable and accessible (1.5s)
+  ok 27 tests\e2e\report-render.spec.ts:8:31 › report layout 1440 is readable and accessible (1.6s)
+  ok 28 tests\e2e\report-render.spec.ts:19:1 › report renders personal scenario, honest metadata, all horizons and annual table (19ms)
+  ok 29 tests\e2e\security.spec.ts:3:1 › production validation respects CSP without eval probes (298ms)
+  ok 30 tests\e2e\security.spec.ts:18:1 › brand favicon is available (9ms)
+  ok 31 tests\e2e\traffic.spec.ts:6:1 › consented campaign visits, incomplete form and saved contact appear in the real dashboard (3.0s)
+(node:27456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  -  32 tests\e2e\deployment.spec.ts:6:1 › deployed HTTPS app saves a real lead, delivers report and protects dashboard/export
+
+  2 skipped
+  30 passed (40.7s)

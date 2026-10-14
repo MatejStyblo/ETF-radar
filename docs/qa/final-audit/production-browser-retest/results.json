@@ -1,0 +1,423 @@
+{
+  "origin": "https://etf-radar-dun.vercel.app",
+  "browser": "156.0.8078.4",
+  "checkedAt": "2026-10-14T11:53:11.905Z",
+  "viewports": [
+    {
+      "width": 375,
+      "height": 812,
+      "status": 200,
+      "readyMs": 322,
+      "documentWidth": 375,
+      "headline": "Malý roční poplatek. Jaký rozdíl udělá za 20 let?",
+      "demoNotice": true,
+      "cookieHeight": 208.578125,
+      "initialInputBottom": 864.53125,
+      "primaryCtaBottom": 391.421875
+    },
+    {
+      "width": 390,
+      "height": 812,
+      "status": 200,
+      "readyMs": 286,
+      "documentWidth": 390,
+      "headline": "Malý roční poplatek. Jaký rozdíl udělá za 20 let?",
+      "demoNotice": true,
+      "cookieHeight": 208.578125,
+      "initialInputBottom": 814.34375,
+      "primaryCtaBottom": 356.234375
+    },
+    {
+      "width": 768,
+      "height": 812,
+      "status": 200,
+      "readyMs": 300,
+      "documentWidth": 768,
+      "headline": "Malý roční poplatek. Jaký rozdíl udělá za 20 let?",
+      "demoNotice": true,
+      "cookieHeight": 170.515625,
+      "initialInputBottom": 898.71875,
+      "primaryCtaBottom": 352.421875
+    },
+    {
+      "width": 1440,
+      "height": 812,
+      "status": 200,
+      "readyMs": 295,
+      "documentWidth": 1440,
+      "headline": "Malý roční poplatek. Jaký rozdíl udělá za 20 let?",
+      "demoNotice": true,
+      "cookieHeight": 150.375,
+      "initialInputBottom": 1045.046875,
+      "primaryCtaBottom": 388.125
+    }
+  ],
+  "checks": [
+    {
+      "name": "375: overflow and pre-consent boundary",
+      "status": "PASS",
+      "detail": {
+        "noEventPosts": true
+      }
+    },
+    {
+      "name": "375: axe accessibility",
+      "status": "PASS"
+    },
+    {
+      "name": "375: honeypot excluded",
+      "status": "PASS"
+    },
+    {
+      "name": "financial default",
+      "status": "PASS",
+      "detail": {
+        "scenario": {
+          "initial": 100000,
+          "monthly": 3000,
+          "years": 20,
+          "grossReturnPct": 5
+        },
+        "independent": [
+          1472224.2525435765,
+          1448323.2706697052
+        ],
+        "baseline": 1482743.2264678641,
+        "actual": [
+          "1 472 224 Kč",
+          "1 448 323 Kč"
+        ]
+      }
+    },
+    {
+      "name": "financial zero initial",
+      "status": "PASS",
+      "detail": {
+        "scenario": {
+          "initial": 0,
+          "monthly": 3000,
+          "years": 20,
+          "grossReturnPct": 5
+        },
+        "independent": [
+          1209771.651559655,
+          1192383.7855092082
+        ],
+        "baseline": 1217413.4559534187,
+        "actual": [
+          "1 209 772 Kč",
+          "1 192 384 Kč"
+        ]
+      }
+    },
+    {
+      "name": "financial zero monthly",
+      "status": "PASS",
+      "detail": {
+        "scenario": {
+          "initial": 100000,
+          "monthly": 0,
+          "years": 20,
+          "grossReturnPct": 5
+        },
+        "independent": [
+          262452.60098392144,
+          255939.4851604971
+        ],
+        "baseline": 265329.77051444526,
+        "actual": [
+          "262 453 Kč",
+          "255 939 Kč"
+        ]
+      }
+    },
+    {
+      "name": "financial zero investments",
+      "status": "PASS",
+      "detail": {
+        "scenario": {
+          "initial": 0,
+          "monthly": 0,
+          "years": 20,
+          "grossReturnPct": 5
+        },
+        "independent": [
+          0,
+          0
+        ],
+        "baseline": 0,
+        "actual": [
+          "0 Kč",
+          "0 Kč"
+        ]
+      }
+    },
+    {
+      "name": "financial zero growth",
+      "status": "PASS",
+      "detail": {
+        "scenario": {
+          "initial": 100000,
+          "monthly": 3000,
+          "years": 20,
+          "grossReturnPct": 0
+        },
+        "independent": [
+          815021.0473080829,
+          803696.7170036258
+        ],
+        "baseline": 820000,
+        "actual": [
+          "815 021 Kč",
+          "803 697 Kč"
+        ]
+      }
+    },
+    {
+      "name": "financial negative growth",
+      "status": "PASS",
+      "detail": {
+        "scenario": {
+          "initial": 100000,
+          "monthly": 3000,
+          "years": 20,
+          "grossReturnPct": -30
+        },
+        "independent": [
+          102283.8437862121,
+          101930.95531548563
+        ],
+        "baseline": 102437.7210265043,
+        "actual": [
+          "102 284 Kč",
+          "101 931 Kč"
+        ]
+      }
+    },
+    {
+      "name": "financial max horizon",
+      "status": "PASS",
+      "detail": {
+        "scenario": {
+          "initial": 100000,
+          "monthly": 3000,
+          "years": 50,
+          "grossReturnPct": 5
+        },
+        "independent": [
+          8681268.614616128,
+          8296459.822135147
+        ],
+        "baseline": 8854458.502812684,
+        "actual": [
+          "8 681 269 Kč",
+          "8 296 460 Kč"
+        ]
+      }
+    },
+    {
+      "name": "financial decimal comma",
+      "status": "PASS",
+      "detail": {
+        "scenario": {
+          "initial": 123456.78,
+          "monthly": 3000,
+          "years": 20,
+          "grossReturnPct": 5.5
+        },
+        "independent": [
+          1634726.4663600458,
+          1607271.0354238464
+        ],
+        "baseline": 1646813.5108252824,
+        "actual": [
+          "1 634 726 Kč",
+          "1 607 271 Kč"
+        ]
+      }
+    },
+    {
+      "name": "invalid numeric hides result",
+      "status": "PASS"
+    },
+    {
+      "name": "SPY / IVV independent result",
+      "status": "PASS"
+    },
+    {
+      "name": "chart keyboard",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid email client validation",
+      "status": "PASS"
+    },
+    {
+      "name": "denial persists after refresh",
+      "status": "PASS"
+    },
+    {
+      "name": "375: runtime errors",
+      "status": "PASS",
+      "detail": {
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "390: overflow and pre-consent boundary",
+      "status": "PASS",
+      "detail": {
+        "noEventPosts": true
+      }
+    },
+    {
+      "name": "390: axe accessibility",
+      "status": "PASS"
+    },
+    {
+      "name": "390: honeypot excluded",
+      "status": "PASS"
+    },
+    {
+      "name": "390: runtime errors",
+      "status": "PASS",
+      "detail": {
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "768: overflow and pre-consent boundary",
+      "status": "PASS",
+      "detail": {
+        "noEventPosts": true
+      }
+    },
+    {
+      "name": "768: first-screen interaction",
+      "status": "PASS",
+      "detail": 898.71875
+    },
+    {
+      "name": "768: axe accessibility",
+      "status": "PASS"
+    },
+    {
+      "name": "768: honeypot excluded",
+      "status": "PASS"
+    },
+    {
+      "name": "768: runtime errors",
+      "status": "PASS",
+      "detail": {
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "1440: overflow and pre-consent boundary",
+      "status": "PASS",
+      "detail": {
+        "noEventPosts": true
+      }
+    },
+    {
+      "name": "1440: first-screen interaction",
+      "status": "PASS",
+      "detail": 1045.046875
+    },
+    {
+      "name": "1440: axe accessibility",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: honeypot excluded",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: runtime errors",
+      "status": "PASS",
+      "detail": {
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "advertisement B message match",
+      "status": "PASS"
+    },
+    {
+      "name": "anonymous /report/download",
+      "status": "PASS",
+      "detail": {
+        "status": 401,
+        "cache": "private, no-store"
+      }
+    },
+    {
+      "name": "anonymous /dashboard/export",
+      "status": "PASS",
+      "detail": {
+        "status": 404,
+        "cache": "private, no-store"
+      }
+    },
+    {
+      "name": "anonymous /favicon.ico",
+      "status": "PASS",
+      "detail": {
+        "status": 200,
+        "cache": "public, max-age=0, must-revalidate"
+      }
+    },
+    {
+      "name": "anonymous dashboard redirects to login or disabled 404",
+      "status": "PASS",
+      "detail": {
+        "status": 307,
+        "location": "/dashboard/login"
+      }
+    },
+    {
+      "name": "unauthorized report has no private content",
+      "status": "PASS"
+    },
+    {
+      "name": "API rejects invalid email",
+      "status": "PASS",
+      "detail": 422
+    },
+    {
+      "name": "API rejects cross origin",
+      "status": "PASS",
+      "detail": 403
+    },
+    {
+      "name": "API rejects client fee injection",
+      "status": "PASS",
+      "detail": 422
+    },
+    {
+      "name": "API rejects analytics no consent",
+      "status": "PASS",
+      "detail": 422
+    }
+  ],
+  "failures": [
+    {
+      "name": "375: first-screen interaction",
+      "status": "FAIL",
+      "message": "initial input ends at 864.53125px"
+    },
+    {
+      "name": "390: first-screen interaction",
+      "status": "FAIL",
+      "message": "initial input ends at 814.34375px"
+    }
+  ],
+  "privacy": {
+    "prelaunch": true,
+    "nonfunctionalContact": true
+  }
+}

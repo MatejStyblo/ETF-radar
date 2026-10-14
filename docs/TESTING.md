@@ -1,5 +1,15 @@
 # Ověřování — průběžný záznam
 
+## Independent final audit — 14. října 2026
+
+Návazné opakování enabled a disabled Playwright současně odhalilo kolizi společné `test-results` složky: 29 passed / 1 failed / 2 skipped, failure byl ENOENT při zavírání trace, nikoli aplikační assertion. Log uchován v `e2e-trace-collision.txt`, finální celá enabled suite dostala samostatný `--output=.vercel/final-audit-enabled-artifacts`. Dva dokumentační patch pokusy s nepřesnou kotvou byly odmítnuty atomicky; následné patche používají správné kotvy.
+
+Nové důkazy a detailní oddělení prostředí jsou v [FINAL_AUDIT](FINAL_AUDIT.md) a `docs/qa/final-audit/`. Windows/Node 24.15.0/npm 11.12.1/PG17.9/Chromium156. Nově prošly typecheck, lint, **97 unit / 42 real PostgreSQL integration**, produkční build, **30 enabled local browser / 2 skipped**, samostatně **4 disabled/security browser / 2 skipped** a **43 exploratory checků** finální demo repliky na 375/390/768/1440. Produkční read-only browser má **41 PASS / 2 FAIL** pro mobilní polohu vstupu, lokálně opravenou. Po povolení uživatele skutečný produkční funnel s consentem i bez něj prošel: jeden syntetický lead, dva captures, DB readback, report/download/print/refresh/expiry/revocation a cleanup s nulou vlastních řádků. Nejde o mock persistence.
+
+Nový deployment ověřený API: `dpl_EB618uVzbtYGZrvSYRG9U5ep4ZBu`, SHA `b0aa48a2bfe5ffa6e6524ce23985ac26c066cc5f`, devel/production/READY. Nový Lighthouse skutečného HTTPS webu 13:57:20 Europe/Prague: **98 Performance / 100 Accessibility / 96 Best Practices / 100 SEO**, LCP1972,469ms, CLS0, TBT120ms; žádný INP/field výsledek. Complete npm audit má 5 high dev entries; omit-dev má 0. Nové opravy jsou lokální a nejsou v ověřeném deploymentu.
+
+První plný e2e běh měl 3 skutečně zaznamenaná selhání (stará obálka acquisition 2×, CSP1×). Opraveno a celý běh zopakován. Exploratory harness původně očekával obyčejnou mezeru místo NBSP měny; opraven harness, nikoli výpočet. První Lighthouse CLI na Windows `spawn UNKNOWN`, následně programmatic audit s Playwright Chromiem prošel. Jedna dočasná demo konfigurace měla port nesouhlasící s APP_ORIGIN, správně 403; přepsána pouze privátní replika a retest prošel. Tyto pokusy zůstávají popsané, nenahrazují PASS důkazy. Poslední reportové popisky byly ověřeny novým buildem a následným browser/report během.
+
 ## Milník numerického jádra a reportu, 9. října 2026
 
 Skutečné lokální prostředí: macOS, Node 22.23.1, npm 10.9.8. PostgreSQL 17 v samostatném Docker containeru `etf-radar-postgres` na localhost portu 55439; `pg_isready` potvrdil dostupnost. Aplikační DB `etf_radar`, oddělená integrační DB `etf_radar_test`. Dosavadní numerické kontroly DB nepotřebují.

@@ -1,5 +1,7 @@
 # Autentické AI logy
 
+`codex-2026-10-14-final-audit.jsonl`: skutečný dílčí runtime snapshot session `01a13a39-aee7-7552-96eb-e49658af6d57`, vytvořený 14. října 2026 z lokálního Codex rollout JSONL. Obsahuje 11 nezměněných response_item záznamů user/assistant zpráv dostupných v čase exportu, včetně aktuálního povolení produkčního testu a úklidu. Neobsahuje tool calls/outputs, reasoning nebo system/developer instrukce. Finální odpověď a pozdější zprávy nejsou dosud v tomto snapshotu. Credential-value kontrola nenalezla shody; nejsou zde capability cookies ani production connection strings. Není to úplný raw log, zpětná rekonstrukce ani Claude export.
+
 Tento README je návod, nikoliv conversation export. Soubor `hermes-session.jsonl` je skutečný snapshot session `20261009_171555_dc5d1e` exportovaný přes Hermes CLI s `--redact`. Obsahuje jeden session record s polem `messages`, nikoliv jednu zprávu na řádek. Export není Claude Code log ani zpětná rekonstrukce. Před veřejným sdílením zkontrolovat osobní údaje a lokální cesty.
 
 Postup a současné omezení viz `docs/AI_USAGE.md`. Snapshot nezahrnuje zprávy vzniklé po exportu; pro finální handoff jej znovu exportovat s ověřeným ID a secrets redaction. Skutečné delegation runtime logs lze uchovat jako dílčí záznam se zřetelně popsanou proveniencí; neoznačovat je jako kompletní parent chat.

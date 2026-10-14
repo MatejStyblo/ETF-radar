@@ -1,5 +1,9 @@
 # Datové zdroje a metodika ETF katalogu
 
+## Nezávislá revalidace 14. října 2026
+
+Aktuální stránky všech pěti fondů, oba 2Q26 factsheety a Strive prospekt byly znovu otevřeny. Sazby, listingy, indexy, výplaty i doložené SPY/CSPX ISIN odpovídají katalogu; podrobnosti a zdrojové odkazy jsou v [FINAL_AUDIT](FINAL_AUDIT.md#financial-accuracy-findings). Původní katalogová retrieval data zůstávají historickým snapshotem. Strive je dle issuer/factsheet sub-adviser, nikoli automaticky právní emitent; `issuer` je legacy provider/brand field a v obou reportech se nyní označuje „Značka / poskytovatel“. Právní struktura EA Series Trust zůstává uvedená. Neověřená pole nebyla doplněna z paměti.
+
 Základní reference SPY/IVV/CSPX byly načteny 9. října 2026; nové hlavní NYSE fondy STXF/STXG 13. října 2026. Datum načtení není datum vydání dokumentu. Versionovaný katalog: `data/etfs.ts`, aktuální identifikátor `2026-10-13.1`. Podrobné nové ověření, emitentské odkazy, factsheety a prospekt jsou v [NYSE_VERIFICATION](NYSE_VERIFICATION.md).
 
 ## Hlavní výběr přímo na NYSE — 13. října 2026

@@ -1,5 +1,9 @@
 # ETF Radar — produktový a implementační plán
 
+## Nezávislý audit — 14. října 2026
+
+Aktuální provedená práce a stavy: [FINAL_AUDIT](FINAL_AUDIT.md). Audit četl existující implementaci, znovu ověřil primární data, skutečný produkční i lokální funnel, opravil pouze doložené CSP/test/UX/popiskové regrese a doplnil důkazy. Žádný redesign, push, nasazení ani změna produkčních secrets. Další priorita před kampaní: skutečná provozní/privacy připravenost, ověřený retention job a hosting dovolující komerční provoz; rozhodnutí patří vlastníkovi.
+
 Datum: 9. října 2026. Deadline podle nadřazeného `AGENTS.md`: 16. října 2026.
 Stav: produktová revize 9. října 2026; následuje implementace a skutečné ověření vertical slice. Stav jednotlivých kontrol bude uveden v TESTING.md.
 

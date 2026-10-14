@@ -1,0 +1,105 @@
+{
+  "cloudReachable": true,
+  "constraints": [
+    {
+      "constraint_name": "leads_id_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "leads_email_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "leads_email_key_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "leads_marketing_consent_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "leads_privacy_notice_version_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "leads_privacy_notice_at_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "leads_created_at_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "leads_pkey",
+      "constraint_type": "PRIMARY KEY"
+    },
+    {
+      "constraint_name": "leads_email_key_key",
+      "constraint_type": "UNIQUE"
+    },
+    {
+      "constraint_name": "reports_id_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "reports_token_hash_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "reports_snapshot_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "reports_expires_at_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "reports_created_at_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "reports_pkey",
+      "constraint_type": "PRIMARY KEY"
+    },
+    {
+      "constraint_name": "reports_token_hash_key",
+      "constraint_type": "UNIQUE"
+    },
+    {
+      "constraint_name": "submission_receipts_attempt_id_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "submission_receipts_payload_hash_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "submission_receipts_lead_id_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "submission_receipts_is_new_lead_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "submission_receipts_attribution_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "submission_receipts_created_at_not_null",
+      "constraint_type": "CHECK"
+    },
+    {
+      "constraint_name": "submission_receipts_pkey",
+      "constraint_type": "PRIMARY KEY"
+    },
+    {
+      "constraint_name": "submission_receipts_lead_id_fkey",
+      "constraint_type": "FOREIGN KEY"
+    },
+    {
+      "constraint_name": "submission_receipts_report_id_fkey",
+      "constraint_type": "FOREIGN KEY"
+    }
+  ]
+}

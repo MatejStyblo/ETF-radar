@@ -1,0 +1,16 @@
+{
+  "checks": 41,
+  "failures": [
+    {
+      "name": "375: first-screen interaction",
+      "status": "FAIL",
+      "message": "initial input ends at 864.53125px"
+    },
+    {
+      "name": "390: first-screen interaction",
+      "status": "FAIL",
+      "message": "initial input ends at 814.34375px"
+    }
+  ],
+  "output": "docs/qa/final-audit/production-browser-retest"
+}

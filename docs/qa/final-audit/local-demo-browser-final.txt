@@ -1,0 +1,5 @@
+{
+  "checks": 43,
+  "failures": [],
+  "output": "docs/qa/final-audit/local-demo-browser-final"
+}

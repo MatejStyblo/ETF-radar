@@ -1,0 +1,173 @@
+{
+  "origin": "https://etf-radar-dun.vercel.app",
+  "checkedAt": "2026-10-14T11:52:52.852Z",
+  "flows": [
+    {
+      "consent": true,
+      "status": "PASS",
+      "persisted": true,
+      "isNewLead": true,
+      "snapshotInitial": 123456.78,
+      "pair": [
+        "stxf",
+        "cspx"
+      ],
+      "balances": [
+        "1 533 787 Kč",
+        "1 530 620 Kč"
+      ],
+      "events": [
+        {
+          "name": "landing_view",
+          "source": "client",
+          "ad_variant": "b",
+          "is_new_lead": null,
+          "etf_ids": null
+        },
+        {
+          "name": "primary_cta_click",
+          "source": "client",
+          "ad_variant": "b",
+          "is_new_lead": null,
+          "etf_ids": null
+        },
+        {
+          "name": "comparison_started",
+          "source": "client",
+          "ad_variant": "b",
+          "is_new_lead": null,
+          "etf_ids": null
+        },
+        {
+          "name": "etf_selected",
+          "source": "client",
+          "ad_variant": "b",
+          "is_new_lead": null,
+          "etf_ids": [
+            "stxf",
+            "cspx"
+          ]
+        },
+        {
+          "name": "calculator_interaction",
+          "source": "client",
+          "ad_variant": "b",
+          "is_new_lead": null,
+          "etf_ids": null
+        },
+        {
+          "name": "results_viewed",
+          "source": "client",
+          "ad_variant": "b",
+          "is_new_lead": null,
+          "etf_ids": null
+        },
+        {
+          "name": "lead_form_started",
+          "source": "client",
+          "ad_variant": "b",
+          "is_new_lead": null,
+          "etf_ids": null
+        },
+        {
+          "name": "lead_offer_viewed",
+          "source": "client",
+          "ad_variant": "b",
+          "is_new_lead": null,
+          "etf_ids": null
+        },
+        {
+          "name": "lead_submit_attempt",
+          "source": "client",
+          "ad_variant": "b",
+          "is_new_lead": null,
+          "etf_ids": null
+        },
+        {
+          "name": "lead_submit_success",
+          "source": "server",
+          "ad_variant": "b",
+          "is_new_lead": true,
+          "etf_ids": null
+        },
+        {
+          "name": "session_start",
+          "source": "client",
+          "ad_variant": "b",
+          "is_new_lead": null,
+          "etf_ids": null
+        },
+        {
+          "name": "session_start",
+          "source": "client",
+          "ad_variant": "b",
+          "is_new_lead": null,
+          "etf_ids": null
+        },
+        {
+          "name": "report_viewed",
+          "source": "client",
+          "ad_variant": "b",
+          "is_new_lead": null,
+          "etf_ids": null
+        },
+        {
+          "name": "report_downloaded",
+          "source": "client",
+          "ad_variant": "b",
+          "is_new_lead": null,
+          "etf_ids": null
+        }
+      ],
+      "cookie": {
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "Lax",
+        "path": "/report"
+      },
+      "refresh": "PASS",
+      "download": "PASS",
+      "printMediaPdf": "PASS",
+      "expiry": "PASS",
+      "revocation": "PASS"
+    },
+    {
+      "consent": false,
+      "status": "PASS",
+      "persisted": true,
+      "isNewLead": false,
+      "snapshotInitial": 123456.78,
+      "pair": [
+        "stxf",
+        "cspx"
+      ],
+      "balances": [
+        "1 533 787 Kč",
+        "1 530 620 Kč"
+      ],
+      "events": [],
+      "cookie": {
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "Lax",
+        "path": "/report"
+      },
+      "refresh": "PASS",
+      "download": "PASS",
+      "printMediaPdf": "PASS",
+      "expiry": "PASS",
+      "revocation": "NOT APPLICABLE"
+    }
+  ],
+  "cleanup": {
+    "status": "PASS",
+    "remainingOwnRecords": {
+      "leads": 0,
+      "receipts": 0,
+      "reports": 0,
+      "sessions": 0,
+      "events": 0,
+      "buckets": 0
+    }
+  }
+}

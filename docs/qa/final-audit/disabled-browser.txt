@@ -1,0 +1,14 @@
+
+Running 6 tests using 1 worker
+
+(node:7232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\e2e\dashboard.spec.ts:10:1 › dashboard and contact export are unavailable without local opt-in (45ms)
+  ok 2 tests\e2e\dashboard.spec.ts:19:1 › a nonlocal Host cannot expose the dashboard or CSV even when enabled (20ms)
+  -  3 tests\e2e\dashboard.spec.ts:94:3 › opt-in read-only dashboard on a real local server › returning from landing to dashboard never tracks cross-tab opt-in
+  -  4 tests\e2e\dashboard.spec.ts:143:3 › opt-in read-only dashboard on a real local server › SSR totals match PostgreSQL; filters, CSV, responsive tables and accessibility work
+  ok 5 tests\e2e\security.spec.ts:3:1 › production validation respects CSP without eval probes (420ms)
+  ok 6 tests\e2e\security.spec.ts:18:1 › brand favicon is available (16ms)
+
+  2 skipped
+  4 passed (1.4s)

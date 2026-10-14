@@ -1,5 +1,11 @@
 # Poctivé použití AI
 
+## Codex — nezávislý finální audit (14. října 2026)
+
+Uživatel dodal execution zadání auditu. Codex sám, bez subagentů, nově ověřil repo/deployment/primární zdroje, testy a skutečný production DB/report funnel. Produkční testovací zápis byl proveden až po aktuálním výslovném povolení, vlastní data odstraněna a readback ověřen. Opravil doloženou import-order CSP regresi, zastaralou event assertion, změřený demo mobile spacing a reportový popisek značky. Neprovedl push/deploy ani změnu secrets. Důkazy, otevřené provozní/legal blokery a skutečné počáteční neúspěchy jsou v FINAL_AUDIT/TESTING. Jeden patch s chybnou kotvou do dokumentu byl odmítnut beze změny a znovu aplikován s přesnými kotvami. Automatická kontrola jednou odmítla shellový restart lokální repliky s pouhým „blocked by policy“; běžné spuštění z explicitního privátního env souboru následně prošlo, bez změny produkce.
+
+`ai-log/codex-2026-10-14-final-audit.jsonl` zachovává skutečné nezměněné user/assistant message response_item z runtime této session. Jde o dílčí snapshot, bez reasoning, tool calls/outputs a pozdějších dosud neuložených zpráv. Nejde o rekonstruované výsledky ani Claude export.
+
 ## Nástroj a rozsah
 
 Použit Hermes Agent (Nous Research), v této konverzaci s modelem uvedeným runtime jako gpt-6.1-sol / openai-codex. AI pomohla s discovery, českým product copy, interpretací zdrojů, architekturou a implementací/testy. Dvě skutečné delegované workstreams řeší backend a frontend; parent ověřuje jejich self-reports vlastním čtením a spuštěním. Nejde o Claude Code session a nevydáváme výstupy za jeho logy.

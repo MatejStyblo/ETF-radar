@@ -1,0 +1,16 @@
+
+> etf-radar@0.1.0 test:integration
+> vitest run tests/integration
+
+
+ RUN  v5.0.3 C:/Users/Uživatel/Desktop/projekty/ETF-radar
+
+
+ Test Files  4 passed (4)
+      Tests  42 passed (42)
+   Start at  13:46:09
+   Duration  3.77s (tests 73%, import 22%, transform 5%, worker 1%)
+
+    Isolate  4 workers spawned · ~114ms startup each (spawn + environment, per file)
+             at least ~342ms faster with isolate: false — reuses workers across files instead of one per file
+

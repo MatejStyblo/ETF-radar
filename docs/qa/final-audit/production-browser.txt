@@ -1,0 +1,71 @@
+{
+  "checks": 30,
+  "failures": [
+    {
+      "name": "375: first-screen interaction",
+      "status": "FAIL",
+      "message": "initial input ends at 864.53125px"
+    },
+    {
+      "name": "financial default",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   '1 472 224 Kč',\n+   '1 448 323 Kč'\n-   '1 472 224 Kč',\n-   '1 448 323 Kč'\n  ]\n"
+    },
+    {
+      "name": "financial zero initial",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   '1 209 772 Kč',\n+   '1 192 384 Kč'\n-   '1 209 772 Kč',\n-   '1 192 384 Kč'\n  ]\n"
+    },
+    {
+      "name": "financial zero monthly",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   '262 453 Kč',\n+   '255 939 Kč'\n-   '262 453 Kč',\n-   '255 939 Kč'\n  ]\n"
+    },
+    {
+      "name": "financial zero investments",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   '0 Kč',\n+   '0 Kč'\n-   '0 Kč',\n-   '0 Kč'\n  ]\n"
+    },
+    {
+      "name": "financial zero growth",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   '815 021 Kč',\n+   '803 697 Kč'\n-   '815 021 Kč',\n-   '803 697 Kč'\n  ]\n"
+    },
+    {
+      "name": "financial negative growth",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   '102 284 Kč',\n+   '101 931 Kč'\n-   '102 284 Kč',\n-   '101 931 Kč'\n  ]\n"
+    },
+    {
+      "name": "financial max horizon",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   '8 681 269 Kč',\n+   '8 296 460 Kč'\n-   '8 681 269 Kč',\n-   '8 296 460 Kč'\n  ]\n"
+    },
+    {
+      "name": "financial decimal comma",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   '1 634 726 Kč',\n+   '1 607 271 Kč'\n-   '1 634 726 Kč',\n-   '1 607 271 Kč'\n  ]\n"
+    },
+    {
+      "name": "SPY / IVV independent result",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   '1 464 558 Kč',\n+   '1 476 942 Kč'\n-   '1 464 558 Kč',\n-   '1 476 942 Kč'\n  ]\n"
+    },
+    {
+      "name": "390: first-screen interaction",
+      "status": "FAIL",
+      "message": "initial input ends at 814.34375px"
+    },
+    {
+      "name": "768: first-screen interaction",
+      "status": "FAIL",
+      "message": "initial input ends at 898.71875px"
+    },
+    {
+      "name": "1440: first-screen interaction",
+      "status": "FAIL",
+      "message": "initial input ends at 1045.046875px"
+    }
+  ],
+  "output": "docs/qa/final-audit/production-browser"
+}

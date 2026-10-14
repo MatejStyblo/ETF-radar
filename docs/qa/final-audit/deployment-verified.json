@@ -1,0 +1,10 @@
+{
+  "http": 200,
+  "status": "READY",
+  "id": "dpl_EB618uVzbtYGZrvSYRG9U5ep4ZBu",
+  "target": "production",
+  "source": "git",
+  "commit": "b0aa48a2bfe5ffa6e6524ce23985ac26c066cc5f",
+  "branch": "devel",
+  "url": "etf-radar-f768fd34g-matejstyblos-projects.vercel.app"
+}

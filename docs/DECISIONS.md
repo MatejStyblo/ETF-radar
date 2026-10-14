@@ -1,5 +1,9 @@
 # ETF Radar — rozhodnutí a předpoklady
 
+## D22 — Nezávislý audit a omezené opravy (14. října 2026)
+
+Nový audit nebere staré výsledky jako důkaz. Produkční syntetický zápis byl proveden až po výslovném souhlasu v aktuálním chatu; cleanup používá pouze přesná vlastní ID a ověřuje nulu. Lokální/produkční důkazy zůstávají oddělené. Runtime Zod konfigurace patří před všechny object schemas, protože acquisition může být vyhodnocena před hlavním schema modulem. Report zobrazuje značku jako „Značka / poskytovatel“, nikoli právní emitent. Kompaktní demo spacing opravuje změřenou mobilní polohu vstupu, bez odstranění pravdivého varování. Nic se automaticky nenasazuje. Detailní metodika, závady a retesty: [FINAL_AUDIT](FINAL_AUDIT.md).
+
 **Aktuální revize 13. října 2026:** D18 níže nahrazuje původní výběr v D02 a pracovní interpretaci NYSE-family v D03. Původní rozhodnutí ponechána jako historický kontext, nikoliv aktuální scope.
 
 Datum: 9. října 2026. Stav rozhodnutí: navržené pro implementaci, není-li uvedeno jinak. Výchozí specifikace: přečtený nadřazený `AGENTS.md`, přiložené zadání a příkaz `/plan`. Akceptační důkazy a pořadí práce jsou v `PLAN.md`.
