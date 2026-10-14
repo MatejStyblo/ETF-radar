@@ -1,5 +1,9 @@
 # ETF Radar — rozhodnutí a předpoklady
 
+## D28 — Funkční reportový tok v uživatelově lokálním náhledu (14. října 2026)
+
+Uživatel upozornil na deaktivované tlačítko získání reportu. Příčina byla procesová LEADS_ENABLED=false ponechaná při vizuálním preview, nikoli emailová validace nebo chyba tlačítka. Náhled3140 nyní používá oddělenou lokální DB `etf_radar_preview`, migrace001–005, přesný loopback origin a vlastní stabilní secrets v ignorovaném `.vercel/local-preview.env`. Restart přes `node .vercel/run-preview.mjs` načte tuto konfiguraci. Společný backend gate nebyl obcházen ani změněn. Existující DB kontakty nebyly kopírovány, produkce se nemění.
+
 ## D27 — Odstranění horního testovacího upozornění (14. října 2026)
 
 Na výslovný požadavek uživatele bylo ze společného layoutu odstraněno horní testovací upozornění na všech stránkách. Odstraněny také jeho nepoužívané CSS větve a DEMO_MODE z příkladu env. Historické auditové důkazy zůstávají záznamem tehdejšího stavu. Produkční secrets/config ani právní a provozní informace stránky soukromí nebyly změněny. Změna je lokální, bez push/deploymentu.

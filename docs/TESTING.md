@@ -1,5 +1,9 @@
 # Ověřování — průběžný záznam
 
+## Zprovoznění tlačítka v lokálním náhledu — 14. října 2026
+
+Lokální Chromium bez route interception na port3140 nově ověřil enabled tlačítko, prázdný email → přístupnou validační chybu, validní unikátní syntetický email → HTTP200, PostgreSQL readback jednoho lead/receipt/report, navigaci na report a download200 bez emailu v HTML. Přesný vlastní testovací lead/report/receipt/throttle odstraněn, cizí preview data zachována. Proces byl přepnut ze záměrně vypnutého capture na vlastní oddělenou lokální DB. První launcher `node --env-file ... next dev` narazil na Next child-process NODE_OPTIONS omezení; následný lokální wrapper načítající env před spuštěním child CLI běží správně. Žádný source-code bypass, push nebo deployment.
+
 ## Odstranění horního upozornění — 14. října 2026
 
 Skutečný lokální Chromium ověřil nepřítomnost `.demo-notice` na `/`, `/privacy`, `/report` a `/dashboard/login` i přesto, že proces původního náhledu měl DEMO_MODE nastavený. Layout již tuto proměnnou nečte. Typecheck/lint/build jsou ověřeny v tomto kroku. Opt-in deployment test assertion byla aktualizována na nepřítomnost banneru; žádný produkční write test ani deployment nebyl pro tuto vizuální změnu spuštěn.
