@@ -115,3 +115,7 @@ Na žádost uživatele odstraněn odstavec s listingy a dostupností/KID pod vst
 ## Zkrácení popisku grafu — 14. října 2026
 
 Na žádost uživatele odstraněn vysvětlující odstavec pod grafem. Křivky, přepínač pohledu, posuvník, hodnoty a přístupný SVG popis zůstávají. Výpočet a modelové předpoklady v metodice se nemění.
+
+## Zkrácení úvodu metodiky — 14. října 2026
+
+Na žádost uživatele odstraněn eyebrow, nadpis a úvodní odstavec sekce metodiky. Rozbalovací přesný výpočet zůstává na stejném anchoru pro odkaz Jak počítáme; sekce má přístupný název bez nového viditelného textu. Výpočet, zdroje a report se nemění.
