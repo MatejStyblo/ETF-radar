@@ -104,7 +104,15 @@ test.describe('opt-in real local production funnel (no interception)', () => {
           expect([...new Set(stored.map(row => row.name))].sort()).toEqual([...required].sort());
           expect(stored.filter(row => row.source === 'server')).toEqual([expect.objectContaining({ name: 'lead_submit_success', event_id: attemptId, is_new_lead: true })]);
           for (const event of stored) expect(Object.keys(event).sort()).toEqual(['event_id','source','session_id','name','ad_variant','is_new_lead','schema_version','created_at','etf_ids'].sort());
-          for (const event of events) expect(Object.keys(event).sort()).toEqual((event.name === 'etf_selected' ? ['eventId','name','adVariant','consent','etfIds'] : ['eventId','name','adVariant','consent']).sort());
+          for (const event of events) {
+            const keys = ['eventId','name','adVariant','consent'];
+            if (event.name === 'etf_selected') keys.push('etfIds');
+            if (event.name === 'landing_view') {
+              keys.push('acquisition');
+              expect(event).toHaveProperty('acquisition', { utm_source: 'qa', utm_medium: 'browser', utm_campaign: run, utm_content: 'live_funnel' });
+            }
+            expect(Object.keys(event).sort()).toEqual(keys.sort());
+          }
           if(!primary) expect(stored.filter(event => event.name === 'etf_selected').at(-1)?.etf_ids).toEqual(pair);
           if(!primary) expect(events.filter(event => event.name === 'etf_selected').at(-1)?.etfIds).toEqual(pair);
           expect(JSON.stringify(stored)).not.toContain(email);

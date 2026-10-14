@@ -1,7 +1,7 @@
 import 'server-only';
 import { randomUUID } from 'node:crypto';
 import { acquisitionSchema } from '@/lib/analytics/acquisition';
-import { z } from 'zod';
+import { z } from '@/lib/validation/zod';
 import { etfPairSchema } from '@/lib/validation/schemas';
 import { getPool } from './pool';
 import { HttpError } from '@/lib/security/http';

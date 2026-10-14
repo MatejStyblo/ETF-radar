@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from '@/lib/validation/zod';
 
 const campaign = z.string().max(64).regex(/^[a-zA-Z0-9_-]*$/);
 export const acquisitionSchema = z.object({

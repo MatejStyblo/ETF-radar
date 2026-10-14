@@ -12,7 +12,7 @@ export function renderReportHtml(report: PersonalReport): string {
   const [pa, pb] = report.selected;
   const indexWarning = indexComparisonWarning(report.etfs);
   const details: [string, string, string][] = [
-    ["Název", a.name, b.name], ["Emitent", a.issuer, b.issuer], ["ISIN", a.isin ?? unknown, b.isin ?? unknown],
+    ["Název", a.name, b.name], ["Značka / poskytovatel", a.issuer, b.issuer], ["ISIN", a.isin ?? unknown, b.isin ?? unknown],
     ["Index", a.index, b.index], ["Průběžný roční náklad", `${percent(a.chargePct)} (${a.chargeLabel})`, `${percent(b.chargePct)} (${b.chargeLabel})`],
     ["Přesný listing", a.exchange, b.exchange], ["Obchodní měna", a.tradingCurrency, b.tradingCurrency],
     ["Měna share class", a.shareClassCurrency ?? unknown, b.shareClassCurrency ?? unknown],

@@ -1,7 +1,7 @@
 import type {Etf} from '@/data/etfs';
 import {percent} from '@/lib/format';
 const attributes:{label:string;value:(fund:Etf)=>string}[]=[
- {label:'Celý název',value:f=>f.name},{label:'Emitent',value:f=>f.issuer},{label:'ISIN',value:f=>f.isin??'neověřeno'},
+ {label:'Celý název',value:f=>f.name},{label:'Značka / poskytovatel',value:f=>f.issuer},{label:'ISIN',value:f=>f.isin??'neověřeno'},
  {label:'Sledovaný index',value:f=>f.index},{label:'Průběžný náklad',value:f=>`${percent(f.chargePct)} · ${f.chargeLabel}`},
  {label:'Konkrétní burza',value:f=>f.exchange},{label:'Obchodní měna',value:f=>f.tradingCurrency},
  {label:'Měna třídy',value:f=>f.shareClassCurrency??'neověřeno'},{label:'Domicil',value:f=>f.domicile??'neověřeno'},

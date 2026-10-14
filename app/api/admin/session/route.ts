@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
+import { z } from '@/lib/validation/zod';
 import { dashboardLoginAvailable, verifyDashboardKey, createDashboardSession, dashboardCookie } from '@/lib/dashboard/auth';
 import { getPool } from '@/lib/db/pool';
 import { readJson, HttpError } from '@/lib/security/http';

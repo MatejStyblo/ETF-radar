@@ -2,7 +2,7 @@
 import { useRef,useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { z } from '@/lib/validation/zod';
 import {track,trackOnce,measurementConsent} from '@/lib/analytics/client';
 import { useRouter } from 'next/navigation';
 import type { Scenario } from '@/lib/calculations/project';

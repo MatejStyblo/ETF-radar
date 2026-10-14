@@ -2,6 +2,7 @@ export const ETF_IDS = ["stxf", "stxg", "spy", "ivv", "cspx"] as const;
 export type EtfId = (typeof ETF_IDS)[number];
 export const DEFAULT_ETF_PAIR: [EtfId, EtfId] = ["stxf", "stxg"];
 export type Etf = {
+  // `issuer` is the provider/brand label, not a verified legal issuing entity.
   id: EtfId; ticker: string; name: string; issuer: string; isin: string | null;
   index: string; indexNote?: string; sourceUrls?: readonly string[]; chargePct: number; chargeLabel: string; exchange: string;
   tradingCurrency: string; shareClassCurrency: string | null; domicile: string | null;
