@@ -119,3 +119,9 @@ Na žádost uživatele odstraněn vysvětlující odstavec pod grafem. Křivky, 
 ## Zkrácení úvodu metodiky — 14. října 2026
 
 Na žádost uživatele odstraněn eyebrow, nadpis a úvodní odstavec sekce metodiky. Rozbalovací přesný výpočet zůstává na stejném anchoru pro odkaz Jak počítáme; sekce má přístupný název bez nového viditelného textu. Výpočet, zdroje a report se nemění.
+
+## Pouze vertikální posun stránky — 14. října 2026
+
+Na žádost uživatele root stránky na obrazovce omezuje horizontální overflow pomocí clip (fallback hidden), horizontální overscroll a povoluje vertikální touch pan i pinch zoom. Pravidla nejsou součástí print stylu. Regresní kontrola vloží záměrně příliš široký element a ověří nulový scrollX a funkční scrollY; existující grafové testy kontrolují přepínače, posuvník a výběr roku.
+
+Doplnění kontroly: první clipping varianta nestačila na absolutně umístěný testovací prvek; body dostalo position:relative. Po opravě oba browser enginy splnily behavior test. Dva starší WebKit testy měly timing problém před hydratací; před zadáním vstupů ověří skutečnou reakci přepínače grafu. Finální frontend/chart běhy: 12 Chromium + 12 WebKit PASS, bez přepisování prvních selhání na úspěch.

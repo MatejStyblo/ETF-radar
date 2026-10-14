@@ -10,6 +10,9 @@
 .cookie-settings { display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
 @media print { .cookie-settings { display: none; } }
 @media screen {
+  html, body { max-width: 100%; overflow-x: clip; overscroll-behavior-x: none; touch-action: pan-y pinch-zoom; }
+  body { position: relative; }
+  @supports not (overflow-x: clip) { html, body { overflow-x: hidden; } }
   :root {
     color-scheme: dark;
     --canvas: #080d15;
@@ -144,7 +147,6 @@
   .intro h1 { font-size: 30px; }
 }
 @media screen and (max-width: 700px) {
-  html { overscroll-behavior-x: none; }
   .fund select, #lead-email { font-size: 16px; }
   body:has(.mobile-bottom-nav) { --mobile-nav-height: 66px; --mobile-nav-bottom: max(5px, env(safe-area-inset-bottom, 0px)); --mobile-nav-space: calc(var(--mobile-nav-height) + var(--mobile-nav-bottom) + 8px); padding-bottom: var(--mobile-nav-space); }
   body:has(.mobile-bottom-nav):has(.cookie-banner) { padding-bottom: calc(var(--cookie-banner-height, 240px) + var(--mobile-nav-space) + 24px); }

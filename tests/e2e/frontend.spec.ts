@@ -7,6 +7,8 @@ test('ad B matches both headline and comparison action', async ({page})=>{
 });
 test('invalid inputs hide old result and decimal comma is accepted',async({page})=>{
  await page.goto('/');
+ await page.getByRole('button',{name:'Dopad nákladů',exact:true}).click();
+ await expect(page.getByRole('button',{name:'Dopad nákladů',exact:true})).toHaveAttribute('aria-pressed','true');
  await page.getByLabel('Investiční horizont').fill('0');
  await expect(page.getByTestId('model-difference')).toHaveCount(0);
  await expect(page.getByRole('status').filter({hasText:'Nejdřív upravte vstupy'})).toBeVisible();
@@ -47,6 +49,13 @@ test('mobile fund and email controls remain readable when focused',async({page})
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
  }
 });
+test('page blocks horizontal overflow while preserving vertical scrolling',async({page})=>{
+ await page.setViewportSize({width:375,height:812});await page.goto('/');
+ await page.evaluate(()=>{const probe=document.createElement('div');probe.id='overflow-probe';probe.style.cssText='position:absolute;top:0;left:0;width:200vw;height:1px;pointer-events:none';document.body.append(probe);window.scrollTo({left:500,top:300,behavior:'instant'});});
+ await expect.poll(()=>page.evaluate(()=>window.scrollX)).toBe(0);
+ await expect.poll(()=>page.evaluate(()=>window.scrollY)).toBeGreaterThan(0);
+ await page.evaluate(()=>document.querySelector('#overflow-probe')?.remove());
+});
 test('large valid scenario remains within mobile viewport',async({page})=>{
  await page.setViewportSize({width:375,height:812});await page.goto('/');
  await page.getByLabel('Počáteční vklad').fill('100000000');
@@ -58,6 +67,8 @@ test('large valid scenario remains within mobile viewport',async({page})=>{
 });
 test('public comparison shows real funds and recalculates without email', async ({ page }) => {
   await page.goto('/');
+  await page.getByRole('button',{name:'Dopad nákladů',exact:true}).click();
+  await expect(page.getByRole('button',{name:'Dopad nákladů',exact:true})).toHaveAttribute('aria-pressed','true');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Malý roční poplatek. Jaký rozdíl udělá za 20 let?');
   await expect(page.getByLabel('První ETF')).toHaveValue('stxf');
   await expect(page.getByLabel('Druhé ETF')).toHaveValue('stxg');
