@@ -216,3 +216,7 @@ Před deploymentem **95 unit / 42 PostgreSQL integration**, typecheck a lint pro
 První deployment dostal skutečný alias odlišný od plánovaného, proto APP_ORIGIN upraven a aplikace nasazena znovu. První smoke prošel přes uložení/report/login/export, ale odhlášení skončilo 403: navigační form POST při no-referrer politice neposlal očekávaný Origin. Opraveno na same-origin fetch s ponechanou přísnou kontrolou Origin, nikoli oslabením guardu. Následný finální build a opakovaný celý smoke prošly. Dřívější neúspěch není vynechán.
 
 Cloudové npm ci hlásí 5 high dev dependency findings, stejně jako lokální původní audit; není to tvrzení o čistém kompletním dependency auditu. Nové Lighthouse skóre nebylo měřeno. Appka je veřejné testovací demo s upozorněním na syntetické emaily; nejde o produkční právní schválení nebo spuštěnou kampaň.
+
+## Git automatické deploymenty z devel — 14. října 2026
+
+Před změnou GitHub obsahoval jen main. Vytvořena devel z ověřeného aktuálního HEAD a pushnuta bez force; main nebyla přepsána. První push ccb9520 prokazatelně spustil Git deployment, ale ještě preview, protože uložení produkční větve se dokončilo až po založení vzdálené devel. Následně UI potvrdilo „Branch tracking saved“ a nezávislý GET /v9/projects/etf-radar vrátil link.productionBranch=devel. Další dokumentační commit ověří skutečný production Git build; finální evidence bude doplněna po doběhu.
