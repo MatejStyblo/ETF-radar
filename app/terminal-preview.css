@@ -1,5 +1,12 @@
 /* Local design iteration based on the user's dark financial terminal reference. */
 .mobile-bottom-nav { display: none; }
+.report-preview { margin: 18px 0; padding: 16px; border: 1px solid var(--line); border-radius: 6px; background: var(--soft-blue); }
+.report-preview table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+.report-preview caption { padding: 10px 0; text-align: left; color: var(--muted); font-size: 12px; }
+.report-preview th, .report-preview td { padding: 8px 0; border-bottom: 1px solid var(--line); text-align: left; }
+.report-preview td, .report-preview thead th:last-child { text-align: right; }
+.report-preview .hint { margin-top: 12px; }
+.preview-checklist { margin: 12px 0 0; font-size: 12px; line-height: 1.6; }
 .cookie-settings { display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
 @media print { .cookie-settings { display: none; } }
 @media screen {

@@ -212,3 +212,7 @@ Uživatel výslovně požaduje automatickou aktualizaci veřejného webu při pu
 ## D23 — Nepřihlášený dashboard vede na login
 
 Přímý /dashboard na správném HTTPS hostu nyní vrací redirect na /dashboard/login, pokud je remote přihlášení dostupné a chybí session. Původní 404 byla pro správce matoucí. Změna neodkrývá kontakty: redirect předchází filtru/DB čtení a export bez session zůstává 404. Vypnutý režim/cizí host se neoznamují přesměrováním.
+
+## D19 — finální výběrové demo
+
+14. října 2026 uživatel potvrdil testovací účel s realistickým profesionálním vzhledem. Výchozí GitHub větev je devel, stejně jako Vercel production branch. Úvodní velké testovací bannery nejsou potřeba; stručné upozornění se zobrazí v místě zadání emailu a technické chování je vysvětleno v soukromí. Nenahrazujeme test@example.invalid fiktivním kontaktem a nespouštíme skutečné rozesílání. Náhled reportu používá buildReport, aby odpovídal skutečnému doručenému PDF. Reklamy jsou hotové PNG/SVG návrhy se skutečným screenshotem srovnání; žádný koncept není spuštěná kampaň.

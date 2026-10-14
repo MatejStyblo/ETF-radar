@@ -1,6 +1,17 @@
 # Dvě české reklamní varianty
 
-Stav: připravené reklamní koncepty, žádná kampaň neběžela, žádný rozpočet nebyl utracen. Vyžadují finální legal/data QA a nakonfigurovaný production lead tok.
+Stav: dva hotové reklamní návrhy v PNG a editovatelném SVG, 1080 × 1350 px. Žádná kampaň neběžela a žádný rozpočet nebyl utracen. Landing a ukládání jsou nasazené jako výběrové demo; skutečná kampaň vyžaduje provozní/privacy připravenost.
+
+| Varianta | PNG pro předání | Editovatelný zdroj | Landing |
+| --- | --- | --- | --- |
+| A — náklady | [ad-a.png](ads/ad-a.png) | [ad-a.svg](ads/ad-a.svg) | [Otevřít A](https://etf-radar-dun.vercel.app/?ad_variant=a&utm_source=meta&utm_medium=paid_social&utm_campaign=costs_v1&utm_content=tool_a) |
+| B — orientace | [ad-b.png](ads/ad-b.png) | [ad-b.svg](ads/ad-b.svg) | [Otevřít B](https://etf-radar-dun.vercel.app/?ad_variant=b&utm_source=meta&utm_medium=paid_social&utm_campaign=compare_v1&utm_content=tool_b) |
+
+Obě grafiky obsahují screenshot skutečného srovnání STXF/STXG z lokálního produkčního buildu. Generátor `scripts/generate-ads.mjs` pořídí nový screenshot a exportuje oba formáty (`ADS_ORIGIN` musí ukazovat na běžící aplikaci). Finanční sazby se berou z vykresleného katalogu, ne z ručně zadaných reklamních čísel. Jedná se o verzi katalogu 2026-10-13.1. Viditelné upozornění odděluje model od předpovědi; před reálným použitím sazby znovu ověřit.
+
+![Varianta A](ads/ad-a.png)
+
+![Varianta B](ads/ad-b.png)
 
 ## A — Náklady, které se projeví v čase
 
@@ -25,7 +36,7 @@ Stav: připravené reklamní koncepty, žádná kampaň neběžela, žádný roz
 
 ## Společná nabídka po výsledku
 
-„Jedno číslo není celý příběh. Získejte své ETF srovnání pro 5 až 30 let — včetně rozdílů fondů a checklistu před nákupem.“ CTA „Získat moje srovnání“.
+„Jedno číslo není celý příběh. Získejte své ETF srovnání pro 5, 10, 20 a 30 let — včetně rozdílů fondů a checklistu před nákupem.“ CTA „Získat moje srovnání“. Před emailovým polem je skutečný náhled zvoleného scénáře, vypočtený stejným buildReport jako výsledný report.
 
 Report otevřete a stáhnete ihned po zadání emailu. Neposílá se emailem; marketing je volitelný, oddělený a předem nezaškrtnutý. PDF i HTML jsou skutečně vytvořené soubory ke stažení; tisk zůstává vedlejší možnost.
 

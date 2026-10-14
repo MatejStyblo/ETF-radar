@@ -294,3 +294,7 @@ Uživatel narazil na 404 na veřejném /dashboard. Příčinou je záměrný aut
 ## Heslo dashboardu — 14. října 2026
 
 Uživatel výslovně zvolil vlastní krátké heslo pro testovací demo. Přidat salted scrypt hash při zachování kompatibility původních generovaných klíčů, aktualizovat server env a lokální předání, přejmenovat pole na Heslo. Zachovat rate limit, origin guard a zabezpečenou cookie. Ověřit unit a build, pushnout do devel a skutečně ověřit přihlášení po automatickém deploymentu. Heslo se nevkládá do klientského bundle ani zdrojových souborů.
+
+## Finální odevzdání — 14. října 2026
+
+Uživatel povolil dokončit navržené úpravy a nastavit devel jako výchozí větev. Následně upřesnil, že vše má zůstat testovací s profesionálním vzhledem. Rozsah: nastavit GitHub default branch; sjednotit README a aktuální web; skutečný propojený náhled reportu; dvě exportované reklamní grafiky; pravdivé demo soukromí bez fiktivního kontaktu; skutečné runtime exporty; lint/typy/unit/integrace/build/browser a Git deployment s ověřením DB/PDF. Neaktivovat placený hosting, marketing ani komerční sběr; neinstalovat produkční cron bez provozní potřeby. Výsledky budou v HANDOFF.md. Archivovaný README zachová historické důkazy odděleně od aktuálního přehledu.

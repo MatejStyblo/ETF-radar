@@ -54,3 +54,7 @@ Před release a následně navrženě měsíčně otevřít issuer dokumenty, zk
 [4] https://finance.ec.europa.eu/consumer-finance-and-payments/retail-financial-services/key-information-documents-packaged-retail-and-insurance-based-investment-products-priips_en
 [6] https://www.nyse.com/regulation/exchange-traded-products
 [7] https://www.nyse.com/products/exchange-traded-products/exchange-traded-funds
+
+## Kontrola zdrojů před odevzdáním — 14. října 2026
+
+Znovu otevřeny oficiální emitentské stránky STXF, STXG, SPY, IVV a CSPX. U hlavní dvojice stránka emitenta nadále uvádí Primary Exchange NYSE a Expense Ratio 0,0545 % / 0,18 %. Základní sazby referencí zkontrolovány proti příslušným stránkám. Tato kontrola nenahrazuje broker-specific KID/dostupnost a nevydává celý katalog za znovu ověřený live dataset; původní datované snapshoty a DATA_VERSION zůstávají zachované.

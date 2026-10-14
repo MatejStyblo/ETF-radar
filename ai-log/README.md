@@ -18,3 +18,7 @@ Postup a současné omezení viz `docs/AI_USAGE.md`. Snapshot nezahrnuje zprávy
 `codex-2026-10-14-devel.jsonl`: dílčí skutečné runtime user/assistant message záznamy od požadavku na push → deployment z devel. Neobsahuje tool calls/outputs ani reasoning; aktivní závěrečný turn nemusí být úplný. Není rekonstruovaný přepis.
 
 `codex-2026-10-14-dashboard-login.jsonl`: skutečné dílčí runtime message záznamy od hlášení 404 na dashboardu. Uživatelské/asistentské zprávy bez tool calls, výstupů a reasoning; aktuální závěrečná odpověď nemusí být v snapshotu.
+
+## Finální exporty pro odevzdání (14. října 2026)
+
+`codex-2026-10-14-handoff.jsonl` obsahuje skutečné user/assistant response_item zprávy aktuální session 01a13b43-ef44-7791-a9e4-f16c049ce581. `codex-2026-10-14-final-followup.jsonl` doplňuje dostupné navazující zprávy session 01a13a39-aee7-7552-96eb-e49658af6d57 od posledního dostupného uživatelského požadavku obsahujícího PDF. Záznamy jsou přímo vybrané z lokálních rollout souborů, bez přepisování textu. Vynechány system/developer instrukce, reasoning, tool calls/outputs a celé zprávy se slovy heslo/password/přístupový klíč nebo credential patterns; tento konzervativní filtr může vynechat i nesenzitivní zprávy. Aktivní turn je snapshot k času exportu; pozdější závěrečná odpověď nemusí být zahrnuta. Nejde o úplný raw log ani Claude /export. Historické exporty zůstávají oddělené. Tajemství jsou mimo verzovaný obsah.

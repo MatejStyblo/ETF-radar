@@ -1,267 +1,150 @@
 # ETF Radar
 
-**Nezávislý audit 14. října 2026:** skutečný produkční formulář → PostgreSQL → report/download ověřen se souhlasem i bez něj, vlastní syntetická data uklizena. Komerční kampaň zatím **NO-GO** kvůli testovací privacy/provozní připravenosti a Hobby hostingu. Aktuální důkazy, lokální opravy, nové testy a přesný ověřený deployment jsou v [FINAL_AUDIT](docs/FINAL_AUDIT.md); starší výsledky níže jsou historické.
+Česká mobilní landing page pro **zadání B — porovnání ETF a získání kontaktu**. Návštěvník nejprve získá vlastní výpočet, potom může uložit testovací email a okamžitě stáhnout osobní PDF. Jde o funkční výběrové demo s reálnou databází, nikoli spuštěnou reklamní kampaň.
 
-**Výhradně testovací projekt pro hiring zadání; nikdy skutečný komerční provoz ani placená kampaň.** Používejte syntetické emaily (například na `example.invalid`), nikoli osobní údaje skutečných návštěvníků.
+- **Web:** [etf-radar-dun.vercel.app](https://etf-radar-dun.vercel.app)
+- **Repozitář:** [MatejStyblo/ETF-radar](https://github.com/MatejStyblo/ETF-radar), výchozí i produkční větev `devel`.
+- **Reklamy:** [texty, cílení a hotové grafiky](docs/ADS.md).
+- **Ověření:** [aktuální závěrečný průchod](docs/HANDOFF.md), [historie testů](docs/TESTING.md).
 
-Český mobilní nástroj pro izolované srovnání průběžných nákladů ETF. Výchozí dvojice STXF/STXG má primární listing na hlavním NYSE, ale sleduje odlišné indexy a strategie. Návštěvník si vybere dva fondy, zadá vlastní modelovou investici a uvidí výsledek **bez registrace a bez souhlasu s měřením**. Až potom může zadat email a získat podrobnější osobní srovnání.
+## Vyzkoušení za dvě minuty
 
-**Aktuální stav k 13. říjnu 2026:** lokální aplikace, PostgreSQL persistence a společný browser → DB → report/download tok jsou ověřené; důkazy a rozsah testů jsou v [TESTING](docs/TESTING.md). K tomuto historickému datu neproběhl externí deployment ani reklamní kampaň. Dne 14. října uživatel následně povolil bezplatný testovací deployment na Vercel; aktuální postup a stav jsou v docs/DEPLOYMENT.md. Uživatelem dodané testovací jméno je přesně **Matěj STýblo**; `test@example.invalid` je úmyslně nefunkční placeholder, nikoli jeho skutečný email. Nejde o produkční právní identitu. Její schválení není úkol nutný k dokončení lokálního dema; nevydáváme demo za veřejný sběr leadů.
+1. Otevřete web, vyberte dva fondy a upravte počáteční vklad, měsíční příspěvek, horizont nebo hypotetický výnos. Souhlas s měřením není nutný.
+2. Prohlédněte výsledek, baseline bez průběžných nákladů a náhled horizontů reportu.
+3. Zadejte **syntetický email**, například `radar@example.invalid`. Marketing je volitelný a předem nezaškrtnutý; demo nic nerozesílá.
+4. Po skutečném databázovém zápisu se otevře report. Stáhněte PDF, HTML nebo použijte tisk. **Report nezasíláme emailem.**
 
-## Vizuální identita
+Dashboard `/dashboard` vyžaduje soukromé heslo správce; přístupové údaje nejsou součástí veřejného repozitáře. Odevzdání ani testování nevyžaduje zadání osobních údajů skutečných návštěvníků.
 
-**Ověřovací běh po změně na hlavní NYSE:** produkční build a 88 unit / 40 integration / 27 enabled browser testů prošly; jedna disabled kontrola byla samostatně ověřena na vypnutém serveru. Nový lokální běh na portu 3103 používá oddělenou `etf_radar_nyse_test`, nikoli původní `etf_radar_test` se dvěma starými testovacími kontakty. Původní kontakty nebyly přeneseny ani odstraněny; nový dashboard zobrazuje novou DB. Přesné podmínky, počáteční selhání a cleanup jsou v [TESTING](docs/TESTING.md#výchozí-fondy-přímo-na-nyse--13-října-2026). Nové výsledky nejsou nasazení ani naměřená reklamní konverze.
+## Produkt a cílová skupina
 
-Od 12. října 2026 stránka používá tmavě modrou, tyrkysovou a bílou. Podle uživatelem dodané obrazové předlohy má desktop velký dvouřádkový nadpis, jemnou grafiku na světlém pozadí a dva samostatné zaoblené panely. Hlavní tlačítko vede přímo ke kalkulačce, modelový rozdíl zvýrazňuje světlý tyrkysový panel. Fondy rozlišují modré a tyrkysové ukazatele s textovými popisky. Interaktivní graf nabízí hodnotu investice i dopad nákladů v čase, baseline bez poplatků a přesné částky po zvolení roku; vychází ze stejného modelu jako kalkulačka. Stejné barvy má formulář, webový i stažený report a soukromí. [Tokeny a rozhodnutí](docs/DECISIONS.md#d13--vizuální-identita-má-podporovat-práci-s-čísly), [ověření](docs/TESTING.md).
+Čeští drobní investoři přibližně 25–45 let přicházející z mobilní reklamy potřebují rychle porozumět rozdílu mezi malou roční sazbou a dlouhodobým dopadem nákladů. Tento segment je pracovní hypotéza, ne výsledek uživatelského výzkumu.
 
-## Pro koho a proč
+ETF Radar porovnává průběžné náklady a vlastnosti fondů, nikoli jejich očekávanou výkonnost. Má umožnit vlastní výpočet během několika okamžiků, bez falešných referencí, garantovaných úspor a nákupních doporučení.
 
-Pracovní cílová skupina ze zadání: čeští retailoví investoři přibližně 25–45 let, přicházející převážně na mobilu z reklamy. Chtějí se orientovat v dlouhodobém investování, ale nemusí znát rozdíl mezi nákladem fondu, nákladem brokera, listingem a měnovou expozicí. Nejde o ověřený výsledek uživatelského výzkumu.
+## Konverzní cesta a pořadí sekcí
 
-Motivace produktu: malé roční procento převést do srozumitelného **hypotetického dopadu v čase**, současně ukázat, že nižší náklad není celé investiční rozhodnutí. Bez doporučení „nejlepšího ETF“, garantovaného výnosu, nákupního tlačítka nebo falešných referencí.
+**Reklama → veřejné srovnání → vlastní scénář → okamžitý výsledek → náhled reportu → email → databáze → report ke stažení.**
 
-Simulovaným obchodním cílem zadání je dobrovolně získaný a skutečně uložený testovací kontakt. Veřejným užitkem je srovnání vlastností fondů, vlastní kalkulace, baseline bez průběžných nákladů, zdroje a vysvětlené limity — ne pouze formulář maskovaný jako kalkulačka.
+1. Kompaktní hero navazuje na reklamní slib; hlavní CTA vede ke kalkulačce.
+2. Výběr fondů ukazuje přesný listing, náklady a rozdíly strategií před formulářem.
+3. Vlastní vstupy dělají výsledek relevantní konkrétnímu návštěvníkovi.
+4. Výsledek a graf okamžitě ukazují zůstatky, baseline a izolovaný dopad nákladů.
+5. Náhled reportu ukáže čísla pro 5, 10, 20 a 30 let ještě před kontaktem. Teprve potom nabídneme plný PDF report: podrobnosti fondů, roční tabulku, zdroje, metodiku a checklist před nákupem.
+6. Metodika a soukromí umožňují kontrolu důvěryhodnosti; hlavní finanční omezení jsou zároveň přímo u výsledků.
 
-## Cesta návštěvníka a lead magnet
+Na desktopu jsou vstupy a výstupy vedle sebe, na mobilu pod sebou. Spodní mobilní navigace usnadňuje návrat mezi sekcemi. Nastavení cookies zůstává v patičce. Profesionální tmavý design používá tyrkysovou jako akční barvu a tabulární čísla; žádná velká hero fotografie neoddaluje produkt.
 
-Reklama → veřejné srovnání → vlastní scénář → modelový výsledek → nabídka podrobného reportu → email → databázový commit → `/report` → PDF ke stažení / HTML / tisk.
+## Dvě reklamy
 
-Report obsahuje vlastní vstupy, detail obou fondů, horizonty 5/10/20/30 let a vlastní horizont, roční tabulku, checklist před nákupem, zdroje a metodiku. Je snapshotem nastavení a katalogu, nikoli živým dokumentem. Email není součástí reportu ani jeho URL.
+[Varianta A](https://etf-radar-dun.vercel.app/?ad_variant=a&utm_source=meta&utm_medium=paid_social&utm_campaign=costs_v1&utm_content=tool_a): **„Malý roční poplatek. Jaký rozdíl udělá za 20 let?“** Motivace: porozumět nákladům v čase.
 
-**Report se nezasílá emailem.** Otevře se ihned po úspěšném uložení a hlavní tlačítko stáhne skutečný samostatný PDF soubor vytvořený serverem z uloženého scénáře. HTML a tisk zůstávají alternativami; SMTP není implementované. PDF používá pdf-lib a lokálně vložené písmo Noto Sans s českou diakritikou a licencí OFL (assets/fonts). Next file tracing zahrnuje obě písma do serverového exportu. Přístup přes HttpOnly cookie platí 24 hodin ve stejném prohlížeči; stažený soubor zůstává návštěvníkovi. Email je jediný povinný kontaktní údaj. Marketingový checkbox je volitelný, nezaškrtnutý a není podmínkou reportu. Vlastnictví emailu se neověřuje. Marketingový checkbox v demu pouze uloží volbu; neprobíhá žádné skutečné rozesílání.
+[Varianta B](https://etf-radar-dun.vercel.app/?ad_variant=b&utm_source=meta&utm_medium=paid_social&utm_campaign=compare_v1&utm_content=tool_b): **„ETF na NYSE nejsou všechna stejná.“** Motivace: snadná orientace ve fondech.
 
-### Proč jsou sekce v tomto pořadí
+Parametr `ad_variant` mění headline i CTA; výpočet a report zůstávají stejné. Kompletní texty, cílení, grafiky a předpoklady jsou v [ADS](docs/ADS.md). Žádná reklama nebyla spuštěna.
 
-Pořadí odpovídá `app/page.tsx` a propojenému `Workspace`, nikoli všem původně navrženým sekcím v plánu:
+## Skutečná data a rozhodnutí o NYSE
 
-1. **Kompaktní hlavička a konkrétní hero:** vysvětlit otázku a zachovat shodu s reklamou; CTA vede ke vstupům, ne rovnou na email.
-2. **Výběr dvou fondů, náklady, listing a dostupnost:** dát první hodnotu a důležité výhrady před sběrem kontaktu.
-3. **Parametry modelu:** návštěvník pracuje s vlastním vkladem, měsíčním příspěvkem, horizontem a hypotetickým výnosem.
-4. **Okamžitý výsledek:** oba zůstatky, baseline a modelový dopad; neplatné vstupy neschováváme za stará čísla.
-5. **Nabídka reportu a formulář:** email až po veřejném užitku, s konkrétním obsahem a pravdivým způsobem plnění. Na desktopu jsou vstupy a výstupy vedle sebe, na mobilu navazují svisle.
-6. **Metodika:** podrobnosti pro kontrolu, přičemž hlavní limity zůstávají i u produktu a reportu.
-7. **Volitelné měření a patička se soukromím:** consent panel není vstupní popup ani podmínka kalkulace. Samostatná FAQ a sticky CTA nejsou v aktuální implementaci.
+Katalog je datovaný snapshot `2026-10-13.1`, nikoli živý feed. [Evidence jednotlivých údajů](docs/DATA_SOURCES.md), [ověření hlavního NYSE](docs/NYSE_VERIFICATION.md).
 
-## Reklamy a shoda s landing page
-
-Kompletní české texty, vizuální koncepty a cílení: [ADS](docs/ADS.md).
-
-- [Varianta A — náklady](./?ad_variant=a&utm_source=meta&utm_medium=paid_social&utm_campaign=costs_v1&utm_content=tool_a): „Malý roční poplatek. Jaký rozdíl udělá za 20 let?“
-- [Varianta B — orientace](./?ad_variant=b&utm_source=meta&utm_medium=paid_social&utm_campaign=compare_v1&utm_content=tool_b): „ETF na NYSE nejsou všechna stejná.“
-
-Jde o relativní URL pro běžící aplikaci, nikoli veřejné deployment adresy. Parametr `ad_variant=b` mění viditelný hero a CTA; jiné hodnoty používají A. Finanční model a nabídka zůstávají stejné. Reklamní CTA A v ADS je „Porovnat náklady“, onsite CTA A je „Spočítat modelový dopad“: význam navazuje, není to doslovně stejný label. Parametrická reklama není randomizovaný onsite experiment.
-
-## Data, zdroje a přesný rozsah NYSE
-
-Katalog v [data/etfs.ts](data/etfs.ts), verze `2026-10-13.1`, doplňuje STXF/STXG podle issuer stránek a factsheetů ověřených 13. října 2026; reference SPY/IVV/CSPX zachovávají svůj původní snapshot z 9. října 2026. Jde o dokumentovaný snapshot, nikoli tvrzení o živých dnešních datech. Primární odkazy a evidence jednotlivých polí jsou v [DATA_SOURCES](docs/DATA_SOURCES.md#primární-evidence).
-
-| Fond | Publikovaná roční sazba v katalogu | Přesný listing | Role a zdroj evidence |
+| Fond | Roční sazba v katalogu | Listing | Role |
 | --- | --- | --- | --- |
-| STXF — Strive 500 ETF | Expense Ratio 0,0545 % | NYSE | Hlavní výběr; [NYSE_VERIFICATION](docs/NYSE_VERIFICATION.md) |
-| STXG — Strive 1000 Growth ETF | Expense Ratio 0,18 % | NYSE | Hlavní výběr; [NYSE_VERIFICATION](docs/NYSE_VERIFICATION.md) |
-| SPY — State Street SPDR S&P 500 ETF Trust | Gross Expense Ratio 0,0945 % | NYSE Arca, USD | Americká reference; DATA_SOURCES, zdroj [1] |
-| IVV — iShares Core S&P 500 ETF | Expense Ratio 0,03 % | NYSE Arca, USD | Americká reference; DATA_SOURCES, zdroj [2] |
-| CSPX — iShares Core S&P 500 UCITS ETF USD (Acc) | TER 0,07 % | London Stock Exchange, USD | Evropský akumulační UCITS doplněk; DATA_SOURCES, zdroj [3] |
+| STXF — Strive 500 ETF | Expense Ratio 0,0545 % | NYSE | Hlavní výběr |
+| STXG — Strive 1000 Growth ETF | Expense Ratio 0,18 % | NYSE | Hlavní výběr |
+| SPY — SPDR S&P 500 ETF Trust | Gross Expense Ratio 0,0945 % | NYSE Arca | Oddělená reference |
+| IVV — iShares Core S&P 500 ETF | Expense Ratio 0,03 % | NYSE Arca | Oddělená reference |
+| CSPX — iShares Core S&P 500 UCITS ETF USD (Acc) | TER 0,07 % | London Stock Exchange | Evropský UCITS doplněk |
 
-**Výchozí STXF/STXG splňují striktní primární listing NYSE.** Volby jsou oddělené jako „NYSE — hlavní výběr“, „NYSE Arca — reference“ a „Evropský UCITS doplněk (LSE)“. SPY/IVV nejsou hlavní NYSE, CSPX na LSE není NYSE-listed. Dřívější pracovní NYSE-family interpretaci D03 nahrazuje novější rozhodnutí D18; staré report snapshoty se nemění. Důkazy listingu, aktuálních tickerů a sazeb: [NYSE_VERIFICATION](docs/NYSE_VERIFICATION.md).
+Zadání výslovně požaduje NYSE, proto výchozí STXF/STXG mají listing na hlavním NYSE. NYSE Arca nezaměňujeme s NYSE; evropský doplněk neoznačujeme jako NYSE fond. Výchozí dvojice sleduje odlišné indexy: Bloomberg US Large Cap a Bloomberg US 1000 Growth Total Return. Srovnání izoluje pouze náklady.
 
-STXF: Bloomberg US Large Cap Index; STXG: Bloomberg US 1000 Growth Total Return Index. Starší prospekt STXF používá název Bloomberg 500 Index; poznámka v katalogu neslibuje nezávisle ověřenou totožnost názvů. Výchozí dvojice není S&P 500 ani stejný index. Stejný modelový hrubý výnos slouží **pouze k izolaci nákladů**, nikoli jako odhad stejného očekávaného výnosu či rizika, porovnání výkonnosti nebo doporučení.
+Zdroje jsou primárně emitentské stránky, factsheety a prospekty; dostupnost u konkrétního českého brokera a příslušný PRIIPs KID nebyly ověřeny. Americké fondy nemusí být českému retailu dostupné. UCITS sám dostupnost nezaručuje. Neověřené AUM a další metadata zůstávají nedostupné místo vymyšlených hodnot. Obchodní měna není měnová expozice.
 
-Dostupnost u konkrétního českého brokera a příslušný KID nejsou ověřeny; ani UCITS není záruka dostupnosti. Kontext PRIIPs má v DATA_SOURCES primární zdroj Evropské komise, nikoli broker-specific potvrzení. Chybějící metadata zůstávají `null`: IVV ISIN, SPY/IVV domicil a měna share class, AUM všech fondů. Obchodní měna není měnová expozice. Rozdílné názvy zveřejněných sazeb nepovažujeme za identické regulatorní definice.
+## Finanční model
 
-Před zveřejněním revalidovat emitentské dokumenty a konkrétní pole; následná měsíční kontrola je provozní návrh, nikoli automatický job. Při změně upravit katalog, datum a `DATA_VERSION`, spustit testy. Staré snapshoty nepřepisovat.
+Čisté testované funkce jsou v `lib/calculations/project.ts`. Pro roční hrubý výnos `r` a roční náklad `c`, obojí jako desetinné sazby:
 
-### Model a hranice výsledku
+```text
+q = ((1 + r) × (1 − c))^(1/12)
+V dalšího měsíce = V × q + měsíční příspěvek
+```
 
-Čistý engine: [lib/calculations/project.ts](lib/calculations/project.ts). Pro desetinný roční hrubý výnos `r` a náklad `c` používá měsíční faktor `q = ((1+r)*(1-c))**(1/12)`; každý měsíc `V = V*q + měsíční příspěvek`. Příspěvek přichází na konci měsíce. Baseline používá `c=0`; její rozdíl proti nákladové variantě zahrnuje také ušlé složené zhodnocení, nikoli jen skutečně stržené poplatky.
+Příspěvky přicházejí na konci měsíce; baseline má `c = 0`. Distribuce jsou hypoteticky reinvestované před zdaněním. Rozdíl proti baseline zahrnuje náklady i ušlé složené zhodnocení. Stejný pevný hrubý výnos neslibuje stejné skutečné výnosy či riziko. Model nezahrnuje daně, broker/FX poplatky, spread, tracking difference, inflaci a kolísání výnosů. Kč jsou modelová jednotka, bez FX předpovědi.
 
-Stejný fixní hrubý výnos pro oba fondy, distribuce hypoteticky plně reinvestované před zdaněním. Bez daní, broker/FX poplatků, spreadu, inflace, tracking difference a proměnlivého výnosu. Kč jsou modelová jednotka, bez FX konverze. Výchozí scénář není doporučení ani forecast. Nasdaq-100, živé ceny a historická performance nejsou součástí aplikace.
+## Analytika a očekávaná konverze
 
-## Měření a konverzní hypotéza
+First-party `/api/events` ukládá allowlisted události do PostgreSQL **až po opt-in**. Měří příchod, CTA, zahájení srovnání, změny ETF/vstupů, výsledky, nabídku, formulář, pokus/úspěch/chybu a zobrazení/stažení reportu. Atribuce zahrnuje validované UTM a variantu reklamy; neposíláme email ani částky investice do analytiky. Úspěch leadu navazuje na databázový commit, nikoli pouze kliknutí. Detail: [ANALYTICS](docs/ANALYTICS.md).
 
-First-party `POST /api/events` ukládá allowlisted události do PostgreSQL až po opt-in. Neposílá raw emaily, hash emailu, částky ani volné properties. Serverový `lead_submit_success` vzniká až po commitu, ale měření je samostatný best-effort zápis: jeho výpadek nesmí zrušit lead. Přesná taxonomie, relace, atribuce, deduplikace, SQL a mezery jsou v [ANALYTICS](docs/ANALYTICS.md).
+Primární metrika: **nové validní uložené leady / způsobilé měřené landing relace stejné kohorty**. Relace končí po 30 minutách neaktivity a není unikátní člověk. Deduplikace eventů používá UUID; kontaktu HMAC emailového klíče; opakovaného odeslání attempt UUID. Validní email znamená syntaktickou validaci, ne ověření identity.
 
-Primární definice: **nové validní uložené leady připsané způsobilým měřeným landing relacím / tyto stejné relace**. Validní zde znamená syntakticky validovaný email a databázový zápis, ne ověřenou identitu či obchodní kvalifikaci. Relace není unikátní člověk. Bez souhlasu lead funguje, ale všechny leady nelze dělit pouze consented návštěvami. SQL má vyloučit revokované a explicitně známé testovací relace; automatická detekce botů ani úplný návštěvnický denominator nejsou implementované.
-
-**2–5 % je pouze plánovací hypotéza**, nikoli benchmark, změřená konverze nebo slib. Předpokládá relevantní cold mobile traffic, shodu reklamy s hero, rychlý funkční produkt a srozumitelný report. Kampaň zatím neběžela; z tohoto rozsahu neodvozujeme CPL ani návratnost. Souhlasový výběr a ztráty eventů mohou výsledek zkreslit.
+**Očekávaných 2–5 % je plánovací hypotéza**, nikoli naměřený výsledek ani externí benchmark. Předpokládá relevantní mobilní publikum, shodu reklamy s hero a funkční report. Kampaň neběžela; CPL ani návratnost neuvádíme. Měřená kohorta nezahrnuje odmítnuté měření; všechny leady nelze dělit pouze consented návštěvami. Boty a testovací relace je před kampaní nutné identifikovat průhlednými pravidly.
 
 ### Tři prioritní A/B hypotézy
 
-Následují návrhy, ne spuštěné experimenty ani změřené uplifty. Každý test mění jeden prvek, se stejnými disclosures a pravdivým „ihned PDF / HTML / tisk, ne emailem“.
+Pořadí je odhad dopadu, nikoli změřený uplift. První hypotéza míří přímo na motivaci ke kontaktu, druhá na začátek práce a třetí na dokončení formuláře.
 
-| Priorita | Hypotéza a varianty | Primární metrika | Guardrails |
-| --- | --- | --- | --- |
-| 1 | Konkrétní „scénáře 5–30 let + checklist“ proti „uložit výsledek“ zvýší motivaci dát email. | Nové unikátní leady / způsobilé měřené landing relace stejné kohorty. | Podíl konvertujících relací s následným report view neklesne; submit errors a přístup k veřejnému výsledku se nezhorší. |
-| 2 | Viditelné selektory na první mobilní obrazovce proti hero s CTA nad produktem zvýší vědomé zahájení srovnání. | Relace s `comparison_started` / způsobilé landing relace. | Primární lead rate neklesne; bez overflow a zhoršení dostupnosti na 375 px. |
-| 3 | Skutečný preview horizontů a checklistu u formuláře proti textovému seznamu zvýší dokončení formuláře. | Relace s committed capture / relace s `lead_form_started`, v téže kohortě. | Submit error sessions nezvýší podíl; report/download použití a mobilní layout se nezhorší. |
+| Priorita | Hypotéza | Primární metrika |
+| --- | --- | --- |
+| 1 | Konkrétní nabídka „scénáře + checklist“ získá více kontaktů než obecné „uložit výsledek“. | Nové leady / způsobilé relace |
+| 2 | Viditelné selektory na první mobilní obrazovce zvýší zahájení oproti hero s CTA nad produktem. | Relace se zahájením / způsobilé relace; lead rate jako guardrail |
+| 3 | Skutečný náhled horizontů zvýší dokončení formuláře proti pouhému seznamu obsahu reportu. | Relace s uložením / relace se zahájením formuláře |
 
-Nejdříve baseline a předem stanovené okno, MDE, vzorek a pravidlo ukončení; bez dodatečného hledání „vítěze“. Aktuální schema nemá experiment ID/exposure ani randomizaci. Tyto testy **nelze nyní spolehlivě vyhodnotit jako onsite randomizované A/B**. `ad_variant` je kampaňový/hero parametr. Report use je pouze session proxy, nikoli přesné přiřazení ke konkrétnímu reportu.
+Současná verze používá konkrétní nabídku a náhled, ale nedokládá tím vítězství experimentu. Před testem stanovit velikost vzorku, okno, MDE a pravidlo ukončení. Randomizace/exposure ID nejsou implementované; reklamní parametr není randomizovaný onsite A/B test. Hlídat chyby, následné použití reportu a přístupnost.
 
-## Technická architektura
+## Architektura a ochrany
 
-- Next.js 16.4.0 App Router, React 19.3.0, strict TypeScript, Tailwind CSS 4; konkrétní verze uzamyká `package-lock.json`, netvrdíme „latest“.
-- Serverový landing shell; client workspace se sdíleným stavem, React Hook Form + Zod a Lucide. Bez ORM, Recharts, shadcn balíčku a email SDK.
-- Node.js API routes: origin/content-type/body-size checks, Zod, honeypot, parametrizované SQL a sdílený DB throttle. Limity nenahrazují ochranu proti distribuovanému spamu.
-- Server-only `pg`, pool maximálně 5 připojení na instanci. Transakce ukládá lead, report a receipt; unikátní HMAC emailový klíč a advisory lock pro attempt chrání duplicity.
-- Normalizace emailu: trim ve schématu, lowercase pouze domény; bez slučování plus/dot aliasů. Duplicate capture nevynucuje nový marketing consent.
-- Report token odvozený HMAC z attempt UUID a serverového secretu, v DB přístupový hash, v prohlížeči HttpOnly/SameSite cookie (Secure pro HTTPS). Token ani email nejsou v URL; report je no-store/noindex.
-- SQL migrace `001.sql` až `005.sql`; tabulky `leads`, `reports`, `submission_receipts`, `rate_limit_buckets`, `analytics_sessions`, `analytics_events`.
-- Vitest unit/integration; Playwright + axe. CSP aktuálně připouští inline scripts/styles; nonce hardening není hotový.
+Next.js 16.4.0 App Router, React 19.3.0, strict TypeScript, Tailwind 4, Lucide, React Hook Form + Zod. Serverový shell a klientská interaktivní workspace. PostgreSQL přes `pg`, migrace 001–005, bez ORM. Serverový PDF export používá `pdf-lib`, `fontkit` a lokální Noto Sans (OFL).
+
+Server validuje vstupy, Origin, Content-Type a velikost těla. Parametrizované SQL, honeypot, DB throttling a transakční deduplikace chrání běžné chyby a zneužití. Report používá HttpOnly/SameSite cookie na 24 hodin, je no-store/noindex a neobsahuje email. Vzdálený dashboard má HTTPS, podepsanou cookie, scrypt hash hesla a sdílený limit přihlášení. Tajemství zůstávají na serveru mimo Git.
 
 ## Lokální spuštění
 
-Ověřené prostředí v TESTING: Node 22.23.1, npm 10.9.8, PostgreSQL 17 přes Docker. Následující postup je pro **nové vlastní lokální prostředí**, ne pokyn přepsat existující kontejner nebo databázi. Příkazy spouštějte z kořene repozitáře. Docker musí běžet a port 55439 být volný.
+Použijte Node **24.x**, npm a vlastní PostgreSQL. Z kořene repozitáře:
 
 ```sh
 npm ci
 cp .env.example .env.local
-# Pouze lokální vývoj: loopback a trust, nikdy veřejný DB server.
-docker run --name etf-radar-postgres \
-  -e POSTGRES_HOST_AUTH_METHOD=trust \
-  -e POSTGRES_DB=etf_radar \
-  -p 127.0.0.1:55439:5432 -d postgres:17
+```
+
+V `.env.local` nastavte `DATABASE_URL`, přesný `APP_ORIGIN`, dvě nezávislá náhodná tajemství alespoň 32 znaků (`LEAD_DEDUPE_SECRET`, `REPORT_TOKEN_SECRET`), testovací `CONTROLLER_NAME`, `PRIVACY_CONTACT` a `LEADS_ENABLED=true`. Nevkládejte tajemství do `NEXT_PUBLIC_*` ani do Gitu. Dashboard je volitelný a má další proměnné popsané v [DEPLOYMENT](docs/DEPLOYMENT.md).
+
+Nový lokální PostgreSQL lze vytvořit pomocí Dockeru; trust režim jen na vlastním loopbacku:
+
+```sh
+docker run --name etf-radar-postgres -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGRES_DB=etf_radar -p 127.0.0.1:55439:5432 -d postgres:17
 docker exec etf-radar-postgres pg_isready -U postgres -d etf_radar
-docker exec etf-radar-postgres createdb -U postgres etf_radar_test
-```
-
-Je-li `pg_isready` ještě neúspěšný, počkejte na readiness a zopakujte jej před `createdb`. Existující kontejner spustíte `docker start etf-radar-postgres`; existující DB znovu nevytvářejte. Trust autentizace patří výhradně na vlastní loopback. Data zůstávají v tomto kontejneru; nemažte jej jako způsob restartu, produkce vyžaduje samostatně zajištěnou trvalou DB a zálohy.
-
-### Prostředí
-
-Upravte ignorovaný `.env.local`, tajemství necommitujte ani nevypisujte do sdílených logů:
-
-| Proměnná | Hodnota / účel |
-| --- | --- |
-| `DATABASE_URL` | Lokálně `postgresql://postgres@127.0.0.1:55439/etf_radar`; pro cizí hosting by byla nutná vlastní TLS DB. |
-| `APP_ORIGIN` | Přesný origin browseru, lokálně `http://localhost:3000`. `localhost` a `127.0.0.1` nezaměňovat. |
-| `LEAD_DEDUPE_SECRET` | Nezávislé náhodné serverové tajemství, alespoň 32 znaků. |
-| `REPORT_TOKEN_SECRET` | Druhé nezávislé náhodné tajemství, alespoň 32 znaků; také podpis analytics cookie. |
-| `CONTROLLER_NAME` | V `.env.example` přesně `Matěj STýblo`, jméno dodané uživatelem pro testovací projekt; není to produkční právní identita. |
-| `PRIVACY_CONTACT` | V `.env.example` `test@example.invalid`, výslovně nefunkční testovací placeholder, ne skutečný kontakt. |
-| `LEADS_ENABLED` | Výchozí `false`. `true` až se všemi předpoklady pro konkrétní prostředí. |
-| `DASHBOARD_ENABLED` | Výchozí vypnuto. Pouze lokálně explicitní `true`; `/dashboard` i CSV navíc vyžadují HTTP loopback `APP_ORIGIN` a přesně odpovídající `Host`. Vzdálený režim navíc potřebuje HTTPS, DASHBOARD_REMOTE_ENABLED a obě auth proměnné. |
-| `TEST_DATABASE_URL` | Uvedená v příkladu, ale **aktuální integration suite ji nečte**; přepisuje `DATABASE_URL` pevnou adresou `etf_radar_test` na portu 55439. |
-
-Pro nově zkopírovaný `.env.local` můžete obě tajemství vyplnit bez jejich výpisu následujícím příkazem. **Nespouštějte jej jako běžný restart**: přegenerování mění deduplikaci i přístup k existujícím reportům. Přepíše pouze tyto dvě položky, DB URL a flag capture si nastavte v editoru zvlášť.
-
-```sh
-node --input-type=module -e 'import {readFileSync,writeFileSync} from "node:fs"; import {randomBytes} from "node:crypto"; const p=".env.local"; let s=readFileSync(p,"utf8"); for(const key of ["LEAD_DEDUPE_SECRET","REPORT_TOKEN_SECRET"]) s=s.replace(new RegExp("^"+key+"=.*$","m"),key+"="+randomBytes(32).toString("hex")); writeFileSync(p,s,{mode:0o600});'
-```
-
-Žádné `NEXT_PUBLIC_*` pro DB nebo secrets. Technický backend gate v `requireConfig()` vyžaduje všechny serverové proměnné včetně zapnutého capture a identity; přítomnost řetězců sama nedokazuje právní správnost. UI gate kontroluje jen flag a identitu, takže formulář může být aktivní při chybějící DB/secrets a API pak poctivě vrátí 503.
-
-### Migrace a server
-
-Next načítá `.env.local`, ale samostatné Node skripty **ne**. Node 22 umí env file načíst explicitně:
-
-```sh
 node --env-file=.env.local scripts/migrate.mjs
-# Tentýž skript přes npm, pokud DATABASE_URL už máte bezpečně exportovanou:
-# npm run db:migrate
-npm run dev -- --hostname localhost --port 3000
+npm run dev
 ```
 
-Otevřete `http://localhost:3000`. Migrační skript spustí všechny `.sql` soubory v lexikálním pořadí v transakci s advisory lockem. Nemá migration ledger; současné migrace jsou opakovatelně aplikovatelné, budoucí migrace musí toto chování respektovat. Neexistuje automatická migrace při startu serveru.
+Nevytvářejte znovu existující kontejner ani databázi. Migrace spouštějte až po readiness. Data jsou v kontejneru; pro dlouhodobý vlastní provoz zajistěte volume a zálohy.
 
-Pro kontrolu produkčního buildu lokálně:
-
-```sh
-npm run build
-npm run start -- --hostname localhost --port 3000
-```
-
-Před změnou portu změňte i `APP_ORIGIN` a restartujte server; UI identity/env ověřte na skutečně běžícím buildu, ne pouze v souboru.
-
-## Lokální přehled skutečných dat
-
-`/dashboard` je server-renderovaný český přehled skutečně uložených PostgreSQL dat, bez simulovaných statistik. Výchozí období je 30 dní; lze zvolit 7/30/90 dní nebo všechna dosud uchovaná data, variantu A/B/všechny a stránku kontaktů. Kontakty mají stránkování po 50, diagnostický výpis nejvýše 100 nejnovějších událostí. Obnovení je obyčejné načtení ze serveru, nikoli optimistická změna čísel. Výpadek DB zobrazí nedostupnost, ne smyšlené nuly.
-
-Povolení je **jen pro vlastní lokální demo**: nastavte `DASHBOARD_ENABLED=true` v lokálním prostředí, `APP_ORIGIN` na přesný HTTP loopback origin a server přivažte na loopback. Například při `APP_ORIGIN=http://127.0.0.1:3103` použijte `npm run start -- --hostname 127.0.0.1 --port 3103` a otevřete `http://127.0.0.1:3103/dashboard`. Změna konfigurace vyžaduje restart; nový kód nejprve produkční rebuild. `localhost` a `127.0.0.1` nejsou zaměnitelné Host hodnoty. Guard vrací 404 ještě před načtením dat; forwardované hlavičky nelze použít jako náhradu lokálního Hostu.
-
-**Samotný lokální gate není veřejná autentizace.** Od 14. října 2026 je pro cloud doplněný oddělený HTTPS režim: `DASHBOARD_REMOTE_ENABLED=true`, hash náhodného přístupového klíče a nezávislý session secret. Bez nich vzdálený dashboard i CSV zůstávají nepřístupné. Přihlášení je na `/dashboard/login`; cookie je HttpOnly/Secure/SameSite=Strict na 8 hodin. Noindex/nofollow a no-referrer samy o sobě nejsou autentizace. Lokální režim se nevystavuje přes tunel ani `0.0.0.0`.
-
-Měřené relace nejsou všichni návštěvníci ani unikátní lidé. Primární karta **Nové kontakty / měřené relace** odpovídá výše uvedené definici nových měřených leadů ve stejné landing kohortě. Při více nových emailech v jedné relaci může tento poměr přesáhnout 100 %. Oddělená **Konverze měřených relací** počítá relace s alespoň jedním úspěšným uložením, včetně opakovaného capture existujícího kontaktu; tato metrika je nejvýše 100 %. Bez měřených landing relací se zobrazí „—“, nikoli vymyšlená konverze. Všechny captures a unikátní kontakty se zobrazují odděleně. Kampaně ukazují pouze uložené captures, ne neexistující campaign conversion rate. Výběry ETF z měřených eventů se nemíchají s dvojicemi ze snapshotů uložených reportů. Nezměněná výchozí dvojice není event výběru. Starší chybějící dvojice, expirované reporty a retence jsou výslovně přiznané; neodvozujeme historii z dnešního katalogu.
-
-Odkaz na `/dashboard/export?range=30&variant=all` exportuje filtrované kontakty do CSV se stejným lokálním guardem; export není veřejné API ani způsob obcházení stránkování v UI. CSV obsahuje emaily a nesmí se publikovat. Přesné definice a hranice jsou v [ANALYTICS](docs/ANALYTICS.md#lokální-dashboard), skutečné kontroly a opt-in příkaz v [TESTING](docs/TESTING.md#lokální-dashboard--10-října-2026).
-
-## Testování a údržba
+## Testování a nasazení
 
 ```sh
-npm run typecheck
 npm run lint
+npm run typecheck
 npm run test
-# Integrace používá pevně oddělenou DB níže, ne .env.local ani TEST_DATABASE_URL.
-DATABASE_URL=postgresql://postgres@127.0.0.1:55439/etf_radar_test npm run db:migrate
-npm run test:integration
-npx playwright install chromium
-# Běžící server musí mít lokální testovací identitu a LEADS_ENABLED=true.
-# Backend pro skutečný happy path navíc vyžaduje všechny env výše.
-PLAYWRIGHT_BASE_URL=http://localhost:3000 npm run test:e2e
 npm run build
 ```
 
-Playwright config **nespouští server**; bez `PLAYWRIGHT_BASE_URL` očekává `http://127.0.0.1:3100`. Integration suite generuje vlastní secrets/test identity a používá vlastní testovací emaily; nesmí mířit na produkci. Browser lead-form scénáře používají intercepted API responses: nepovažujte je samy za důkaz persistence.
+DB integrace používají **pevně oddělenou** `etf_radar_test` na portu 55439; nečtou `TEST_DATABASE_URL`. Vytvořte ji a aplikujte migrace před `npm run test:integration`. Playwright očekává běžící server (`PLAYWRIGHT_BASE_URL`), automaticky ho nespouští. Část UI testů interceptuje API; skutečnou persistenci dokládají samostatné DB/funnel testy. [Přesné výsledky a omezení](docs/HANDOFF.md).
 
-Závěrečné kontroly: typecheck/lint/build prošly, 26 unit a 25 DB integration testů prošlo. Standardní browser suite: 19 prošlo, 2 explicitně opt-in live testy byly přeskočené; při samostatném zapnutí oba skutečné DB/browser testy prošly. Consented funnel uložil přesně 13 událostí včetně reportového `session_start`; bez souhlasu se report doručil s nulou analytických událostí. Testovací řádky byly uklizeny. Mobilní Lighthouse po opravě favicon/CSP: **Performance 99, Accessibility 100, Best Practices 100, SEO 100**, LCP 2,2 s, TBT 60 ms, CLS 0. Jde o konkrétní lokální měření, ne výkon veřejného hostingu; předchozí výsledky 75/97/97 nejsou skryté. Důkazy v [TESTING](docs/TESTING.md) a [QA_FINAL](docs/QA_FINAL.md). Externí deployment nebyl proveden. Starší audit zachytil 0 production findings, ale 5 high dev findings; nejde o aktuální záruku bezchybného dependency auditu.
+Web je nasazen na Vercel Hobby s oddělenou Neon Free DB. Push do `devel` spouští produkční Git build. Migrace se aplikují řízeně samostatně. [Deployment runbook](docs/DEPLOYMENT.md). Bezplatné výběrové demo není spuštěná komerční kampaň; Hobby má [omezení nekomerčního použití](https://vercel.com/docs/plans/hobby).
 
-**Aktualizace po dashboardu (10. října 2026):** nejnovější typecheck/lint/build prošly, **74 unit a 39 PostgreSQL integration testů prošlo**. Kompletní browser běh se zapnutým dashboardem a live funnelem: **23 passed / 1 skipped**; vypnutý dashboard/export a odmítnutí cizího Hostu navíc samostatně ověřeny na dočasném lokálním serveru. Skutečné nově uložené testovací kontakty a dvojice byly před vlastním scoped cleanup viditelné v přehledu/CSV; dashboard totals ověřeny nezávislým SQL, bez mockovaného úspěchu. Podrobnosti a předešlá selhání v TESTING. Dashboard má vlastní nové ověření přístupnosti/responsivity, nikoli nové Lighthouse skóre.
+## Známé limity
 
-Po opravě lifecycle regrese nalezené nezávislým review jsou aktuální výsledky **75 unit / 39 integration / 24 browser passed**, jedna disabled kontrola úmyslně přeskočena na zapnutém serveru a samostatně ověřena proti vypnutému. SPA návrat do dashboardu a souhlas změněný v jiné záložce již nevytváří falešnou landing návštěvu; předchozí mezivýsledky zůstávají v TESTING.
+- Testovací účel potvrzen uživatelem: používat syntetické emaily, žádný skutečný marketing. Funkční privacy kontakt a provozní právní základ pro skutečné leady nejsou dodány.
+- Retence 90 dnů kontakt / 7 dnů report / 30 dnů analytics je implementovaná ručním skriptem, bez automatického harmonogramu. Přístupová cookie expiruje za 24 hodin. Zálohy a hostingové logy nejsou tímto skriptem řešeny.
+- Per-email/session throttling neřeší distribuovaný spam. Před kampaní doplnit přiměřenou provozní ochranu a vyloučení známých testů/botů z metrik.
+- Data jsou snapshot, broker dostupnost/KID a některá metadata neověřeny. Žádná historická performance ani živé ceny.
+- Email ownership, SMTP, onsite A/B randomizace a MFA dashboardu nejsou implementované. CSP má `unsafe-inline`; historie auditu eviduje dev dependency nálezy. Nejde o kompletní bezpečnostní certifikaci.
 
-Retenční skript je ruční, bez npm aliasu a bez scheduleru:
+Tyto limity otevřeně oddělují funkční odevzdání od připravenosti ke skutečné placené kampani.
 
-```sh
-# Destruktivní: jen po ověření cílové DB a schválení retenčního postupu.
-node --env-file=.env.local scripts/cleanup.mjs --retention
-# Výmaz konkrétního leadu: nahraďte skutečným ověřeným UUID, nikdy emailem.
-# node --env-file=.env.local scripts/cleanup.mjs --lead-id <UUID>
-```
+## Jak jsem pracoval s AI
 
-Skript odstraní leady starší 90 dnů, snapshoty starší 7 dnů a analytics starší 30 dnů; přístup k reportu přitom expiruje už po 24 hodinách. Další vztahy a omezení výmazu viz ANALYTICS. Zálohy ani hostingové logy tento skript neřeší.
+Použil jsem Hermes/Codex jako podobný nástroj povolený zadáním, nikoli Claude Code. Instrukce v [AGENTS.md](AGENTS.md) požadují skutečné datové zdroje, hodnotu před kontaktem, čistý výpočetní model, skutečnou DB a pravdivé testy. AI pomohla s plánem, copy, zdroji, UI, backendem a testy; kontrola zahrnovala primární dokumenty, nezávislý numerický výpočet, PostgreSQL dotazy a browser průchody.
 
-## Deployment runbook — původní podmínky a nové povolení
+Konkrétní chyby: původní interpretace NYSE Arca vyžadovala doplnit hlavní NYSE fondy; browser test odhalil Origin chybu odhlášení; změna analytické obálky vyžadovala opravit zastaralé testy; vizuální QA odhalila kontrast a mobilní rozestupy. Poslední kontrola našla starý README na výchozí `main`, proto je výchozí `devel`. Chyby a opravy jsou v [AI_USAGE](docs/AI_USAGE.md) a [TESTING](docs/TESTING.md).
 
-Původní rozsah byl pouze lokální testovací demo. Dne 14. října 2026 uživatel výslovně požádal o bezplatné nasazení na Vercel do matejstyblos-projects. To povoluje testovací cloud deployment, nikoli placený plán nebo skutečnou reklamní kampaň. Stav nasazení a konkrétní konfigurace: [DEPLOYMENT](docs/DEPLOYMENT.md). Následující produkční podmínky jsou původní runbook; nejde o potvrzení, že byly splněny.
-
-1. Získat zvláštní oprávnění k deploymentu a přístup k projektu; zvolit spravovaný PostgreSQL a cílový Vercel projekt/doménu. Žádné veřejné URL ani vytvořený projekt nyní netvrdíme.
-2. Potvrdit skutečnou identitu správce, privacy kontakt, účel uchovávání emailu, právní základ, zpracovatele, marketingový/odvolávací proces a schválenou notice. Předstartovní `/privacy` není hotové právní posouzení. Dokud chybí, ponechat veřejný capture vypnutý.
-3. Revalidovat ETF dokumenty/KID a viditelné údaje. Ověřit, že zvolené hlavní fondy stále mají primární listing NYSE; reference Arca/LSE nezapočítávat jako hlavní NYSE.
-4. Nakonfigurovat vlastní DB s TLS a zálohami; ověřit connection string a kompatibilitu poolu `pg` s limitem poskytovatele a serverless instancemi. Server používá Node runtime, nikoli Edge. Preview musí používat izolovanou DB a nesmí sbírat skutečné leady bez schválení.
-5. V chráněném prostředí proti **cílové** DB spustit `npm run db:migrate` s bezpečně vloženou `DATABASE_URL`. Nepoužívat lokální trust autentizaci. Migrace nejsou součástí build scriptu.
-6. Nastavit server env z tabulky; `APP_ORIGIN` musí odpovídat skutečnému HTTPS hostu. Secrets odděleně v hostingu, žádná tajemství v repozitáři. Ověřit i build/runtime rendering identity. Rotace dedupe secretu mění emailové klíče; rotace token secretu invaliduje přístupy — potřebuje samostatný plán.
-7. Před publikací zopakovat quality gates, řešit audit findings, provést ruční mobile/keyboard/axe a Lighthouse na produkčním buildu. Žádné skóre neodvozovat z cíle.
-8. Až s oprávněním publikovat; na přesné cílové URL provést smoke test bez měření, s opt-in i odvoláním, valid/invalid lead, DB readback, report/download, cookies/no-store/expiry a outage. Testovací řádky uklidit. Teprve readback potvrzuje výsledek.
-9. Zajistit skutečný schedule cleanup, výmazové žádosti a backups deletion SLA, monitoring 503/429 a ochranu hostingu proti spamu. Schedule/config soubory v repozitáři zatím nejsou. Při potížích vypnout `LEADS_ENABLED`, ověřit API gate a rollback buildu; DB rollback není implementovaný a nesmí ztratit leady.
-
-Žádný krok deploymentu, push ani placený traffic nebyl při doplnění této dokumentace proveden.
-
-## Známé limity a AI
-
-- Pět ETF: výchozí STXF/STXG na hlavním NYSE s odlišnými indexy, SPY/IVV jako reference na NYSE Arca a CSPX jako evropský UCITS doplněk na LSE. Dostupnost českému retailu není ověřena. Chybějící metadata a manuální aktualizace jsou přiznané.
-- Pouze testovací identita **Matěj STýblo** a nefunkční `test@example.invalid`; bez skutečné produkční identity a bez komerčního zpracování. Není to lokální blocker, ale jasná hranice použití.
-- Analytics je souhlasový vzorek, bez celkových návštěv, úplného consent rate, experiment assignments a přesného report-to-capture linkage; UTM jsou na receipts, nikoli session/event tabulkách. Report bootstrap nově nezvětšuje landing denominator a replay nepřenese success do jiné session; původní receipt zůstává autoritou atribuce. Podrobnosti v ANALYTICS.
-- Žádné ověření mailboxu, email delivery, marketingové rozesílání či self-service výmaz. Rate limits nejsou úplná anti-spam ochrana; CSP nonce hardening, cron a backup deletion proces chybí.
-- Původní [PLAN](docs/PLAN.md) a [DECISIONS](docs/DECISIONS.md) zachycují i návrhy před implementací. Skutečný stav určují soubory, tento README, ANALYTICS a časově řazené důkazy v TESTING.
-
-AI použití a skutečné chyby/opravy popisuje [AI_USAGE](docs/AI_USAGE.md). Použit byl Hermes Agent, nikoli předstíraná Claude Code session. **[ai-log/hermes-session.jsonl](ai-log/hermes-session.jsonl) obsahuje skutečný redigovaný snapshot rodičovské session**, exportovaný Hermes CLI. Je to jeden JSONL session record s polem `messages`, nikoli jedna zpráva na řádek. Parent ověřil parsování a kontrolu literal secrets/password-bearing PostgreSQL URL. Snapshot nezahrnuje pozdější zprávy a nedokládá automaticky úplnou lineage všech delegací; není rekonstruovaným chatem. Před případným sdílením stále zkontrolovat osobní údaje a lokální cesty. Finanční evidence, testované výpočty a skutečné tool výsledky mají přednost před tvrzeními AI.
-
-## Návštěvnost a dokončení formuláře (14. října 2026)
-
-Lokální `/dashboard` nyní obsahuje „Návštěvy a kontaktní formulář“: měřené návštěvy, zahájení formuláře, potvrzená uložení kontaktu, návštěvy zatím bez odeslání a jejich aktivní podmnožinu, včetně rozpisu podle zdroje, média, kampaně a varianty. Zdroj návštěvy je z UTM, případně externí referrer domény. Měření běží pouze se souhlasem a neidentifikuje unikátní lidi. Obnovení stránky v relaci nezvyšuje počet návštěv. Chybějící zdroj ani neodeslaný formulář neprokazují přímý příchod nebo odchod. Nová migrace `005.sql` je potřeba i při aktualizaci existující databáze (`node --env-file=.env.local scripts/migrate.mjs`). Detail a rozdíl proti starším eventovým kartám: docs/ANALYTICS.md, poslední sekce.
-
-### Viditelný souhlas s měřením
-
-Při první návštěvě se zobrazuje spodní cookie lišta s rovnocenným Povolit/Odmítnout. Nezakrývá web modálním pozadím a neblokuje kalkulačku. Po volbě se skryje a preference zůstává uložená. Dole na stránce je Změnit nastavení cookies a pro povolené měření také Odvolat. Bez souhlasu se analytické události ani zdroje návštěv neodesílají.
-
-## Veřejné testovací demo — nasazeno 14. října 2026
-
-- Aplikace: https://etf-radar-dun.vercel.app
-- Chráněný dashboard: https://etf-radar-dun.vercel.app/dashboard/login
-- Vercel Hobby + Neon Free (`free_v3`, fra1). Bez placeného plánu; uplatňují se free limity.
-- Cloudová DB je nová a oddělená od lokální; lokální kontakty nebyly zveřejněny ani přeneseny. Přístupový klíč správce není součástí Gitu ani klientského bundle.
-- Celý skutečný cloudový průchod byl ověřen včetně reportu, chráněného exportu a odhlášení. Detaily a zaznamenané počáteční selhání v docs/TESTING.md.
-- Zůstává testovací hiring projekt: pouze syntetické emaily, bez kampaně a bez skutečného emailového doručování. Retenční skript je stále ruční, nikoli spuštěný scheduler.
-
-### Automatické aktualizace webu
-
-Vercel je propojený s `MatejStyblo/ETF-radar` a produkční větev je **devel**. Push do devel spustí build a po jeho úspěchu aktualizuje https://etf-radar-dun.vercel.app. Větev main zůstává samostatná. Není potřeba ruční deployment ani GitHub Actions. Databázové migrace zůstávají samostatným krokem. Postup a ověření: docs/DEPLOYMENT.md a docs/TESTING.md.
+[ai-log](ai-log/README.md) obsahuje skutečné runtime exporty, ne rekonstruované rozhovory. Formát a rozsah vynechaných údajů jsou uvedeny u souborů. Není to Claude `/export`; tajemství a soukromé heslo nepublikujeme. Historické mezistavy jsou archivovány v [docs/history](docs/history/README-before-handoff.md); aktuální stav popisuje tento README a HANDOFF.
