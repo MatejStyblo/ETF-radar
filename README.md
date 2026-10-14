@@ -24,11 +24,11 @@ Simulovaným obchodním cílem zadání je dobrovolně získaný a skutečně ul
 
 ## Cesta návštěvníka a lead magnet
 
-Reklama → veřejné srovnání → vlastní scénář → modelový výsledek → nabídka podrobného reportu → email → databázový commit → `/report` → HTML ke stažení / tisk.
+Reklama → veřejné srovnání → vlastní scénář → modelový výsledek → nabídka podrobného reportu → email → databázový commit → `/report` → PDF ke stažení / HTML / tisk.
 
 Report obsahuje vlastní vstupy, detail obou fondů, horizonty 5/10/20/30 let a vlastní horizont, roční tabulku, checklist před nákupem, zdroje a metodiku. Je snapshotem nastavení a katalogu, nikoli živým dokumentem. Email není součástí reportu ani jeho URL.
 
-**Report se nezasílá emailem.** Otevře se ihned po úspěšném uložení a lze stáhnout skutečné samostatné HTML. PDF nabízí tiskový dialog prohlížeče; serverové PDF ani SMTP nejsou implementované. Přístup přes HttpOnly cookie platí 24 hodin ve stejném prohlížeči; stažený soubor zůstává návštěvníkovi. Email je jediný povinný kontaktní údaj. Marketingový checkbox je volitelný, nezaškrtnutý a není podmínkou reportu. Vlastnictví emailu se neověřuje. Marketingový checkbox v demu pouze uloží volbu; neprobíhá žádné skutečné rozesílání.
+**Report se nezasílá emailem.** Otevře se ihned po úspěšném uložení a hlavní tlačítko stáhne skutečný samostatný PDF soubor vytvořený serverem z uloženého scénáře. HTML a tisk zůstávají alternativami; SMTP není implementované. PDF používá pdf-lib a lokálně vložené písmo Noto Sans s českou diakritikou a licencí OFL (assets/fonts). Next file tracing zahrnuje obě písma do serverového exportu. Přístup přes HttpOnly cookie platí 24 hodin ve stejném prohlížeči; stažený soubor zůstává návštěvníkovi. Email je jediný povinný kontaktní údaj. Marketingový checkbox je volitelný, nezaškrtnutý a není podmínkou reportu. Vlastnictví emailu se neověřuje. Marketingový checkbox v demu pouze uloží volbu; neprobíhá žádné skutečné rozesílání.
 
 ### Proč jsou sekce v tomto pořadí
 
@@ -87,7 +87,7 @@ Primární definice: **nové validní uložené leady připsané způsobilým m�
 
 ### Tři prioritní A/B hypotézy
 
-Následují návrhy, ne spuštěné experimenty ani změřené uplifty. Každý test mění jeden prvek, se stejnými disclosures a pravdivým „ihned HTML / tisk, ne emailem“.
+Následují návrhy, ne spuštěné experimenty ani změřené uplifty. Každý test mění jeden prvek, se stejnými disclosures a pravdivým „ihned PDF / HTML / tisk, ne emailem“.
 
 | Priorita | Hypotéza a varianty | Primární metrika | Guardrails |
 | --- | --- | --- | --- |

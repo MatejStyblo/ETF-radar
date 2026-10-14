@@ -1,5 +1,13 @@
 # Ověřování — průběžný záznam
 
+## Přímý PDF export — 14. října 2026
+
+100 unit a 43 skutečných PostgreSQL integration testů prošlo. Nové PDF testy ověřují validní soubor, A4 stránky, česká metadata, běžný/50letý/nulový scénář a přístup k route včetně expirace. Produkční build, typecheck a lint prošly; produkční dependency audit hlásí 0 nálezů. Next server trace zahrnuje oba TTF fonty.
+
+Report browser suite: 3/3 passed, včetně 375/1440 px, no overflow a axe; nové assertion kontrolují PDF odkaz. Po aktualizaci textu v HTML znovu prošly 2/2 odpovídající unit testy.
+
+Chromium na lokálním portu 3140 při šířce 375 px bez API interception prošel formulář → skutečně uložený syntetický lead → report → hlavní PDF download se jménem `moje-etf-srovnani.pdf`. Ověřena persistence, refresh, funkční vedlejší HTML a anonymní PDF 401. Vlastní testovací lead/receipt/report/throttle byl přesně odstraněn; cizí preview data zachována. Ukázka má 5 stran, pypdf ověřil diakritiku/obsah, pdfplumber nenalezl znaky mimo okraje a všechny stránky byly renderovány Popplerem a vizuálně zkontrolovány. Poppler oznámil chybu v cestách pomocných map kvůli diakritice Windows profilu, samotné PNG a české písmo se vykreslily správně. Žádný push/deployment.
+
 ## Zprovoznění tlačítka v lokálním náhledu — 14. října 2026
 
 Lokální Chromium bez route interception na port3140 nově ověřil enabled tlačítko, prázdný email → přístupnou validační chybu, validní unikátní syntetický email → HTTP200, PostgreSQL readback jednoho lead/receipt/report, navigaci na report a download200 bez emailu v HTML. Přesný vlastní testovací lead/report/receipt/throttle odstraněn, cizí preview data zachována. Proces byl přepnut ze záměrně vypnutého capture na vlastní oddělenou lokální DB. První launcher `node --env-file ... next dev` narazil na Next child-process NODE_OPTIONS omezení; následný lokální wrapper načítající env před spuštěním child CLI běží správně. Žádný source-code bypass, push nebo deployment.

@@ -27,5 +27,7 @@ test('report renders personal scenario, honest metadata, all horizons and annual
  expect(html).toContain('Rok po roce');
  expect(html).toContain('Checklist před nákupem');
  expect(html).toContain('/report/download');
+ expect(html).toContain('/report/download/pdf');
+ expect(html).toContain('Stáhnout PDF');
  for(const assumption of report.assumptions)expect(html).toContain(assumption.replaceAll('&','&amp;'));
 });

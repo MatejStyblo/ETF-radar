@@ -6,6 +6,7 @@ const policy = ["default-src 'self'", `script-src 'self' 'unsafe-inline'${develo
 const config: NextConfig = {
   devIndicators: { position: 'top-right' },
   poweredByHeader: false,
+  outputFileTracingIncludes: { '/report/download/pdf': ['./assets/fonts/*.ttf'] },
   async headers() {
     return [{ source: "/:path*", headers: [
       { key: "X-Content-Type-Options", value: "nosniff" },

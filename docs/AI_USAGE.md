@@ -1,5 +1,9 @@
 # Poctivé použití AI
 
+## Codex — přímé PDF ke stažení (14. října 2026)
+
+Na požadavek uživatele Codex přidal serverový export uloženého reportu pomocí pdf-lib a fontkit s licencovanými lokálními fonty Noto Sans. Nezměnil finanční data ani kalkulační model. Použil PDF skill pro render a vizuální kontrolu všech stran; skutečné výsledky testů jsou v TESTING. Jeden kombinovaný dokumentační patch selhal na neexistující kotvě beze změn a byl následně aplikován s přesnými kotvami. Export zdrojové runtime konverzace pro tento navazující turn dosud není uložen; starší auditový log jej neobsahuje. Žádný push/deployment.
+
 ## Codex — odstranění velké cookie sekce (14. října 2026)
 
 Na přímý požadavek uživatele odstraněn velký panel; zůstal nenápadný patičkový spouštěč stávajících voleb. Zachované chování souhlasu/revokace bylo skutečně znovu ověřeno, odpovídající UI testy i auditový skript nyní otevřou volby přes patičku. Jeden shellový pokus o změnu testovacích souborů selhal v parseru beze změn; úpravy dokončeny apply_patch. Výsledky a limity běhů jsou v TESTING. Žádný push/deployment; starý dílčí auditový runtime export tento pozdější turn neobsahuje.

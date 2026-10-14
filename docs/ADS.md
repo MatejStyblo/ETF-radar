@@ -27,7 +27,7 @@ Stav: připravené reklamní koncepty, žádná kampaň neběžela, žádný roz
 
 „Jedno číslo není celý příběh. Získejte své ETF srovnání pro 5 až 30 let — včetně rozdílů fondů a checklistu před nákupem.“ CTA „Získat moje srovnání“.
 
-Report otevřete a stáhnete ihned po zadání emailu. Neposílá se emailem; marketing je volitelný, oddělený a předem nezaškrtnutý. HTML report je reálný dokument, tisk do PDF nabízí prohlížeč.
+Report otevřete a stáhnete ihned po zadání emailu. Neposílá se emailem; marketing je volitelný, oddělený a předem nezaškrtnutý. PDF i HTML jsou skutečně vytvořené soubory ke stažení; tisk zůstává vedlejší možnost.
 
 ## Měření
 

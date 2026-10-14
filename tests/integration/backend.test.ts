@@ -58,6 +58,23 @@ test('download serves only the authorized snapshot as private HTML without email
  const html = await downloaded.text(); expect(html).toContain('<html'); expect(html).not.toContain(body.email);
  expect((await GET(new Request('http://localhost:3000/report/download'))).status).toBe(401);
 });
+
+test('PDF download requires a current report session and returns a genuine private PDF', async () => {
+ const { GET } = await import('@/app/report/download/pdf/route');
+ const url = 'http://localhost:3000/report/download/pdf';
+ expect((await GET(new Request(url))).status).toBe(401);
+ const body = payload({ email: `pdf-${run}@example.invalid`, etfIds: ['stxf','cspx'] });
+ const captured = await POST(request(body)); expect(captured.status).toBe(200);
+ const headers = { cookie: `etf_report=${token(captured)}` };
+ const downloaded = await GET(new Request(url, { headers }));
+ expect(downloaded.status).toBe(200);
+ expect(downloaded.headers.get('content-type')).toBe('application/pdf');
+ expect(downloaded.headers.get('content-disposition')).toContain('moje-etf-srovnani.pdf');
+ expect(downloaded.headers.get('cache-control')).toBe('private, no-store');
+ expect(Buffer.from(await downloaded.arrayBuffer()).subarray(0,5).toString()).toBe('%PDF-');
+ await getPool().query("UPDATE reports SET expires_at=now()-interval '1 second' WHERE id=(SELECT report_id FROM submission_receipts WHERE attempt_id=$1)",[body.attemptId]);
+ expect((await GET(new Request(url, { headers }))).status).toBe(401);
+}, 15000);
 test('analytics requires explicit consent, signed landing session, dedupes events and stores server lead success only', async () => {
  const { POST: eventPost, DELETE: revoke } = await import('@/app/api/events/route');
  const event = { eventId: randomUUID(), name: 'landing_view', adVariant: 'a', consent: true };

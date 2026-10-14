@@ -1,5 +1,9 @@
 # ETF Radar — rozhodnutí a předpoklady
 
+## D29 — Přímý PDF soubor ke stažení (14. října 2026)
+
+Na výslovný požadavek uživatele je PDF hlavním exportem na `/report`. Serverová Node route `/report/download/pdf` načte stejný uložený snapshot přes stávající HttpOnly cookie a vytvoří samostatné A4 PDF pomocí pdf-lib. Žádný email ani token nevstupují do obsahu. Bez oprávnění nebo po expiraci vrací 401; skutečné selhání vrací chybu, nikoli náhradní dokument. Odpověď je private/no-store a attachment. Vložené lokální Noto Sans Regular/Bold podporuje češtinu, má přiloženou OFL licenci a je zahrnuté do Next file tracing. Export nevyžaduje vzdálené fonty nebo headless browser. HTML a tisk zůstávají alternativami; historické D07 popisuje původní stav, který toto rozhodnutí rozšiřuje. Změna je lokální bez push/deploymentu.
+
 ## D28 — Funkční reportový tok v uživatelově lokálním náhledu (14. října 2026)
 
 Uživatel upozornil na deaktivované tlačítko získání reportu. Příčina byla procesová LEADS_ENABLED=false ponechaná při vizuálním preview, nikoli emailová validace nebo chyba tlačítka. Náhled3140 nyní používá oddělenou lokální DB `etf_radar_preview`, migrace001–005, přesný loopback origin a vlastní stabilní secrets v ignorovaném `.vercel/local-preview.env`. Restart přes `node .vercel/run-preview.mjs` načte tuto konfiguraci. Společný backend gate nebyl obcházen ani změněn. Existující DB kontakty nebyly kopírovány, produkce se nemění.
