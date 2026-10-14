@@ -1,5 +1,4 @@
 @import "tailwindcss";
-.demo-notice{padding:9px 20px;text-align:center;background:var(--soft-blue);color:var(--ink);font-size:12px;border-bottom:1px solid var(--line)}
 .dashboard-login{max-width:560px;margin:48px auto;padding:28px}.dashboard-login h1{font-size:34px;margin:24px 0 14px}.dashboard-login>p{color:var(--muted);margin-bottom:24px}.dashboard-login form{display:grid;gap:12px;margin:24px 0}.dashboard-login label{font-weight:600}.dashboard-login input{width:100%;min-height:48px;padding:12px;border:1px solid var(--control-line);border-radius:var(--radius);background:var(--surface)}.dashboard-login [role=alert]{color:var(--danger);font-size:14px}
 /* Nonmodal consent banner: equal choices, safe-area support, room to scroll past it. */
 body:has(.cookie-banner){padding-bottom:calc(var(--cookie-banner-height,240px) + 32px)}
@@ -192,15 +191,5 @@ body{background:radial-gradient(ellipse at 85% 0%,var(--soft-accent),transparent
  .chart-readout dd{font-size:12px}
 }
 @media print{.projection-chart{break-inside:avoid}.chart-mode,.chart-year-slider,.chart-slider-label{display:none}.chart-readout dd{font-size:12pt}.projection-chart figcaption{font-size:10pt}}
-/* Keep the calculator near the first mobile screen even with the honest demo notice. */
-@media(max-width:700px){
- body:has(.demo-notice) .demo-notice{padding-block:6px;font-size:11px;line-height:1.4}
- body:has(.demo-notice) .site-header{padding-block:8px}
- body:has(.demo-notice) .intro h1{font-size:28px}
- body:has(.demo-notice) .intro-bottom{margin-top:10px}
- body:has(.demo-notice) .intro-bottom>p{font-size:12px;line-height:1.5}
- body:has(.demo-notice) .workspace-inputs{padding:16px}
- body:has(.demo-notice) .scenario{margin-top:10px}
-}
 @media print{body{background:#fff;font-size:12pt;color:#000}.skip-link,.report-actions,.report-action-area,.report-header>.quiet-link,.measurement,.report-bottom>a{display:none!important}.personal-report{border:0;max-width:none}.report-cover,.report-section{padding:20px 0;background:#fff}.report-section-heading{break-after:avoid}.report-section-heading h2{font-size:22pt}.report-cover h1{font-size:34pt}.report-small,.report-intro,.report-assumptions li,.report-checklist li,.fund-details,.source-row,.annual-table{font-size:12pt}.fund-details th:first-child{font-size:12pt}.report-checklist li,.fund-details tr,.horizon-row{break-inside:avoid}.source-row a:after{content:" (" attr(href) ")";font-size:10pt;overflow-wrap:anywhere}.annual-detail:not([open])>*:not(summary){display:block!important}.annual-detail table{display:table!important}.annual-detail summary{font-size:16pt}.annual-table small{font-size:10pt}.report-header{padding:0 0 16px}.scenario-summary>.results{background:#fff;padding:16px 0}.report-cover>.report-small{font-size:12pt}.horizon-row{background:#fff}.horizon-value{font-size:14pt}}
 .result-sources{display:flex;gap:16px;border-top:1px solid var(--line);margin-top:18px;padding-top:12px}.result-sources a{font-size:10px;min-height:44px;display:flex;flex-direction:column;justify-content:center}.result-sources span{font-size:9px;color:var(--muted);text-decoration:none;margin-top:4px}.difference,.balance,.cost-impact strong,.baseline dd{overflow-wrap:anywhere}.result-fund{min-width:0}.balance{white-space:normal}.baseline dd{max-width:55%;text-align:right}.baseline dt{min-width:0}@media(min-width:701px){.site-header{padding:18px 32px}.intro{padding:28px 32px 26px}.intro-bottom{margin-top:16px}.fund-name{min-height:28px}.scenario{margin-top:24px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}

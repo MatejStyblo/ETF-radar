@@ -146,8 +146,8 @@
   .mobile-bottom-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
   body:has(.mobile-bottom-nav) .cookie-banner { bottom: calc(var(--mobile-nav-space) + 6px); max-height: calc(100dvh - var(--mobile-nav-space) - 22px); }
   .site-header { padding: 8px 16px; }
-  .intro, body:has(.demo-notice) .intro { padding: 14px 16px; }
-  .intro h1, body:has(.demo-notice) .intro h1 { font-size: 25px; }
+  .intro { padding: 14px 16px; }
+  .intro h1 { font-size: 25px; }
   .intro-bottom { display: block; margin-top: 8px; }
   .intro-bottom>p { font-size: 12px; }
   .intro-cta { min-height: 44px; border-radius: 5px; padding: 10px 12px; }
@@ -160,7 +160,7 @@
   .overview-toolbar { gap: 10px; }
   .quick-funds>div { width: 100%; justify-content: space-between; }
   .quick-funds button { min-height: 40px; padding: 7px 8px; }
-  .workspace-inputs, .workspace-output, body:has(.demo-notice) .workspace-inputs { padding: 16px; }
+  .workspace-inputs, .workspace-output { padding: 16px; }
   .section-label h2 { font-size: 13px; }
   .section-label { margin-bottom: 14px; }
   .fund-cost { font-size: 24px; }

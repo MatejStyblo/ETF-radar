@@ -26,7 +26,7 @@ test('deployed HTTPS app saves a real lead, delivers report and protects dashboa
   expect(crossSite.status()).toBe(403);
   await page.setViewportSize({width:375,height:812});
   await page.goto(`${base}/?utm_source=deployment_test&utm_medium=test&utm_campaign=${campaign}`);
-  await expect(page.getByText('Testovací projekt pro výběrové řízení.',{exact:false})).toBeVisible();
+  await expect(page.locator('.demo-notice')).toHaveCount(0);
   await page.screenshot({path:info.outputPath('deployed-landing.png')});
   await page.getByRole('button',{name:'Povolit',exact:true}).click();
   await expect.poll(async()=> (await db.query("SELECT count(*)::int AS n FROM analytics_sessions WHERE acquisition->>'utm_campaign'=$1",[campaign])).rows[0].n).toBe(1);

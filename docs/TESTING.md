@@ -1,5 +1,9 @@
 # Ověřování — průběžný záznam
 
+## Odstranění horního upozornění — 14. října 2026
+
+Skutečný lokální Chromium ověřil nepřítomnost `.demo-notice` na `/`, `/privacy`, `/report` a `/dashboard/login` i přesto, že proces původního náhledu měl DEMO_MODE nastavený. Layout již tuto proměnnou nečte. Typecheck/lint/build jsou ověřeny v tomto kroku. Opt-in deployment test assertion byla aktualizována na nepřítomnost banneru; žádný produkční write test ani deployment nebyl pro tuto vizuální změnu spuštěn.
+
 ## Cookie nastavení pouze v patičce — 14. října 2026
 
 Typecheck/lint/build prošly, **97 unit** a **16 cílených browser testů** prošlo na lokálním produkčním buildu port3150. Testováno otevření z patičky, odmítnutí po reloadu, povolení a odvolání přes nastavení, focus/Escape, cross-tab revokace, síťová chyba při výmazu a zachované UI odesílání s aktuální volbou, responsive landing a report včetně axe. API odpovědi u consent/form UX jsou interceptované; tyto běhy se nevydávají za nové persistence ověření. Velký `.measurement` blok je skutečně nepřítomný a jediný spouštěč se nachází ve footer. Screenshot lokálního náhledu3140 vizuálně zkontrolován. Samostatný pokus o druhý Next dev byl odmítnut lockem již běžícího náhledu; místo zastavení uživatelova serveru byl pro testy použit next start s oddělenou privátní procesovou konfigurací. Produkční databáze/nasazení se nezměnily.

@@ -1,5 +1,9 @@
 # ETF Radar — rozhodnutí a předpoklady
 
+## D27 — Odstranění horního testovacího upozornění (14. října 2026)
+
+Na výslovný požadavek uživatele bylo ze společného layoutu odstraněno horní testovací upozornění na všech stránkách. Odstraněny také jeho nepoužívané CSS větve a DEMO_MODE z příkladu env. Historické auditové důkazy zůstávají záznamem tehdejšího stavu. Produkční secrets/config ani právní a provozní informace stránky soukromí nebyly změněny. Změna je lokální, bez push/deploymentu.
+
 ## D26 — Pouze nenápadné cookie nastavení v patičce (14. října 2026)
 
 Uživatel požádal odstranit velký blok nastavení cookies. MeasurementPanel nyní vykresluje pouze textový spouštěč „Nastavení cookies“ v patičce landing page i reportu; samostatná sekce a viditelný stav měření byly odstraněny. Pro čtečky zůstává skrytý status. Spouštěč otevírá existující consent lištu; při již povoleném měření její první volba „Odvolat“ provede stejnou revokaci jako dřívější samostatné tlačítko. Odmítnutí/souhlas, serverový mechanismus, synchronizace mezi záložkami, retry a focus návrat zůstávají funkční. Žádný push/deployment.
