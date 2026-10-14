@@ -298,3 +298,7 @@ Uživatel výslovně zvolil vlastní krátké heslo pro testovací demo. Přidat
 ## Finální odevzdání — 14. října 2026
 
 Uživatel povolil dokončit navržené úpravy a nastavit devel jako výchozí větev. Následně upřesnil, že vše má zůstat testovací s profesionálním vzhledem. Rozsah: nastavit GitHub default branch; sjednotit README a aktuální web; skutečný propojený náhled reportu; dvě exportované reklamní grafiky; pravdivé demo soukromí bez fiktivního kontaktu; skutečné runtime exporty; lint/typy/unit/integrace/build/browser a Git deployment s ověřením DB/PDF. Neaktivovat placený hosting, marketing ani komerční sběr; neinstalovat produkční cron bez provozní potřeby. Výsledky budou v HANDOFF.md. Archivovaný README zachová historické důkazy odděleně od aktuálního přehledu.
+
+## Zúžení reklamních výstupů — 14. října 2026
+
+Na následný výslovný požadavek uživatele odstranit PNG/SVG a jejich generátor, upravit aktuální dokumentaci a ponechat dvě textové reklamní varianty požadované originálním zadáním. Bez změny aplikačního kódu. Ověřit odstranění souborů a odkazů; aktualizovat devel bez přepisování historie.

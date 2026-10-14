@@ -7,7 +7,7 @@ Aktuální produktový přehled je v kořenovém README. Starší audit/README z
 - GitHub default branch ověřena přes API jako `devel`, repository public. Vercel production branch již sleduje `devel`.
 - README sjednocen s nasazeným produktem: cílovka, funnel, NYSE rozhodnutí, zdroje, analytika, konverzní hypotéza, tři A/B testy, setup, deployment, AI a omezení.
 - Náhled horizontů používá skutečný buildReport a mění se s fondy/vstupy. Invalidní scénář nezobrazuje stará čísla.
-- Dvě hotové PNG/SVG reklamní grafiky 1080 × 1350, s reálným screenshotem a finančními qualifiers. Vizuálně zkontrolované; žádná kampaň neběžela.
+- Dvě textové reklamní varianty s cílením a popisem vizuálního konceptu podle zadání; žádná kampaň neběžela.
 - Stručné testovací upozornění v místě kontaktu a srozumitelné demo soukromí. Žádný fiktivní funkční email ani právní základ; uživatel potvrdil testovací účel.
 - Autentické navazující exporty AI v ai-log, s popsaným rozsahem a vynecháním citlivých zpráv.
 
@@ -35,7 +35,7 @@ Na veřejné HTTPS URL následně prošly **oba skutečné formulářové průch
 
 Sensitive cloud env nelze stáhnout jako skutečné hodnoty; tento smoke proto není nezávislý produkční SQL audit/cleanup. Persistence je zde doložena serverovým reportem z uloženého snapshotu po reloadu; přímé DB dotazy a deduplikaci prokazují lokální integrace. Jediný syntetický email `handoff_7633ed780ffb447f80152af613605022@example.invalid` a kampaň stejného názvu zůstaly v testovací cloud DB pro dohledání. Nejde o obchodní lead ani reklamní konverzi; tato kohorta nesmí být zahrnuta do případných obchodních metrik. Žádná cizí data nebyla odstraněna.
 
-Veřejný browser audit na **375 / 390 / 768 / 1440 px**: 43 kontrol PASS, 0 failures, axe bez violations a bez horizontálního overflow. [Artefakty](qa/handoff/production-browser/results.json). Vizuálně zkontrolované reklamy a mobilní první obrazovka. Test byl proveden na konkrétním deploymentu, není obecnou zárukou všech zařízení.
+Veřejný browser audit na **375 / 390 / 768 / 1440 px**: 43 kontrol PASS, 0 failures, axe bez violations a bez horizontálního overflow. [Artefakty](qa/handoff/production-browser/results.json). Vizuálně zkontrolovaná mobilní první obrazovka. Test byl proveden na konkrétním deploymentu, není obecnou zárukou všech zařízení.
 
 Nový **mobilní Lighthouse 13.5.0** na veřejném aliasu, 14. října 2026 v 18:55 CEST: Performance **98**, Accessibility **100**, Best Practices **100**, SEO **100**; LCP 2,28 s, TBT 96 ms, CLS 0. [JSON souhrn](qa/handoff/lighthouse-summary.json), [HTML report](qa/handoff/lighthouse-production.html). Žádný runtime error ani warning. Skóre popisuje jeden běh, nikoli SLA či naměřenou konverzi.
 

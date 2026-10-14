@@ -4,7 +4,7 @@
 
 - **Web:** [etf-radar-dun.vercel.app](https://etf-radar-dun.vercel.app)
 - **Repozitář:** [MatejStyblo/ETF-radar](https://github.com/MatejStyblo/ETF-radar), výchozí i produkční větev `devel`.
-- **Reklamy:** [texty, cílení a hotové grafiky](docs/ADS.md).
+- **Reklamy:** [dvě textové varianty a cílení](docs/ADS.md).
 - **Ověření:** [aktuální závěrečný průchod](docs/HANDOFF.md), [historie testů](docs/TESTING.md).
 
 Ověření 14. října 2026: **102 unit / 43 DB integration / 28 browser testů prošlo** (4 explicitně opt-in scénáře přeskočeny). Oba skutečné veřejné formulářové průchody a PDF prošly samostatně. Mobilní Lighthouse na veřejném webu: **98 / 100 / 100 / 100** (Performance / Accessibility / Best Practices / SEO), CLS 0. Přesné podmínky a limity jsou v HANDOFF; nejde o naměřenou reklamní konverzi.
@@ -43,7 +43,7 @@ Na desktopu jsou vstupy a výstupy vedle sebe, na mobilu pod sebou. Spodní mobi
 
 [Varianta B](https://etf-radar-dun.vercel.app/?ad_variant=b&utm_source=meta&utm_medium=paid_social&utm_campaign=compare_v1&utm_content=tool_b): **„ETF na NYSE nejsou všechna stejná.“** Motivace: snadná orientace ve fondech.
 
-Parametr `ad_variant` mění headline i CTA; výpočet a report zůstávají stejné. Kompletní texty, cílení, grafiky a předpoklady jsou v [ADS](docs/ADS.md). Žádná reklama nebyla spuštěna.
+Parametr `ad_variant` mění headline i CTA; výpočet a report zůstávají stejné. Kompletní texty, cílení a předpoklady jsou v [ADS](docs/ADS.md). Žádná reklama nebyla spuštěna.
 
 ## Skutečná data a rozhodnutí o NYSE
 

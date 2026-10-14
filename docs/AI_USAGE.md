@@ -87,3 +87,7 @@ Uživatel výslovně požádal nahradit generovaný klíč jím zvoleným krátk
 ## Finální odevzdání — 14. října 2026
 
 Uživatel povolil navržené dokončení a změnu výchozí GitHub větve na devel, následně potvrdil výhradně testovací účel s realistickým vzhledem. Codex nastavil default branch přes autentizované GitHub API, zkrátil README pro hodnotitele, doplnil náhled přes stejný buildReport jako fulfillment a vytvořil reklamy jako SVG/PNG ze skutečného screenshotu bez nové závislosti. Soukromí vysvětluje demo, skutečné technické ukládání a chybějící provozní kontakt; žádná fiktivní identita, rozesílání, placený hosting ani komerční kampaň nebyly přidány. Dva dokumentační patche nejprve selhaly kvůli duplicitní operaci na jednom souboru a chybné kotvě; nebyly aplikovány a byly opraveny přesnými operacemi. Vercel env pull vrací pro sensitive proměnné pouze placeholders, proto produkční smoke nedokládáme jako nezávislý SQL audit. Přímé SQL a cleanup byly ověřeny v oddělené lokální DB; veřejná verze se ověřuje skutečným formulářem, reloadem serverového reportu a staženým PDF. Aktuální runtime snapshoty jsou v ai-log; přesný rozsah/filtr je uveden v jeho README.
+
+## Odstranění reklamních obrázků — 14. října 2026
+
+Na výslovný požadavek uživatele odstraněny oba PNG/SVG reklamní obrázky, jejich generátor a odkazy v aktuálním README/ADS/HANDOFF. Textové návrhy dvou reklam podle zadání zůstávají. Předchozí popis tvorby je historický záznam skutečné AI práce, nikoli tvrzení o aktuálně přiložených souborech. Webová aplikace a její funkce se nemění.

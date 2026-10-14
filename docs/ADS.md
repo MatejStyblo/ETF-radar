@@ -1,17 +1,6 @@
 # Dvě české reklamní varianty
 
-Stav: dva hotové reklamní návrhy v PNG a editovatelném SVG, 1080 × 1350 px. Žádná kampaň neběžela a žádný rozpočet nebyl utracen. Landing a ukládání jsou nasazené jako výběrové demo; skutečná kampaň vyžaduje provozní/privacy připravenost.
-
-| Varianta | PNG pro předání | Editovatelný zdroj | Landing |
-| --- | --- | --- | --- |
-| A — náklady | [ad-a.png](ads/ad-a.png) | [ad-a.svg](ads/ad-a.svg) | [Otevřít A](https://etf-radar-dun.vercel.app/?ad_variant=a&utm_source=meta&utm_medium=paid_social&utm_campaign=costs_v1&utm_content=tool_a) |
-| B — orientace | [ad-b.png](ads/ad-b.png) | [ad-b.svg](ads/ad-b.svg) | [Otevřít B](https://etf-radar-dun.vercel.app/?ad_variant=b&utm_source=meta&utm_medium=paid_social&utm_campaign=compare_v1&utm_content=tool_b) |
-
-Obě grafiky obsahují screenshot skutečného srovnání STXF/STXG z lokálního produkčního buildu. Generátor `scripts/generate-ads.mjs` pořídí nový screenshot a exportuje oba formáty (`ADS_ORIGIN` musí ukazovat na běžící aplikaci). Finanční sazby se berou z vykresleného katalogu, ne z ručně zadaných reklamních čísel. Jedná se o verzi katalogu 2026-10-13.1. Viditelné upozornění odděluje model od předpovědi; před reálným použitím sazby znovu ověřit.
-
-![Varianta A](ads/ad-a.png)
-
-![Varianta B](ads/ad-b.png)
+Stav: dvě textové reklamní varianty s popisem vizuálního konceptu podle zadání. Žádná kampaň neběžela a žádný rozpočet nebyl utracen. Landing a ukládání jsou nasazené jako výběrové demo; skutečná kampaň vyžaduje provozní/privacy připravenost.
 
 ## A — Náklady, které se projeví v čase
 
