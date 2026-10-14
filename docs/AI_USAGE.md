@@ -103,3 +103,7 @@ Uživatel hlásil horizontální posun v Chrome na iPhonu. Před opravou nebyl l
 ## Zkrácení popisků fondů — 14. října 2026
 
 Na žádost uživatele odstraněn drobný odstavec s indexem, distribucí a obchodní měnou pod oběma selektory ETF. Název, sazba a přesný listing zůstávají; finanční data a report se nemění. Informace o odlišných indexech a dostupnosti jsou dále v kontextovém upozornění a podrobnosti ve výsledném reportu.
+
+## Zkrácení upozornění u selektorů — 14. října 2026
+
+Na žádost uživatele odstraněn samostatný odstavec o odlišných indexech pod výběrem fondů. Stejné vysvětlení zůstává přímo u výsledku, v metodice a reportu; výpočet ani data se nemění. Existující live-funnel kontrola ověřuje zbývající upozornění u výsledku.

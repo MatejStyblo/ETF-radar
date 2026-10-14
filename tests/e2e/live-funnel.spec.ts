@@ -45,7 +45,7 @@ test.describe('opt-in real local production funnel (no interception)', () => {
         if(primary) {
           await expect(page.getByRole('combobox',{name:'První ETF',exact:true})).toHaveValue('stxf');
           await expect(page.getByRole('combobox',{name:'Druhé ETF',exact:true})).toHaveValue('stxg');
-          await expect(page.locator('.workspace-inputs .availability').first()).toContainText('Odlišné indexy a strategie');
+          await expect(page.locator('.workspace-output .results > .result-note').first()).toContainText('Odlišné indexy a strategie');
         } else {
           await page.getByRole('combobox',{name:'Druhé ETF',exact:true}).selectOption('ivv');
           await page.getByRole('combobox',{name:'První ETF',exact:true}).selectOption('cspx');
