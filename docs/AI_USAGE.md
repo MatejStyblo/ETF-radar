@@ -111,3 +111,7 @@ Na žádost uživatele odstraněn samostatný odstavec o odlišných indexech po
 ## Zkrácení dolního popisku kalkulačky — 14. října 2026
 
 Na žádost uživatele odstraněn odstavec s listingy a dostupností/KID pod vstupy kalkulačky. Listingy zůstávají u fondů a v selektorech; informace o dostupnosti a KID zůstávají v reportu a dokumentaci. Finanční data, výpočet a formulář se nemění. Existující UI test byl sladěn s odstraněním tohoto popisku.
+
+## Zkrácení popisku grafu — 14. října 2026
+
+Na žádost uživatele odstraněn vysvětlující odstavec pod grafem. Křivky, přepínač pohledu, posuvník, hodnoty a přístupný SVG popis zůstávají. Výpočet a modelové předpoklady v metodice se nemění.

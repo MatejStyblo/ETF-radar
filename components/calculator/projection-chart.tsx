@@ -58,6 +58,5 @@ export function ProjectionChart({ results, tickers }: { results: [Projection, Pr
     <label className="chart-slider-label" htmlFor={`${id}-year`}><span>Prohlédnout rok</span><strong>{yearText}</strong></label>
     <input className="chart-year-slider" id={`${id}-year`} type="range" min="0" max={lastYear} step="1" value={index} aria-label="Rok v grafu" aria-valuetext={accessibleValue} onChange={event => setChosenYear(Number(event.target.value))}/>
     <dl className="chart-readout" data-testid="chart-readout">{series.map(s => <div key={s.key}><dt><i className={s.className} aria-hidden="true"/>{s.label}</dt><dd>{money(selected[s.key])}</dd></div>)}</dl>
-    <figcaption>{mode === 'balance' ? 'Při nízkých nákladech mohou křivky téměř splývat. Rozdíl lépe uvidíte v pohledu „Dopad nákladů“.' : 'Dopad zahrnuje průběžné náklady i ušlé složené zhodnocení. Nejde o součet skutečně stržených poplatků.'} Stejné vklady a pevný hypotetický výnos. Není předpověď.</figcaption>
   </figure>;
 }
