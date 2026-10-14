@@ -44,3 +44,17 @@ Hobby je určený pro nekomerční osobní projekty a má limity. Po jejich pře
 - [PostgreSQL přes Vercel Marketplace](https://vercel.com/docs/postgres)
 
 Ověřeno 14. října 2026; parametry konkrétní cloud DB se musí ověřit při výběru plánu.
+
+## Automatické nasazení z devel (14. října 2026)
+
+Git integrace propojuje GitHub `MatejStyblo/ETF-radar`. Production branch je `devel`, Auto-assign Production Domains je zapnuté a Git deployments jsou enabled. Každý push/merge do devel spustí nový produkční build; po úspěchu Vercel přepne https://etf-radar-dun.vercel.app na nový deployment. Při neúspěšném buildu zůstává předchozí funkční deployment. `main` tím není změněná ani přepsaná.
+
+Běžná práce:
+```sh
+git switch devel
+git add <zmenene-soubory>
+git commit -m "Popis zmeny"
+git push origin devel
+```
+
+Není potřeba ruční vercel deploy, GitHub Actions ani credentials v repozitáři. Cloudové proměnné a Neon connection zůstávají v projektu. Změny schématu DB vyžadují řízené aplikování nových SQL migrací, nejsou automaticky součástí Git buildu. Ostatní větve mohou mít Vercel preview, ale produkční secrets/DB jsou určené pouze production prostředí; preview se nevydává za plně nakonfigurovanou produkci.

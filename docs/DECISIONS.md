@@ -170,3 +170,7 @@ Uživatel výslovně požádal o viditelnější cookie lištu; toto je povolen�
 Nový výslovný požadavek nasadit celou aplikaci ruší dřívější omezení na čistě lokální provoz; zachován testovací/nekomerční účel. Vercel Hobby a Neon free_v3, DB fra1, žádný placený plán. Cloud oddělený od lokálních kontaktů. Uživatel dokončil login a přijal podmínky Neonu sám.
 
 Celá aplikace zahrnuje chráněný dashboard: explicitní vzdálený režim, HTTPS a přesný Host, 256bit náhodný přístupový klíč uložený jen jako SHA-256 hash v server env, nezávislý session HMAC secret, HttpOnly/Secure/Strict cookie 8 hodin a DB login throttle. Bez session je dashboard i export 404. Lokální guard zůstává. Veřejné demo zřetelně žádá pouze syntetické emaily. Nezprovozňuje se kampaň ani emailová rozesílka. Retenční cleanup zatím zůstává ruční podle původního návrhu.
+
+## D22 — Produkční větev devel
+
+Uživatel výslovně požaduje automatickou aktualizaci veřejného webu při pushi do devel. Proto devel slouží jako Vercel Production branch pro tento testovací projekt, bez ohledu na konvenční název větve. Vytvořena z aktuálního ověřeného HEAD, nikoli ze staršího remote main. Main se nepřepisuje, nevynucuje se force push. Stávající Git integrace obstará build/deploy a atomické přepnutí aliasu; další CI služba není nutná.

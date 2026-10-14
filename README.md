@@ -259,3 +259,7 @@ Při první návštěvě se zobrazuje spodní cookie lišta s rovnocenným Povol
 - Cloudová DB je nová a oddělená od lokální; lokální kontakty nebyly zveřejněny ani přeneseny. Přístupový klíč správce není součástí Gitu ani klientského bundle.
 - Celý skutečný cloudový průchod byl ověřen včetně reportu, chráněného exportu a odhlášení. Detaily a zaznamenané počáteční selhání v docs/TESTING.md.
 - Zůstává testovací hiring projekt: pouze syntetické emaily, bez kampaně a bez skutečného emailového doručování. Retenční skript je stále ruční, nikoli spuštěný scheduler.
+
+### Automatické aktualizace webu
+
+Vercel je propojený s `MatejStyblo/ETF-radar` a produkční větev je **devel**. Push do devel spustí build a po jeho úspěchu aktualizuje https://etf-radar-dun.vercel.app. Větev main zůstává samostatná. Není potřeba ruční deployment ani GitHub Actions. Databázové migrace zůstávají samostatným krokem. Postup a ověření: docs/DEPLOYMENT.md a docs/TESTING.md.
