@@ -75,6 +75,24 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       <Metric label="Marketingové kontakty" value={number(overview.marketingLeads)} note="Z kontaktů v období: souhlas uložený při založení." id="marketing-leads" />
       <Metric label="Neměřená uložení" value={number(overview.unmeasuredCaptures)} note="Mimo způsobilou kohortu, nejen odmítnutí souhlasu." id="unmeasured-captures" />
     </dl></section>
+    <section aria-labelledby="visits-title" className="dash-section">
+      <h2 id="visits-title">Návštěvy a kontaktní formulář</h2>
+      <p className="dash-description">Jedna návštěva znamená měřenou relaci se souhlasem, která končí po 30 minutách neaktivity. Obnovení stránky ve stejné relaci se nepočítá znovu. Nejde o počet unikátních lidí.</p>
+      <dl className="dash-metrics">
+        <Metric label="Měřené návštěvy" value={number(data.formOutcomes.sessions)} note="Stejná landing kohorta jako v tabulce zdrojů." id="traffic-visits" />
+        <Metric label="Zahájili formulář" value={number(data.formOutcomes.started)} note="Návštěvy se zaznamenaným vstupem do formuláře." id="form-started" />
+        <Metric label="Odeslali a uložili kontakt" value={number(data.formOutcomes.submitted)} note="Návštěvy s potvrzeným zápisem v databázi, každá nejvýše jednou." id="form-submitted" />
+        <Metric label="Zatím bez odeslání" value={number(data.formOutcomes.withoutSubmission)} note={`Z toho ${number(data.formOutcomes.activeWithoutSubmission)} stále aktivních; mohou ještě odeslat.`} id="form-not-submitted" />
+        <Metric label="Zahájili, zatím neodeslali" value={number(data.formOutcomes.startedWithoutSubmission)} note="Podmnožina návštěv bez uložení kontaktu; zahrnuje aktivní návštěvy." id="form-started-not-submitted" />
+        <Metric label="Dokončení formuláře z návštěv" value={data.formOutcomes.sessions ? `${number(100 * data.formOutcomes.submitted / data.formOutcomes.sessions)} %` : '—'} note="Návštěvy s uložením / měřené návštěvy stejné kohorty." id="traffic-conversion" />
+      </dl>
+      <h3>Odkud návštěvy přicházejí</h3>
+      <p className="dash-description">Zdroj z UTM, jinak doména odkazujícího webu, pokud ji prohlížeč předá. Ukládá se při prvním měřeném příchodu relace. Neuvedeno znamená neznámý zdroj, nikoliv prokázanou přímou návštěvu. Starší zdroje se zpětně nedoplňují.</p>
+      <DataTable label="Návštěvy a formuláře podle zdroje" columns={['Zdroj', 'Médium', 'Kampaň', 'Varianta', 'Návštěvy', 'Zahájili formulář', 'Uložili kontakt', 'Zatím bez odeslání', 'Z toho aktivní', 'Dokončení']} empty={!data.traffic.length}>
+        {data.traffic.map((row, index) => <tr key={index}><th scope="row">{missing(row.source)}</th><td>{missing(row.medium)}</td><td>{missing(row.campaign)}</td><td>{row.variant.toUpperCase()}</td><td>{number(row.sessions)}</td><td>{number(row.started)}</td><td>{number(row.submitted)}</td><td>{number(row.withoutSubmission)}</td><td>{number(row.activeWithoutSubmission)}</td><td>{row.sessions ? `${number(100 * row.submitted / row.sessions)} %` : '—'}</td></tr>)}
+      </DataTable>
+      <p className="dash-description">Bez odeslání neznamená prokázaný odchod. Čísla platí k načtení přehledu; mohou se změnit dalším odesláním, expirací či odvoláním souhlasu. Nezahrnují návštěvníky bez souhlasu ani ztracené události.</p>
+    </section>
     <section aria-labelledby="funnel-title" className="dash-section">
       <div className="dash-section-head"><h2 id="funnel-title">Dosažení kroků</h2><span>Měřená landing kohorta</span></div>
       <p className="dash-description">Každý krok počítá odlišné relace v téže kohortě, nikoli počet eventů. Kroky nejsou nutně klesající ani v tomto pořadí: výsledek nebo nabídka se mohou zobrazit automaticky.</p>
@@ -89,7 +107,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     </section>
     <section aria-labelledby="campaign-title" className="dash-section">
       <div className="dash-section-head"><h2 id="campaign-title">Kampaně a atribuce</h2><span>Pouze úspěšná uložení</span></div>
-      <p className="dash-description">Atribuce z uložených captures, včetně neměřených. Bez kampaně u všech landing relací nelze spočítat konverzi kampaně. Neuvedeno znamená chybějící atribuci, ne přímou návštěvu.</p>
+      <p className="dash-description">Atribuce z uložených captures, včetně neměřených. Jde o počty uložení; konverzi měřených návštěv podle prvního zdroje ukazuje sekce výše. Neuvedeno znamená chybějící atribuci, ne přímou návštěvu.</p>
       <DataTable label="Uložení podle kampaní" columns={['Zdroj', 'Médium', 'Kampaň', 'Varianta', 'Uložení', 'Nové kontakty']} empty={!data.campaigns.length}>
         {data.campaigns.map((campaign, index) => <tr key={index}><td>{missing(campaign.source)}</td><td>{missing(campaign.medium)}</td><td>{missing(campaign.campaign)}</td><td>{missing(campaign.variant).toUpperCase()}</td><td>{number(campaign.captures)}</td><td>{number(campaign.newLeads)}</td></tr>)}
       </DataTable>

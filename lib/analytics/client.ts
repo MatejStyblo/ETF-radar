@@ -2,6 +2,7 @@
 // Only this allowlisted envelope leaves the browser. Never add arbitrary properties.
 import type { z } from 'zod';
 import { ETF_IDS } from '@/data/etfs';
+import { readAcquisition, type Acquisition } from './acquisition';
 import type { eventSchema } from '@/lib/db/analytics';
 // Type-only import: the server module never enters the browser bundle.
 export type ClientEvent = z.infer<typeof eventSchema>['name'];
@@ -10,6 +11,7 @@ type Preference='unset'|'allowed'|'denied';
 export type MeasurementPage='landing'|'report';
 let page:MeasurementPage='landing';
 let active=false;let activation=0;
+let acquisition:Acquisition|undefined;
 const bootstrapEvent=():ClientEvent=>page==='landing'?'landing_view':'session_start';
 const KEY='etf-radar-measurement';
 let preference:Preference='unset';let variant:'a'|'b'='a';let generation=0;let ready=false;let queue=Promise.resolve();
@@ -47,7 +49,7 @@ export function measurementConsent(){
 export function initializeMeasurement(adVariant?:'a'|'b',currentPage:MeasurementPage='landing'){
  const resumed=!active||page!==currentPage;
  active=true;const currentActivation=++activation;
- if(resumed){generation++;ready=false;once.clear();page=currentPage;}
+ if(resumed){generation++;ready=false;once.clear();page=currentPage;acquisition=currentPage==='landing'&&window.location?.href?readAcquisition(window.location.href,typeof document==='undefined'?'':document.referrer):undefined;}
  if(adVariant)variant=adVariant;
  try{if(localStorage.getItem(REVOCATION_KEY)==='pending'){pendingRevocation=true;queueRevocation();}}catch{}
  if(!listening){window.addEventListener('storage',event=>{if(event.key===KEY||event.key===null){try{const saved=localStorage.getItem(KEY);applyPreference(saved==='allowed'?'allowed':saved==='denied'?'denied':'unset');}catch{}}});listening=true;}
@@ -57,7 +59,7 @@ export function initializeMeasurement(adVariant?:'a'|'b',currentPage:Measurement
 }
 async function send(name:ClientEvent,epoch:number,etfIds?:EtfPair){
  if(!active||preference!=='allowed'||epoch!==generation)return false;
- try{const response=await fetch('/api/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({eventId:crypto.randomUUID(),name,adVariant:variant,consent:true,...(etfIds ? {etfIds} : {})}),keepalive:true});if(response.status===401&&epoch===generation){ready=false;once.clear();}return response.ok;}catch{return false;}
+ try{const response=await fetch('/api/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({eventId:crypto.randomUUID(),name,adVariant:variant,consent:true,...(name==='landing_view'&&acquisition?{acquisition}:{}),...(etfIds ? {etfIds} : {})}),keepalive:true});if(response.status===401&&epoch===generation){ready=false;once.clear();}return response.ok;}catch{return false;}
 }
 export function track(name:ClientEvent,etfIds?:EtfPair){
  if(!active||preference!=='allowed')return Promise.resolve();

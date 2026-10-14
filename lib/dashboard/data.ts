@@ -56,6 +56,25 @@ export async function getDashboardData(filter: DashboardFilter): Promise<Dashboa
     coalesce(attribution->>'utm_campaign','') AS campaign, coalesce(attribution->>'ad_variant','') AS variant,
     count(*)::int AS captures, count(*) FILTER (WHERE is_new_lead)::int AS "newLeads"
    FROM receipts GROUP BY 1,2,3,4 ORDER BY captures DESC, source, medium, campaign, variant`, values)).rows;
+  const traffic = (await client.query(`${dashboardScopeSql}, visit_outcomes AS (
+   SELECT c.id, s.ad_variant AS variant, s.acquisition, s.expires_at>p.to_at AS active,
+    EXISTS (SELECT 1 FROM measured_events e WHERE e.session_id=c.id AND e.name='lead_form_started') AS started,
+    EXISTS (SELECT 1 FROM submission_receipts r WHERE r.analytics_session_id=c.id AND r.created_at>=c.landing_at AND r.created_at<=p.to_at) AS submitted
+   FROM cohort c JOIN analytics_sessions s ON s.id=c.id CROSS JOIN params p
+  ) SELECT coalesce(nullif(acquisition->>'utm_source',''),acquisition->>'referrer_host','') AS source,
+   coalesce(acquisition->>'utm_medium','') AS medium, coalesce(acquisition->>'utm_campaign','') AS campaign, variant,
+   count(*)::int AS sessions, count(*) FILTER (WHERE started)::int AS started,
+   count(*) FILTER (WHERE submitted)::int AS submitted,
+   count(*) FILTER (WHERE NOT submitted)::int AS "withoutSubmission",
+   count(*) FILTER (WHERE NOT submitted AND active)::int AS "activeWithoutSubmission",
+   count(*) FILTER (WHERE started AND NOT submitted)::int AS "startedWithoutSubmission"
+   FROM visit_outcomes GROUP BY 1,2,3,4 ORDER BY sessions DESC,source,medium,campaign,variant`, values)).rows;
+  const formOutcomes = traffic.reduce((total, row) => ({
+   sessions: total.sessions + row.sessions, started: total.started + row.started, submitted: total.submitted + row.submitted,
+   withoutSubmission: total.withoutSubmission + row.withoutSubmission,
+   activeWithoutSubmission: total.activeWithoutSubmission + row.activeWithoutSubmission,
+   startedWithoutSubmission: total.startedWithoutSubmission + row.startedWithoutSubmission,
+  }), { sessions: 0, started: 0, submitted: 0, withoutSubmission: 0, activeWithoutSubmission: 0, startedWithoutSubmission: 0 });
   const comparisons = (await client.query(`${dashboardScopeSql}
    SELECT etf_ids[1] AS first,etf_ids[2] AS second,count(*)::int AS selections,count(DISTINCT session_id)::int AS sessions
    FROM measured_events WHERE source='client' AND name='etf_selected' AND cardinality(etf_ids)=2
@@ -77,7 +96,7 @@ export async function getDashboardData(filter: DashboardFilter): Promise<Dashboa
   const data: DashboardData = {
    generatedAt: clock.rows[0].now.toISOString(), filter: { ...filter, page },
    overview: { ...stats, conversionPct: stats.measuredSessions ? 100 * stats.convertedSessions / stats.measuredSessions : null },
-   funnel: steps.map(([name, label]) => ({ name, label, sessions: funnel.find(row => row.name === name)?.sessions ?? 0 })), daily, campaigns, comparisons, submittedComparisons, leads, leadTotal, events,
+   funnel: steps.map(([name, label]) => ({ name, label, sessions: funnel.find(row => row.name === name)?.sessions ?? 0 })), daily, campaigns, traffic, formOutcomes, comparisons, submittedComparisons, leads, leadTotal, events,
   };
   await client.query('COMMIT'); return data;
  } catch (error) { await client.query('ROLLBACK'); throw error; } finally { client.release(); }

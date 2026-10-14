@@ -17,6 +17,21 @@ function withdrawInOtherTab() {
  const event = Object.assign(new Event('storage'), { key: 'etf-radar-measurement', newValue: 'denied' });
  browser.dispatchEvent(event);
 }
+
+test('landing sends acquisition after opt-in only and report events omit it', async () => {
+ Object.assign(browser, {location:{href:'http://localhost/?utm_source=facebook&utm_campaign=trial'}});
+ vi.stubGlobal('document', {referrer:'https://www.google.com/search?q=private'});
+ const client = await import('@/lib/analytics/client');
+ client.initializeMeasurement('a', 'landing');
+ await client.track('landing_view');
+ expect(fetchMock).not.toHaveBeenCalled();
+ client.setMeasurement(true); await client.track('lead_form_started');
+ const events = fetchMock.mock.calls.map(([, options]) => JSON.parse(options.body));
+ expect(events[0].acquisition).toEqual({utm_source:'facebook',utm_campaign:'trial',referrer_host:'www.google.com'});
+ expect(events.find(event=>event.name==='lead_form_started').acquisition).toBeUndefined();
+ client.initializeMeasurement(undefined, 'report');await client.track('report_viewed');
+ expect(JSON.parse(fetchMock.mock.calls.at(-1)![1].body).acquisition).toBeUndefined();
+});
 test('report-only initialization establishes consented measurement without a landing view', async () => {
  storage.set('etf-radar-measurement', 'allowed');
  const client = await import('@/lib/analytics/client');

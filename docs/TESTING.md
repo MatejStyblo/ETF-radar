@@ -178,3 +178,21 @@ LIVE_FUNNEL_DATABASE_URL=postgresql://postgres@127.0.0.1:55439/etf_radar_nyse_te
 PLAYWRIGHT_BASE_URL=http://127.0.0.1:3103 \
 npx playwright test --workers=1
 ```
+
+## Návštěvy podle zdroje a neodeslané formuláře — 14. října 2026
+
+Windows, Node 24.15.0, npm 11.12.1, samostatná lokální PostgreSQL 17 na 127.0.0.1:55439. Aplikace na 127.0.0.1:3000, etf_radar; integration suite používá etf_radar_test a náhodnou vlastní dashboard DB. Migrace včetně 005 aplikovány. Skutečné nové výsledky: **92 unit / 42 integration prošlo**, typecheck, lint a produkční build prošly. Změna finančního modelu ani katalogu nebyla součástí práce.
+
+Nový explicitně opt-in browser test `tests/e2e/traffic.spec.ts`: **1 passed**, bez interceptu API. Dvě consented návštěvy se stejným unikátním testovacím zdrojem, obě zahájí formulář, jedna skutečně uloží syntetický kontakt a otevře report, druhá neodešle; třetí odmítne souhlas. DB a dashboard ověřily přesně 2 návštěvy / 2 zahájení / 1 uložení / 1 zatím neodeslaný / 1 aktivní / 50 %. Reload se změněným UTM nezmění první zdroj ani počet. Mobilní viewport 375×812 bez overflow celé stránky; axe nové sekce bez violations. Test po sobě scoped odstranil vlastní receipts, reporty, lead, session a throttle buckets. Celá dosavadní e2e suite se v tomto kroku nespouštěla; dřívější skóre Lighthouse není nové měření.
+
+První live běh selhal na nulové atribuci: dosavadní vývojový proces vracel pro nové acquisition payloady HTTP 422. Po restartu tohoto procesu prošel stejný test bez změny aplikačního kódu. Pro správný Chromium runtime bylo třeba `npx playwright install chromium`; starší cache browseru nebyla kompatibilní se současným runnerem. Debug requesty se zdrojem qa_debug byly odmítnuté (422), nikoli uložené návštěvy.
+
+Reprodukce v PowerShell se spuštěným lokálním serverem a nakonfigurovanou DB:
+```powershell
+$env:LIVE_TRAFFIC="1"
+$env:LIVE_TRAFFIC_DATABASE_URL="postgresql://postgres@127.0.0.1:55439/etf_radar"
+$env:PLAYWRIGHT_BASE_URL="http://127.0.0.1:3000"
+npx playwright test tests/e2e/traffic.spec.ts --workers=1
+```
+
+Integrace navíc ověřují nezávislost na best-effort success eventu, opakovaná uložení jedné relace, nerevokovanou kohortu a filtry, hostname referrer fallback, aktivní návštěvu, neměnnost prvního zdroje, odmítnutý souhlas a legacy záznamy.

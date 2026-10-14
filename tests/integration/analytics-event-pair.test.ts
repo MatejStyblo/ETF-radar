@@ -22,6 +22,20 @@ afterAll(async () => {
  await getPool().query('DELETE FROM rate_limit_buckets WHERE bucket_key=ANY($1::text[])', [sessions.map(id => `analytics:${id}`)]);
  await getPool().query('DELETE FROM analytics_sessions WHERE id=ANY($1::uuid[])', [sessions]); await closePool();
 });
+
+test('first consented landing stores source without a lead, reload preserves it and withdrawal excludes it', async () => {
+ const landing = {eventId:randomUUID(),name:'landing_view',adVariant:'a',consent:true,acquisition:{utm_source:'facebook',utm_campaign:'trial',referrer_host:'www.google.com'}};
+ expect((await POST(request({...landing,consent:false}))).status).toBe(422);
+ const response=await POST(request(landing));expect(response.status).toBe(200);
+ const cookie=response.headers.get('set-cookie')!.split(';')[0];
+ const id=cookie.split('=')[1].split('.')[0];sessions.push(id);
+ expect((await getPool().query('SELECT acquisition FROM analytics_sessions WHERE id=$1',[id])).rows[0].acquisition).toEqual(landing.acquisition);
+ expect((await POST(request({...landing,eventId:randomUUID(),acquisition:{utm_source:'changed'}},cookie))).status).toBe(200);
+ expect((await getPool().query('SELECT acquisition FROM analytics_sessions WHERE id=$1',[id])).rows[0].acquisition).toEqual(landing.acquisition);
+ expect((await getPool().query("SELECT count(*)::int AS n FROM analytics_events WHERE session_id=$1 AND name='landing_view'",[id])).rows[0].n).toBe(1);
+ await DELETE(new Request('http://localhost:3000/api/events',{method:'DELETE',headers:{origin:'http://localhost:3000',cookie}}));
+ expect((await getPool().query('SELECT revoked FROM analytics_sessions WHERE id=$1',[id])).rows[0].revoked).toBe(true);
+});
 test('invalid, unconsented, revoked and expired pair events never write rows', async () => {
  const { cookie, event: landing } = await bootstrap();
  const selected = { ...landing, eventId: randomUUID(), name: 'etf_selected', etfIds: ['spy', 'ivv'] };

@@ -15,6 +15,8 @@ export type DashboardData = {
     unmeasuredCaptures: number;
     conversionPct: number | null;
   };
+  traffic: { source: string; medium: string; campaign: string; variant: string; sessions: number; started: number; submitted: number; withoutSubmission: number; activeWithoutSubmission: number; startedWithoutSubmission: number }[];
+  formOutcomes: { sessions: number; started: number; submitted: number; withoutSubmission: number; activeWithoutSubmission: number; startedWithoutSubmission: number };
   funnel: FunnelStep[];
   daily: { day: string; measuredSessions: number; uniqueLeads: number; captures: number }[];
   campaigns: { source: string; medium: string; campaign: string; variant: string; captures: number; newLeads: number }[];

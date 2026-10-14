@@ -262,3 +262,7 @@ Podle uživatelem přiloženého obrázku: desktopový dvouřádkový nadpis, je
 ## Graf modelového scénáře — 12. října 2026
 
 Přidán propojený graf hodnoty investice / dopadu nákladů s ročními daty stávajícího modelu, baseline, legendou, společnou nulovou škálou a přesnými hodnotami zvoleného roku. Funguje v kalkulačce i webovém reportu, myší, dotykem a klávesnicí. Vstupy a změna ETF ho okamžitě přepočítají; při neplatném scénáři zmizí. Bez nové závislosti, bez tvrzení o historických výnosech.
+
+## Návštěvnost a neodeslané formuláře — 14. října 2026
+
+Na žádost uživatele rozšířit stávající opt-in měření: uložit při prvním landing eventu relace validované UTM a pouze externí referrer hostname; přidat aditivní migraci, agregaci stejné landing kohorty a dashboard zdrojů / zahájení / úspěšných uložení / dosud neodeslaných formulářů. Probíhající návštěvy odlišit; úspěch odvodit od durable receipt, nikoli pouze best-effort success eventu. Ověřit unit, PostgreSQL integrace, browser cestu, build a stávající funnel. Bez měření před souhlasem, bez IP/fingerprintu či zpětného domýšlení historie.

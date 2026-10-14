@@ -11,7 +11,7 @@ const all = { range: 'all', variant: 'all', page: 1 } as const;
 beforeAll(async () => {
  await admin.query(`CREATE DATABASE ${database}`);
  process.env.DATABASE_URL = `postgresql://postgres@127.0.0.1:55439/${database}`;
- for (const migration of ['001', '002', '003', '004']) await getPool().query(await readFile(`lib/db/migrations/${migration}.sql`, 'utf8'));
+ for (const migration of ['001', '002', '003', '004', '005']) await getPool().query(await readFile(`lib/db/migrations/${migration}.sql`, 'utf8'));
 });
 beforeEach(async () => {
  // This random database belongs solely to this suite, never the shared test DB.
@@ -57,6 +57,23 @@ test('empty PostgreSQL dashboard is truthful and clamps a nonexistent page', asy
  for (const key of ['daily', 'campaigns', 'comparisons', 'submittedComparisons', 'leads', 'events'] as const) expect(data[key]).toEqual([]);
  expect(data.funnel.length).toBeGreaterThan(0);
  expect(data.funnel.every(step => step.sessions === 0)).toBe(true);
+});
+
+test('traffic counts first-source visits and durable submissions, including lost success events, once per session', async () => {
+ const submitted = await session(); const abandoned = await session(); const active = await session();
+ const referral = await session(); const revoked = await session('a', true, 1, true);
+ const outside = await session('b'); const old = await session('a', true, 40);
+ await getPool().query('UPDATE analytics_sessions SET acquisition=$2 WHERE id=ANY($1::uuid[])', [[submitted, abandoned, active, revoked, outside, old], {utm_source:'facebook',utm_campaign:'trial'}]);
+ await getPool().query('UPDATE analytics_sessions SET acquisition=$2 WHERE id=$1', [referral, {referrer_host:'www.google.com'}]);
+ await getPool().query("UPDATE analytics_sessions SET expires_at=now()+interval '20 minutes' WHERE id=$1",[active]);
+ for(const id of [submitted,abandoned,active]) await event(id,'lead_form_started');
+ const contact = await lead();
+ await receipt(contact,submitted);await receipt(contact,submitted,false); // no best-effort success event
+ await receipt(contact,revoked,false);await receipt(contact,outside,false,1,'b');
+ const data=await getDashboardData({range:'7',variant:'a',page:1});
+ expect(data.formOutcomes).toEqual({sessions:4,started:3,submitted:1,withoutSubmission:3,activeWithoutSubmission:1,startedWithoutSubmission:2});
+ expect(data.traffic.find(row=>row.source==='facebook')).toEqual({source:'facebook',medium:'',campaign:'trial',variant:'a',sessions:3,started:3,submitted:1,withoutSubmission:2,activeWithoutSubmission:1,startedWithoutSubmission:2});
+ expect(data.traffic.find(row=>row.source==='www.google.com')?.sessions).toBe(1);
 });
 test('measured conversion and funnel use the same landing cohort; receipt totals remain independent', async () => {
  const a = await session(); const other = await session();

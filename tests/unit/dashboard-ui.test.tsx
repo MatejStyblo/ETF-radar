@@ -12,6 +12,7 @@ beforeEach(() => { vi.clearAllMocks(); mocks.headers.mockResolvedValue(new Heade
 const fixture = {
  generatedAt: '2026-10-10T08:00:00Z', filter: { range: '30', variant: 'all', page: 1 },
  overview: { measuredSessions: 137, uniqueLeads: 19, captures: 23, marketingLeads: 4, measuredNewLeads: 7, convertedSessions: 6, unmeasuredCaptures: 16, conversionPct: 4.38 },
+ traffic: [], formOutcomes: { sessions: 0, started: 0, submitted: 0, withoutSubmission: 0, activeWithoutSubmission: 0, startedWithoutSubmission: 0 },
  funnel: [], daily: [], campaigns: [], comparisons: [], submittedComparisons: [], leads: [], leadTotal: 0, events: []
 };
 async function render() {

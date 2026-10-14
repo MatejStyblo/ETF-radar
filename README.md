@@ -103,7 +103,7 @@ Nejdříve baseline a předem stanovené okno, MDE, vzorek a pravidlo ukončení
 - Server-only `pg`, pool maximálně 5 připojení na instanci. Transakce ukládá lead, report a receipt; unikátní HMAC emailový klíč a advisory lock pro attempt chrání duplicity.
 - Normalizace emailu: trim ve schématu, lowercase pouze domény; bez slučování plus/dot aliasů. Duplicate capture nevynucuje nový marketing consent.
 - Report token odvozený HMAC z attempt UUID a serverového secretu, v DB přístupový hash, v prohlížeči HttpOnly/SameSite cookie (Secure pro HTTPS). Token ani email nejsou v URL; report je no-store/noindex.
-- SQL migrace `001.sql` až `003.sql`; tabulky `leads`, `reports`, `submission_receipts`, `rate_limit_buckets`, `analytics_sessions`, `analytics_events`.
+- SQL migrace `001.sql` až `005.sql`; tabulky `leads`, `reports`, `submission_receipts`, `rate_limit_buckets`, `analytics_sessions`, `analytics_events`.
 - Vitest unit/integration; Playwright + axe. CSP aktuálně připouští inline scripts/styles; nonce hardening není hotový.
 
 ## Lokální spuštění
@@ -242,3 +242,7 @@ Uživatel výslovně určil, že projekt zůstane testovací a nikdy nebude skut
 - Původní [PLAN](docs/PLAN.md) a [DECISIONS](docs/DECISIONS.md) zachycují i návrhy před implementací. Skutečný stav určují soubory, tento README, ANALYTICS a časově řazené důkazy v TESTING.
 
 AI použití a skutečné chyby/opravy popisuje [AI_USAGE](docs/AI_USAGE.md). Použit byl Hermes Agent, nikoli předstíraná Claude Code session. **[ai-log/hermes-session.jsonl](ai-log/hermes-session.jsonl) obsahuje skutečný redigovaný snapshot rodičovské session**, exportovaný Hermes CLI. Je to jeden JSONL session record s polem `messages`, nikoli jedna zpráva na řádek. Parent ověřil parsování a kontrolu literal secrets/password-bearing PostgreSQL URL. Snapshot nezahrnuje pozdější zprávy a nedokládá automaticky úplnou lineage všech delegací; není rekonstruovaným chatem. Před případným sdílením stále zkontrolovat osobní údaje a lokální cesty. Finanční evidence, testované výpočty a skutečné tool výsledky mají přednost před tvrzeními AI.
+
+## Návštěvnost a dokončení formuláře (14. října 2026)
+
+Lokální `/dashboard` nyní obsahuje „Návštěvy a kontaktní formulář“: měřené návštěvy, zahájení formuláře, potvrzená uložení kontaktu, návštěvy zatím bez odeslání a jejich aktivní podmnožinu, včetně rozpisu podle zdroje, média, kampaně a varianty. Zdroj návštěvy je z UTM, případně externí referrer domény. Měření běží pouze se souhlasem a neidentifikuje unikátní lidi. Obnovení stránky v relaci nezvyšuje počet návštěv. Chybějící zdroj ani neodeslaný formulář neprokazují přímý příchod nebo odchod. Nová migrace `005.sql` je potřeba i při aktualizaci existující databáze (`node --env-file=.env.local scripts/migrate.mjs`). Detail a rozdíl proti starším eventovým kartám: docs/ANALYTICS.md, poslední sekce.

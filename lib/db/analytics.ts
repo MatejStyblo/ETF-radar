@@ -1,11 +1,12 @@
 import 'server-only';
 import { randomUUID } from 'node:crypto';
+import { acquisitionSchema } from '@/lib/analytics/acquisition';
 import { z } from 'zod';
 import { etfPairSchema } from '@/lib/validation/schemas';
 import { getPool } from './pool';
 import { HttpError } from '@/lib/security/http';
 import { readSession } from '@/lib/security/analytics';
-export const eventSchema = z.object({ eventId: z.uuid(), name: z.enum(['session_start','landing_view','primary_cta_click','comparison_started','etf_selected','calculator_interaction','results_viewed','lead_offer_viewed','lead_form_started','lead_submit_attempt','lead_submit_error','report_viewed','report_downloaded']), adVariant: z.enum(['a','b']), consent: z.literal(true), etfIds: etfPairSchema.optional() }).strict().refine(event => !event.etfIds || (event.name === 'etf_selected' && event.etfIds[0] !== event.etfIds[1]), { path: ['etfIds'], message: 'Pouze výběr dvou různých ETF smí obsahovat dvojici fondů.' });
+export const eventSchema = z.object({ eventId: z.uuid(), name: z.enum(['session_start','landing_view','primary_cta_click','comparison_started','etf_selected','calculator_interaction','results_viewed','lead_offer_viewed','lead_form_started','lead_submit_attempt','lead_submit_error','report_viewed','report_downloaded']), adVariant: z.enum(['a','b']), consent: z.literal(true), etfIds: etfPairSchema.optional(), acquisition: acquisitionSchema.optional() }).strict().refine(event => !event.acquisition || event.name === 'landing_view', { message: 'Zdroj návštěvy patří pouze k landing události.' }).refine(event => !event.etfIds || (event.name === 'etf_selected' && event.etfIds[0] !== event.etfIds[1]), { path: ['etfIds'], message: 'Pouze výběr dvou různých ETF smí obsahovat dvojici fondů.' });
 export async function validSession(request: Request): Promise<string | null> {
  const id = readSession(request);
  if (!id) return null;
@@ -32,6 +33,9 @@ export async function recordEvent(event: z.infer<typeof eventSchema>, request: R
    id = randomUUID();
    await client.query("INSERT INTO analytics_sessions(id,ad_variant,expires_at) VALUES($1,$2,now()+interval '30 minutes')", [id,event.adVariant]);
   }
+  // Serialize first landing attribution across tabs; a reload never overwrites it.
+  await client.query('SELECT id FROM analytics_sessions WHERE id=$1 FOR UPDATE', [id]);
+  if (event.name === 'landing_view' && event.acquisition) await client.query("UPDATE analytics_sessions SET acquisition=$2 WHERE id=$1 AND NOT revoked AND NOT EXISTS (SELECT 1 FROM analytics_events WHERE session_id=$1 AND source='client' AND name='landing_view')", [id,event.acquisition]);
   const quota = await client.query(`INSERT INTO rate_limit_buckets(bucket_key,hits,expires_at) VALUES($1,1,now()+interval '1 minute') ON CONFLICT(bucket_key) DO UPDATE SET hits=CASE WHEN rate_limit_buckets.expires_at<now() THEN 1 ELSE rate_limit_buckets.hits+1 END,expires_at=CASE WHEN rate_limit_buckets.expires_at<now() THEN now()+interval '1 minute' ELSE rate_limit_buckets.expires_at END RETURNING hits`, [`analytics:${id}`]);
   if (quota.rows[0].hits > 120) throw new HttpError(429, 'Příliš mnoho událostí.');
   await client.query("INSERT INTO analytics_events(event_id,source,session_id,name,ad_variant,etf_ids) SELECT $1,'client',id,$3,ad_variant,$4::text[] FROM analytics_sessions WHERE id=$2 AND NOT revoked ON CONFLICT DO NOTHING", [event.eventId,id,event.name,event.etfIds ?? null]);
