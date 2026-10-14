@@ -280,3 +280,5 @@ Vercel milník dokončen: Hobby projekt, Neon Free, migrace, server secrets a p�
 ## Automatické nasazení z devel — 14. října 2026
 
 Uživatel požaduje, aby push do devel aktualizoval veřejnou aplikaci. Ověřeno propojení GitHub MatejStyblo/ETF-radar a zapnuté Git deploys; dosavadní productionBranch je main, na GitHubu existuje pouze main. Vytvořit devel z aktuálního ověřeného stavu, nastavit Production branch na devel, pushnout bez force a ověřit skutečný automatický production build a přiřazení veřejného aliasu. Není potřeba GitHub Actions ani kopírování secrets do Gitu.
+
+Automatické nasazení potvrzeno: Git build z devel přešel do READY a veřejný alias ukazuje na jeho deployment ID. Zbývající dokumentační commit projde týmž automatickým tokem; ruční deploy pro tento milník nebyl použit.

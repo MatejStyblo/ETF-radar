@@ -220,3 +220,5 @@ Cloudové npm ci hlásí 5 high dev dependency findings, stejně jako lokální 
 ## Git automatické deploymenty z devel — 14. října 2026
 
 Před změnou GitHub obsahoval jen main. Vytvořena devel z ověřeného aktuálního HEAD a pushnuta bez force; main nebyla přepsána. První push ccb9520 prokazatelně spustil Git deployment, ale ještě preview, protože uložení produkční větve se dokončilo až po založení vzdálené devel. Následně UI potvrdilo „Branch tracking saved“ a nezávislý GET /v9/projects/etf-radar vrátil link.productionBranch=devel. Další dokumentační commit ověří skutečný production Git build; finální evidence bude doplněna po doběhu.
+
+Výsledek ověření: push **ad16f054942d7b5b932d89af40d2337be3d27267** spustil bez ručního CLI deploymentu **dpl_9LisDE9q1weVutJyi8H3JKPxTPe3**, source=git, branch=devel, target=production, stav READY (build 58 s). Nezávislý GET /v4/aliases/etf-radar-dun.vercel.app potvrdil deploymentId stejného Git buildu. Main na GitHubu zůstala 1657b1a. Nastavení potvrzeno UI i API; screenshot docs/qa/vercel-devel-branch.jpg. Finální dokumentační commit znovu využívá stejný automatický tok. Aplikační kód nebyl v tomto milníku měněn.
