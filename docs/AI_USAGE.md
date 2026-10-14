@@ -47,3 +47,9 @@ Na přímý požadavek uživatele Codex rozšířil existující lokální dashb
 ## Codex — cookie lišta (14. října 2026)
 
 Na výslovný požadavek uživatele vznikla viditelná spodní nemodální lišta nad stávajícím consent API; bez změny právního režimu nebo automatického povolení měření. Při vizuální kontrole mobilního screenshotu byl odhalen překryv vývojového Next indikátoru s tlačítkem, proto přesunut do pravého horního rohu. Existující browser test obálky událostí byl aktualizován na acquisition pole z předchozí změny; schéma aplikace se v tomto kroku neměnilo. Podrobné výsledky v TESTING.
+
+## Codex — příprava Vercel Hobby (14. října 2026)
+
+Uživatel výslovně povolil bezplatné nasazení. Codex ověřil oficiální podporu Node 24 a podmínky Hobby, připravil upload exclusions a build konfiguraci, spustil skutečný build. Na Vercel chybí přihlášení ve webu i CLI; vyžádán uživatelský login, žádné credentials nebyly vypsány ani commitnuty. Deployment ani cloud DB zatím nevytvořeny.
+
+Dokončení Vercel: uživatel dokončil CLI login a přijal podmínky Neonu v prohlížeči. CLI vytvořilo projekt, připojilo existující GitHub repo a nainstalovalo Neon Free. Integrace automaticky přidala dva agent skills; ty nejsou aplikační závislost ani součást deploymentu. Doplněn oddělený režim autentizovaného cloud dashboardu, namísto zveřejnění původního lokálního guardu. Cloud migrations a skutečný browser → cloud DB → report → dashboard/export smoke prošly. První test odhalil logout 403; opraven způsob POST se zachováním Origin kontroly a celý cloud test zopakován úspěšně. Podrobnosti, skutečné deployment ID a limity v TESTING a DEPLOYMENT.

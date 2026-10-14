@@ -270,3 +270,9 @@ Na žádost uživatele rozšířit stávající opt-in měření: uložit při p
 ## Viditelná cookie lišta — 14. října 2026
 
 Na výslovný požadavek uživatele nahradit první volbu ve spodní sekci pevnou spodní lištou na landing page/reportu. Zachovat opt-in API, stejné možnosti povolit/odmítnout, zapamatování, odvolání a souhlas mezi záložkami. Po volbě schovat lištu, ponechat trvalé nastavení v původní sekci. Bez zablokování stránky; zkontrolovat mobil, klávesnici, souhlas a stávající acquisition cestu.
+
+## Vercel Hobby — požadavek na nasazení 14. října 2026
+
+Uživatel výslovně požádal nasadit celou aplikaci na bezplatný Vercel účet matejstyblos-projects. Nové povolení nahrazuje dřívější zákaz externího deploymentu, zachovává testovací účel projektu a nulový rozpočet. Plán: ověřit login/Hobby, připravit Node 24 a konfiguraci uploadu bez secrets či AI logů, připojit oddělený bezplatný PostgreSQL, aplikovat migrace, nastavit serverová tajemství a přesný APP_ORIGIN, nasadit a reálně ověřit uložení/report/consent. Online dashboard vyžaduje autentizaci; současný lokální guard nesmí být prostě vypnut. Stav: Vercel CLI připravené, webové přihlášení zatím chybí. Žádný deployment ani cloud DB dosud vytvořeny.
+
+Vercel milník dokončen: Hobby projekt, Neon Free, migrace, server secrets a přesný APP_ORIGIN, testovací notice a chráněný HTTPS dashboard. Finální cloud build READY a skutečný smoke test prošel; výsledky v TESTING.md. Původní plán ponechat dashboard pouze lokálně byl rozšířen o samostatně zabezpečený vzdálený režim, aby splnil požadavek na celou appku.

@@ -1,0 +1,15 @@
+.git
+.next
+node_modules
+.env*
+!.env.example
+.vercel
+ai-log
+docs
+tests
+test-results
+playwright-report
+coverage
+.agents
+skills-lock.json
+*.tsbuildinfo

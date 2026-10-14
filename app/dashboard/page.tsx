@@ -4,6 +4,7 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { dashboardAccessAllowed } from '@/lib/dashboard/access';
+import { DashboardLogoutButton } from '@/components/dashboard/logout-button';
 import { getDashboardData, parseDashboardFilter } from '@/lib/dashboard/data';
 import type { DashboardFilter } from '@/lib/dashboard/types';
 import './dashboard.css';
@@ -44,19 +45,20 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   try {
     data = await getDashboardData(requestedFilter);
   } catch {
-    return <main id="main" className="dashboard"><header className="dash-header"><Link href="/" prefetch={false} className="brand">ETF Radar</Link><span className="dash-local">Pouze lokální přehled</span></header><section className="dash-cover"><h1>Přehled ETF Radar</h1><div className="dash-unavailable" role="alert"><h2>Data jsou nyní nedostupná</h2><p>Databázi se nepodařilo načíst. Čísla nezobrazujeme, protože by nebyla ověřená. Zkontrolujte lokální databázi a migrace a zkuste přehled znovu načíst.</p></div><div className="dash-actions"><a href={dashboardUrl(requestedFilter)}>Načíst znovu</a><Link href="/" prefetch={false}>Otevřít landing page</Link></div></section></main>;
+    return <main id="main" className="dashboard"><header className="dash-header"><Link href="/" prefetch={false} className="brand">ETF Radar</Link><span className="dash-local">{process.env.DASHBOARD_REMOTE_ENABLED === 'true' ? 'Chráněný přehled' : 'Pouze lokální přehled'}</span></header><section className="dash-cover"><h1>Přehled ETF Radar</h1><div className="dash-unavailable" role="alert"><h2>Data jsou nyní nedostupná</h2><p>Databázi se nepodařilo načíst. Čísla nezobrazujeme, protože by nebyla ověřená. Zkontrolujte lokální databázi a migrace a zkuste přehled znovu načíst.</p></div><div className="dash-actions"><a href={dashboardUrl(requestedFilter)}>Načíst znovu</a><Link href="/" prefetch={false}>Otevřít landing page</Link></div></section></main>;
   }
+  const remote = process.env.DASHBOARD_REMOTE_ENABLED === 'true';
   const filter = data.filter;
   const overview = data.overview;
   const funnelMax = Math.max(1, ...data.funnel.map(step => step.sessions));
   const dailyMax = Math.max(1, ...data.daily.map(day => day.measuredSessions));
   const totalPages = Math.max(1, Math.ceil(data.leadTotal / 50));
   return <main id="main" className="dashboard">
-    <header className="dash-header"><Link href="/" prefetch={false} className="brand">ETF <span className="brand-light">Radar</span></Link><span className="dash-local">Pouze lokální přehled</span></header>
+    <header className="dash-header"><Link href="/" prefetch={false} className="brand">ETF <span className="brand-light">Radar</span></Link><span className="dash-local">{process.env.DASHBOARD_REMOTE_ENABLED === 'true' ? 'Chráněný přehled' : 'Pouze lokální přehled'}</span></header>
     <section className="dash-cover" aria-labelledby="dashboard-title">
       <p className="eyebrow">Měření &amp; uložené kontakty</p><h1 id="dashboard-title">Přehled ETF Radar</h1>
       <p>Skutečně uložená data, ne odhad celé návštěvnosti.</p>
-      <div className="dash-actions"><a href={dashboardUrl(filter)}>Načíst znovu</a><a href={`/dashboard/export?${new URLSearchParams({ range: filter.range, variant: filter.variant })}`}>Export kontaktů CSV</a><Link href="/" prefetch={false}>Otevřít landing page</Link></div>
+      <div className="dash-actions">{remote && <DashboardLogoutButton/>}<a href={dashboardUrl(filter)}>Načíst znovu</a><a href={`/dashboard/export?${new URLSearchParams({ range: filter.range, variant: filter.variant })}`}>Export kontaktů CSV</a><Link href="/" prefetch={false}>Otevřít landing page</Link></div>
     </section>
     <form className="dash-filters" action="/dashboard" method="get">
       <label htmlFor="dash-range">Období<select id="dash-range" name="range" defaultValue={filter.range}><option value="7">Posledních 7 dní</option><option value="30">Posledních 30 dní</option><option value="90">Posledních 90 dní</option><option value="all">Všechna dostupná data</option></select></label>
@@ -144,6 +146,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         {data.events.map((event, index) => <tr key={index}><td><time dateTime={event.time}>{timestamp(event.time)}</time></td><td><code>{event.name}</code></td><td>{event.source}</td><td>{missing(event.variant).toUpperCase()}</td><td>{pair(event.first, event.second)}</td></tr>)}
       </DataTable>
     </section>
-    <footer className="dash-footer"><p>Načteno <time dateTime={data.generatedAt}>{timestamp(data.generatedAt)} UTC</time>. Bez automatického obnovování.</p><p>Lokální testovací projekt · kontakty a CSV obsahují emaily. Nesdílejte je veřejně.</p></footer>
+    <footer className="dash-footer"><p>Načteno <time dateTime={data.generatedAt}>{timestamp(data.generatedAt)} UTC</time>. Bez automatického obnovování.</p><p>Testovací projekt · kontakty a CSV obsahují emaily. Nesdílejte je veřejně.</p></footer>
   </main>;
 }

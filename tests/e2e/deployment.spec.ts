@@ -1,0 +1,61 @@
+import { test, expect } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
+import { Pool } from 'pg';
+import { randomUUID } from 'node:crypto';
+test.use({trace:'off'}); // Never record the private administrator key in traces.
+test('deployed HTTPS app saves a real lead, delivers report and protects dashboard/export',async({page,context},info)=>{
+ test.skip(process.env.LIVE_DEPLOYMENT!=='1','Requires explicit deployed test project and private credential files.');
+ test.setTimeout(90000);
+ const base=process.env.PLAYWRIGHT_BASE_URL!;
+ const origin=new URL(base);expect(origin.protocol).toBe('https:');expect(origin.hostname.endsWith('.vercel.app')).toBe(true);
+ const credentials=await readFile(process.env.LIVE_DEPLOYMENT_ACCESS_FILE!,'utf8');
+ const key=/^Přístupový klíč: (.+)$/m.exec(credentials)![1];
+ process.loadEnvFile(process.env.LIVE_DEPLOYMENT_ENV_FILE!);
+ const dbUrl=new URL(process.env.DATABASE_URL!);expect(dbUrl.hostname.endsWith('.neon.tech')).toBe(true);
+ const db=new Pool({connectionString:dbUrl.href});
+ const campaign=`deploy_${randomUUID().replaceAll('-','')}`;
+ const email=`${campaign}@example.invalid`;
+ const sessions:string[]=[];
+ try {
+  for(const path of ['/dashboard','/dashboard/export'])expect((await context.request.get(base+path)).status()).toBe(404);
+  const rejected=await context.request.post(base+'/api/admin/session',{headers:{Origin:base},data:{key:'wrong'}});
+  expect(rejected.status()).toBe(401);expect(rejected.headers()['set-cookie']).toBeUndefined();
+  const crossSite=await context.request.post(base+'/api/admin/session',{headers:{Origin:'https://evil.invalid'},data:{key:'wrong'}});
+  expect(crossSite.status()).toBe(403);
+  await page.setViewportSize({width:375,height:812});
+  await page.goto(`${base}/?utm_source=deployment_test&utm_medium=test&utm_campaign=${campaign}`);
+  await expect(page.getByText('Testovací projekt pro výběrové řízení.',{exact:false})).toBeVisible();
+  await page.screenshot({path:info.outputPath('deployed-landing.png')});
+  await page.getByRole('button',{name:'Povolit',exact:true}).click();
+  await expect.poll(async()=> (await db.query("SELECT count(*)::int AS n FROM analytics_sessions WHERE acquisition->>'utm_campaign'=$1",[campaign])).rows[0].n).toBe(1);
+  const session=(await context.cookies()).find(cookie=>cookie.name==='etf_analytics')!;sessions.push(session.value.split('.')[0]);
+  await page.locator('#lead-email').fill(email);
+  const saved=page.waitForResponse(response=>new URL(response.url()).pathname==='/api/leads'&&response.request().method()==='POST');
+  await page.getByRole('button',{name:'Získat moje srovnání',exact:true}).click();
+  expect((await saved).status()).toBe(200);
+  await expect(page).toHaveURL(base+'/report');
+  await expect(page.getByRole('heading',{name:'Vaše ETF srovnání',exact:true})).toBeVisible();
+  const report=await context.request.get(base+'/report/download');expect(report.status()).toBe(200);expect(await report.text()).not.toContain(email);
+  expect((await db.query('SELECT count(*)::int AS n FROM leads WHERE email=$1',[email])).rows[0].n).toBe(1);
+  await page.goto(base+'/dashboard/login');
+  await page.getByLabel('Přístupový klíč',{exact:true}).fill(key);
+  await page.getByRole('button',{name:'Otevřít dashboard',exact:true}).click();
+  await expect(page).toHaveURL(base+'/dashboard');
+  await expect(page.getByRole('heading',{name:'Přehled ETF Radar',exact:true})).toBeVisible();
+  await expect(page.getByRole('rowheader',{name:email,exact:true})).toBeVisible();
+  const cookie=(await context.cookies()).find(cookie=>cookie.name==='etf_dashboard')!;
+  expect(cookie.httpOnly).toBe(true);expect(cookie.secure).toBe(true);expect(cookie.sameSite).toBe('Strict');
+  const exported=await context.request.get(base+'/dashboard/export');expect(exported.status()).toBe(200);expect(await exported.text()).toContain(email);
+  await page.getByRole('button',{name:'Odhlásit',exact:true}).click();
+  await expect(page).toHaveURL(base+'/dashboard/login');
+  expect((await context.request.get(base+'/dashboard/export')).status()).toBe(404);
+ } finally {
+  const reports=await db.query('SELECT report_id FROM submission_receipts WHERE lead_id IN (SELECT id FROM leads WHERE email=$1)',[email]);
+  await db.query('DELETE FROM submission_receipts WHERE lead_id IN (SELECT id FROM leads WHERE email=$1)',[email]);
+  await db.query('DELETE FROM reports WHERE id=ANY($1::uuid[])',[reports.rows.map(row=>row.report_id)]);
+  await db.query("DELETE FROM rate_limit_buckets WHERE bucket_key IN (SELECT 'lead:'||email_key FROM leads WHERE email=$1) OR bucket_key=ANY($2::text[])",[email,sessions.map(id=>`analytics:${id}`)]);
+  await db.query('DELETE FROM leads WHERE email=$1',[email]);
+  await db.query('DELETE FROM analytics_sessions WHERE id=ANY($1::uuid[]) OR acquisition->>\'utm_campaign\'=$2',[sessions,campaign]);
+  await db.end();
+ }
+});

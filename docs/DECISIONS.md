@@ -164,3 +164,9 @@ Zůstává opt-in relace s 30 minutami neaktivity, nikoli unikátní člověk. A
 ## D20 — Viditelná cookie lišta (14. října 2026)
 
 Uživatel výslovně požádal o viditelnější cookie lištu; toto je povolená výjimka z původního směru bez úvodních popupů. Zvolena nemodální lišta u spodního okraje bez scrimu, bez blokování kalkulačky a bez přesunu focusu při prvním zobrazení. Povolit/Odmítnout mají totožnou velikost, barvu a kontrast. Lišta se po volbě skryje; původní spodní sekce obsahuje stav, změnu nastavení a odvolání. Při ručním otevření jde focus na první volbu a při zavření zpět na spouštěč, Escape zavírá pouze již uložené nastavení. ResizeObserver rezervuje prostor podle skutečné výšky lišty, mobil má safe-area padding, tisk lištu skrývá. Next vývojový indikátor přesunut nahoru vpravo, aby nepřekrýval tlačítka na mobilu. Backend a pravidla opt-in měření nezměněny.
+
+## D21 — Uživatel povolil Vercel Hobby a vzdálený dashboard (14. října 2026)
+
+Nový výslovný požadavek nasadit celou aplikaci ruší dřívější omezení na čistě lokální provoz; zachován testovací/nekomerční účel. Vercel Hobby a Neon free_v3, DB fra1, žádný placený plán. Cloud oddělený od lokálních kontaktů. Uživatel dokončil login a přijal podmínky Neonu sám.
+
+Celá aplikace zahrnuje chráněný dashboard: explicitní vzdálený režim, HTTPS a přesný Host, 256bit náhodný přístupový klíč uložený jen jako SHA-256 hash v server env, nezávislý session HMAC secret, HttpOnly/Secure/Strict cookie 8 hodin a DB login throttle. Bez session je dashboard i export 404. Lokální guard zůstává. Veřejné demo zřetelně žádá pouze syntetické emaily. Nezprovozňuje se kampaň ani emailová rozesílka. Retenční cleanup zatím zůstává ruční podle původního návrhu.

@@ -4,7 +4,7 @@
 
 Český mobilní nástroj pro izolované srovnání průběžných nákladů ETF. Výchozí dvojice STXF/STXG má primární listing na hlavním NYSE, ale sleduje odlišné indexy a strategie. Návštěvník si vybere dva fondy, zadá vlastní modelovou investici a uvidí výsledek **bez registrace a bez souhlasu s měřením**. Až potom může zadat email a získat podrobnější osobní srovnání.
 
-**Aktuální stav k 13. říjnu 2026:** lokální aplikace, PostgreSQL persistence a společný browser → DB → report/download tok jsou ověřené; důkazy a rozsah testů jsou v [TESTING](docs/TESTING.md). Neproběhl externí deployment ani reklamní kampaň a nejsou cílem tohoto projektu. Uživatelem dodané testovací jméno je přesně **Matěj STýblo**; `test@example.invalid` je úmyslně nefunkční placeholder, nikoli jeho skutečný email. Nejde o produkční právní identitu. Její schválení není úkol nutný k dokončení lokálního dema; nevydáváme demo za veřejný sběr leadů.
+**Aktuální stav k 13. říjnu 2026:** lokální aplikace, PostgreSQL persistence a společný browser → DB → report/download tok jsou ověřené; důkazy a rozsah testů jsou v [TESTING](docs/TESTING.md). K tomuto historickému datu neproběhl externí deployment ani reklamní kampaň. Dne 14. října uživatel následně povolil bezplatný testovací deployment na Vercel; aktuální postup a stav jsou v docs/DEPLOYMENT.md. Uživatelem dodané testovací jméno je přesně **Matěj STýblo**; `test@example.invalid` je úmyslně nefunkční placeholder, nikoli jeho skutečný email. Nejde o produkční právní identitu. Její schválení není úkol nutný k dokončení lokálního dema; nevydáváme demo za veřejný sběr leadů.
 
 ## Vizuální identita
 
@@ -137,7 +137,7 @@ Upravte ignorovaný `.env.local`, tajemství necommitujte ani nevypisujte do sd�
 | `CONTROLLER_NAME` | V `.env.example` přesně `Matěj STýblo`, jméno dodané uživatelem pro testovací projekt; není to produkční právní identita. |
 | `PRIVACY_CONTACT` | V `.env.example` `test@example.invalid`, výslovně nefunkční testovací placeholder, ne skutečný kontakt. |
 | `LEADS_ENABLED` | Výchozí `false`. `true` až se všemi předpoklady pro konkrétní prostředí. |
-| `DASHBOARD_ENABLED` | Výchozí vypnuto. Pouze lokálně explicitní `true`; `/dashboard` i CSV navíc vyžadují HTTP loopback `APP_ORIGIN` a přesně odpovídající `Host`. Není to veřejné přihlášení. |
+| `DASHBOARD_ENABLED` | Výchozí vypnuto. Pouze lokálně explicitní `true`; `/dashboard` i CSV navíc vyžadují HTTP loopback `APP_ORIGIN` a přesně odpovídající `Host`. Vzdálený režim navíc potřebuje HTTPS, DASHBOARD_REMOTE_ENABLED a obě auth proměnné. |
 | `TEST_DATABASE_URL` | Uvedená v příkladu, ale **aktuální integration suite ji nečte**; přepisuje `DATABASE_URL` pevnou adresou `etf_radar_test` na portu 55439. |
 
 Pro nově zkopírovaný `.env.local` můžete obě tajemství vyplnit bez jejich výpisu následujícím příkazem. **Nespouštějte jej jako běžný restart**: přegenerování mění deduplikaci i přístup k existujícím reportům. Přepíše pouze tyto dvě položky, DB URL a flag capture si nastavte v editoru zvlášť.
@@ -176,7 +176,7 @@ Před změnou portu změňte i `APP_ORIGIN` a restartujte server; UI identity/en
 
 Povolení je **jen pro vlastní lokální demo**: nastavte `DASHBOARD_ENABLED=true` v lokálním prostředí, `APP_ORIGIN` na přesný HTTP loopback origin a server přivažte na loopback. Například při `APP_ORIGIN=http://127.0.0.1:3103` použijte `npm run start -- --hostname 127.0.0.1 --port 3103` a otevřete `http://127.0.0.1:3103/dashboard`. Změna konfigurace vyžaduje restart; nový kód nejprve produkční rebuild. `localhost` a `127.0.0.1` nejsou zaměnitelné Host hodnoty. Guard vrací 404 ještě před načtením dat; forwardované hlavičky nelze použít jako náhradu lokálního Hostu.
 
-**Na jakémkoli hypotetickém deploymentu ponechte dashboard vypnutý.** Gate není autentizace uživatelů, firewall ani ochrana veřejně naslouchajícího serveru. Nevystavujte jej přes tunel/proxy a nespouštějte povolený dashboard na `0.0.0.0`. Stránka i export obsahují kontaktní emaily; noindex/nofollow a no-referrer nejsou náhradou omezení přístupu.
+**Samotný lokální gate není veřejná autentizace.** Od 14. října 2026 je pro cloud doplněný oddělený HTTPS režim: `DASHBOARD_REMOTE_ENABLED=true`, hash náhodného přístupového klíče a nezávislý session secret. Bez nich vzdálený dashboard i CSV zůstávají nepřístupné. Přihlášení je na `/dashboard/login`; cookie je HttpOnly/Secure/SameSite=Strict na 8 hodin. Noindex/nofollow a no-referrer samy o sobě nejsou autentizace. Lokální režim se nevystavuje přes tunel ani `0.0.0.0`.
 
 Měřené relace nejsou všichni návštěvníci ani unikátní lidé. Primární karta **Nové kontakty / měřené relace** odpovídá výše uvedené definici nových měřených leadů ve stejné landing kohortě. Při více nových emailech v jedné relaci může tento poměr přesáhnout 100 %. Oddělená **Konverze měřených relací** počítá relace s alespoň jedním úspěšným uložením, včetně opakovaného capture existujícího kontaktu; tato metrika je nejvýše 100 %. Bez měřených landing relací se zobrazí „—“, nikoli vymyšlená konverze. Všechny captures a unikátní kontakty se zobrazují odděleně. Kampaně ukazují pouze uložené captures, ne neexistující campaign conversion rate. Výběry ETF z měřených eventů se nemíchají s dvojicemi ze snapshotů uložených reportů. Nezměněná výchozí dvojice není event výběru. Starší chybějící dvojice, expirované reporty a retence jsou výslovně přiznané; neodvozujeme historii z dnešního katalogu.
 
@@ -217,9 +217,9 @@ node --env-file=.env.local scripts/cleanup.mjs --retention
 
 Skript odstraní leady starší 90 dnů, snapshoty starší 7 dnů a analytics starší 30 dnů; přístup k reportu přitom expiruje už po 24 hodinách. Další vztahy a omezení výmazu viz ANALYTICS. Zálohy ani hostingové logy tento skript neřeší.
 
-## Deployment runbook — pouze hypotetický návod, nespouštět
+## Deployment runbook — původní podmínky a nové povolení
 
-Uživatel výslovně určil, že projekt zůstane testovací a nikdy nebude skutečným provozem. Tento seznam plní dokumentační požadavek zadání; **není plánem další práce ani autorizací deploymentu**. Produkční podmínky níže nejsou blokery dokončení lokálního dema.
+Původní rozsah byl pouze lokální testovací demo. Dne 14. října 2026 uživatel výslovně požádal o bezplatné nasazení na Vercel do matejstyblos-projects. To povoluje testovací cloud deployment, nikoli placený plán nebo skutečnou reklamní kampaň. Stav nasazení a konkrétní konfigurace: [DEPLOYMENT](docs/DEPLOYMENT.md). Následující produkční podmínky jsou původní runbook; nejde o potvrzení, že byly splněny.
 
 1. Získat zvláštní oprávnění k deploymentu a přístup k projektu; zvolit spravovaný PostgreSQL a cílový Vercel projekt/doménu. Žádné veřejné URL ani vytvořený projekt nyní netvrdíme.
 2. Potvrdit skutečnou identitu správce, privacy kontakt, účel uchovávání emailu, právní základ, zpracovatele, marketingový/odvolávací proces a schválenou notice. Předstartovní `/privacy` není hotové právní posouzení. Dokud chybí, ponechat veřejný capture vypnutý.
@@ -250,3 +250,12 @@ Lokální `/dashboard` nyní obsahuje „Návštěvy a kontaktní formulář“:
 ### Viditelný souhlas s měřením
 
 Při první návštěvě se zobrazuje spodní cookie lišta s rovnocenným Povolit/Odmítnout. Nezakrývá web modálním pozadím a neblokuje kalkulačku. Po volbě se skryje a preference zůstává uložená. Dole na stránce je Změnit nastavení cookies a pro povolené měření také Odvolat. Bez souhlasu se analytické události ani zdroje návštěv neodesílají.
+
+## Veřejné testovací demo — nasazeno 14. října 2026
+
+- Aplikace: https://etf-radar-dun.vercel.app
+- Chráněný dashboard: https://etf-radar-dun.vercel.app/dashboard/login
+- Vercel Hobby + Neon Free (`free_v3`, fra1). Bez placeného plánu; uplatňují se free limity.
+- Cloudová DB je nová a oddělená od lokální; lokální kontakty nebyly zveřejněny ani přeneseny. Přístupový klíč správce není součástí Gitu ani klientského bundle.
+- Celý skutečný cloudový průchod byl ověřen včetně reportu, chráněného exportu a odhlášení. Detaily a zaznamenané počáteční selhání v docs/TESTING.md.
+- Zůstává testovací hiring projekt: pouze syntetické emaily, bez kampaně a bez skutečného emailového doručování. Retenční skript je stále ruční, nikoli spuštěný scheduler.

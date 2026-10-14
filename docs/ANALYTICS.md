@@ -288,3 +288,7 @@ Konverze zdroje = relace s durable uložením / stejné měřené landing relace
 ## Cookie lišta — 14. října 2026
 
 Na landing page a reportu je první volba měření viditelná v pevné spodní nemodální liště. Před volbou zůstává měření vypnuté. Povolit i Odmítnout schovají lištu a ukládají existující preference; po reloadu se lišta sama nevrací. Změnit nastavení cookies ve spodní sekci ji znovu otevře; Odvolat zůstává přímou akcí. Podmínky consentu, session, serverového uložení a synchronizace mezi záložkami se nemění. Dashboard měření nespouští.
+
+## Chráněný cloudový dashboard — 14. října 2026
+
+Nové nasazení na výslovný požadavek uživatele doplňuje vzdálený HTTPS režim. Dřívější tvrzení, že dashboard nemá veřejné přihlášení a je pouze lokální, popisují původní stav. `/dashboard/login` nyní ověřuje náhodný přístupový klíč přes serverový hash a vydává podepsanou HttpOnly/Secure/SameSite=Strict cookie pro /dashboard na 8 hodin. `DASHBOARD_REMOTE_ENABLED` a oba secrets jsou povinné, Host musí odpovídat APP_ORIGIN. Chrání se současně stránka i CSV, anonymně vrací 404. DB login throttle nesbírá IP. Nastavení a limity jsou v DEPLOYMENT.md. Definice měřených relací a first-source konverzí se nemění; lokální a cloudová DB jsou oddělené.
