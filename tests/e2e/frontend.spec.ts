@@ -38,6 +38,15 @@ test('same fund is rejected and the selectors describe the problem',async({page}
  await expect(page.getByLabel('Druhé ETF')).toHaveAttribute('aria-describedby','etf-pair-error');
  await expect(page.getByRole('button',{name:'Získat moje srovnání'})).toBeDisabled();
 });
+test('mobile fund and email controls remain readable when focused',async({page})=>{
+ await page.setViewportSize({width:375,height:812});await page.goto('/');
+ for(const label of ['První ETF','Druhé ETF','Email']){
+  const control=page.getByLabel(label,{exact:true});
+  await control.focus();
+  expect(await control.evaluate(element=>parseFloat(getComputedStyle(element).fontSize))).toBeGreaterThanOrEqual(16);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+ }
+});
 test('large valid scenario remains within mobile viewport',async({page})=>{
  await page.setViewportSize({width:375,height:812});await page.goto('/');
  await page.getByLabel('Počáteční vklad').fill('100000000');

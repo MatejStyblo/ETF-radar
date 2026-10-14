@@ -282,3 +282,7 @@ Přidán test scrypt hesla kratšího než původní generovaný klíč, špatn�
 ## Finální odevzdání a veřejný retest — 14. října 2026
 
 Aktuální výsledky nového milníku jsou v HANDOFF.md: 102 unit, 43 PostgreSQL integration, 28 browser passed / 4 opt-in skipped, lint/typecheck/build PASS. Veřejný Git deployment fe3d944 READY, oba skutečné synthetic formulář/PDF průchody PASS, browser audit 43 kontrol bez failures a mobilní Lighthouse 98/100/100/100. Ověřená verze, rozsah SQL evidence, ponechaná explicitní QA kohorta a nové artefakty jsou tam přesně uvedeny; starší výsledky v tomto souboru jsou historické.
+
+## Mobilní focus a horizontální posun — 14. října 2026
+
+Hlášení uživatele: Chrome na iPhonu. Chromium ani desktop WebKit nepředvedly layout overflow na veřejné verzi ve 24 scénářích (8 šířek × výchozí fondy / STXG-SPY / maximální vstupy). Před změnou mají mobilní fund select 13 px a email 15 px; možná příčina je iOS automatické focus přiblížení, které desktopová emulace neprokazuje. Mobilní select/email nyní mají 16 px, horizontální overscroll je omezen bez zákazu pinch zoomu. Produkční build a lint PASS, 14 cílených frontend/form/cookie browser testů PASS včetně kontroly fontu při focusu; následný lokální WebKit audit 24 scénářů bez overflow. Finální potvrzení na skutečném iPhonu zůstává závislé na ověření uživatelem.

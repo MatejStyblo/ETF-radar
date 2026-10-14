@@ -95,3 +95,7 @@ Na výslovný požadavek uživatele odstraněny oba PNG/SVG reklamní obrázky, 
 ## Neutrální označení projektu — 14. října 2026
 
 Na žádost uživatele zjednodušen popis GitHub repozitáře na produktový popis a sjednocena prezentace webu a dokumentace pouze na testovací verzi. Zachováno pravdivé technické chování a informace pro používání syntetických emailů. Autentické konverzační exporty a Git historie nejsou zpětně přepisované.
+
+## Mobilní posun na iPhonu — 14. října 2026
+
+Uživatel hlásil horizontální posun v Chrome na iPhonu. Před opravou nebyl layout overflow reprodukován v Chromium ani WebKit při 320/360/375/390/414/700/701/768 px, s výchozí dvojicí, STXG/SPY i maximálními vstupy. Mobilní select měl 13 px a email 15 px; možnou příčinou je automatické přiblížení při focusu na skutečném iOS. Mobilní select/email upraveny na 16 px a omezen horizontální overscroll. Pinch zoom zůstává dostupný. Test ověřuje velikost písma, focus a šířku dokumentu; desktop WebKit není skutečný iPhone a potvrzení chování na zařízení se nesmí nahrazovat tvrzením o reprodukci chyby.
