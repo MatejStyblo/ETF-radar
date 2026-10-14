@@ -39,7 +39,7 @@ Login je omezený sdíleným DB limitem 20 pokusů za 15 minut bez ukládání I
 
 ## Ceny a limity
 
-Hobby je určený pro nekomerční osobní projekty a má limity. Po jejich překročení nelze slibovat nepřetržitou bezplatnou dostupnost. Testovací hiring projekt není ověřená produkční reklamní kampaň.
+Hobby je určený pro nekomerční osobní projekty a má limity. Po jejich překročení nelze slibovat nepřetržitou bezplatnou dostupnost. Testovací projekt není ověřená produkční reklamní kampaň.
 
 - [Vercel Hobby](https://vercel.com/docs/plans/hobby)
 - [Podporované Node verze](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions)

@@ -1,6 +1,6 @@
 # Dvě české reklamní varianty
 
-Stav: dvě textové reklamní varianty s popisem vizuálního konceptu podle zadání. Žádná kampaň neběžela a žádný rozpočet nebyl utracen. Landing a ukládání jsou nasazené jako výběrové demo; skutečná kampaň vyžaduje provozní/privacy připravenost.
+Stav: dvě textové reklamní varianty s popisem vizuálního konceptu podle zadání. Žádná kampaň neběžela a žádný rozpočet nebyl utracen. Landing a ukládání jsou nasazené jako testovací demo; skutečná kampaň vyžaduje provozní/privacy připravenost.
 
 ## A — Náklady, které se projeví v čase
 

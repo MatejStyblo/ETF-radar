@@ -1,6 +1,6 @@
 # ETF Radar
 
-Česká mobilní landing page pro **zadání B — porovnání ETF a získání kontaktu**. Návštěvník nejprve získá vlastní výpočet, potom může uložit testovací email a okamžitě stáhnout osobní PDF. Jde o funkční výběrové demo s reálnou databází, nikoli spuštěnou reklamní kampaň.
+Česká mobilní landing page pro **zadání B — porovnání ETF a získání kontaktu**. Návštěvník nejprve získá vlastní výpočet, potom může uložit testovací email a okamžitě stáhnout osobní PDF. Jde o funkční testovací demo s reálnou databází, nikoli spuštěnou reklamní kampaň.
 
 - **Web:** [etf-radar-dun.vercel.app](https://etf-radar-dun.vercel.app)
 - **Repozitář:** [MatejStyblo/ETF-radar](https://github.com/MatejStyblo/ETF-radar), výchozí i produkční větev `devel`.
@@ -131,7 +131,7 @@ npm run build
 
 DB integrace používají **pevně oddělenou** `etf_radar_test` na portu 55439; nečtou `TEST_DATABASE_URL`. Vytvořte ji a aplikujte migrace před `npm run test:integration`. Playwright očekává běžící server (`PLAYWRIGHT_BASE_URL`), automaticky ho nespouští. Část UI testů interceptuje API; skutečnou persistenci dokládají samostatné DB/funnel testy. [Přesné výsledky a omezení](docs/HANDOFF.md).
 
-Web je nasazen na Vercel Hobby s oddělenou Neon Free DB. Push do `devel` spouští produkční Git build. Migrace se aplikují řízeně samostatně. [Deployment runbook](docs/DEPLOYMENT.md). Bezplatné výběrové demo není spuštěná komerční kampaň; Hobby má [omezení nekomerčního použití](https://vercel.com/docs/plans/hobby).
+Web je nasazen na Vercel Hobby s oddělenou Neon Free DB. Push do `devel` spouští produkční Git build. Migrace se aplikují řízeně samostatně. [Deployment runbook](docs/DEPLOYMENT.md). Bezplatné testovací demo není spuštěná komerční kampaň; Hobby má [omezení nekomerčního použití](https://vercel.com/docs/plans/hobby).
 
 ## Známé limity
 

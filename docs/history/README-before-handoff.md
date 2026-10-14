@@ -6,7 +6,7 @@ Archiv z 14. října 2026. Obsahuje starší, již překonané stavy. Aktuální
 
 **Nezávislý audit 14. října 2026:** skutečný produkční formulář → PostgreSQL → report/download ověřen se souhlasem i bez něj, vlastní syntetická data uklizena. Komerční kampaň zatím **NO-GO** kvůli testovací privacy/provozní připravenosti a Hobby hostingu. Aktuální důkazy, lokální opravy, nové testy a přesný ověřený deployment jsou v [FINAL_AUDIT](docs/FINAL_AUDIT.md); starší výsledky níže jsou historické.
 
-**Výhradně testovací projekt pro hiring zadání; nikdy skutečný komerční provoz ani placená kampaň.** Používejte syntetické emaily (například na `example.invalid`), nikoli osobní údaje skutečných návštěvníků.
+**Výhradně testovací projekt; nikdy skutečný komerční provoz ani placená kampaň.** Používejte syntetické emaily (například na `example.invalid`), nikoli osobní údaje skutečných návštěvníků.
 
 Český mobilní nástroj pro izolované srovnání průběžných nákladů ETF. Výchozí dvojice STXF/STXG má primární listing na hlavním NYSE, ale sleduje odlišné indexy a strategie. Návštěvník si vybere dva fondy, zadá vlastní modelovou investici a uvidí výsledek **bez registrace a bez souhlasu s měřením**. Až potom může zadat email a získat podrobnější osobní srovnání.
 
@@ -264,7 +264,7 @@ Při první návštěvě se zobrazuje spodní cookie lišta s rovnocenným Povol
 - Vercel Hobby + Neon Free (`free_v3`, fra1). Bez placeného plánu; uplatňují se free limity.
 - Cloudová DB je nová a oddělená od lokální; lokální kontakty nebyly zveřejněny ani přeneseny. Přístupový klíč správce není součástí Gitu ani klientského bundle.
 - Celý skutečný cloudový průchod byl ověřen včetně reportu, chráněného exportu a odhlášení. Detaily a zaznamenané počáteční selhání v docs/TESTING.md.
-- Zůstává testovací hiring projekt: pouze syntetické emaily, bez kampaně a bez skutečného emailového doručování. Retenční skript je stále ruční, nikoli spuštěný scheduler.
+- Zůstává testovací projekt: pouze syntetické emaily, bez kampaně a bez skutečného emailového doručování. Retenční skript je stále ruční, nikoli spuštěný scheduler.
 
 ### Automatické aktualizace webu
 

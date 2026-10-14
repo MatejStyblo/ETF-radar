@@ -4,7 +4,7 @@
 
 Build a production-quality, mobile-first ETF comparison and lead-generation landing page for Czech retail investors.
 
-This project is a practical hiring assignment for a Junior AI Developer position.
+This project is a test application focused on ETF comparison and lead generation.
 
 **Deadline:** October 16, 2026.
 

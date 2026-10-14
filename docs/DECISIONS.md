@@ -46,7 +46,7 @@ Datum: 9. října 2026. Stav rozhodnutí: navržené pro implementaci, není-li 
 
 ## D02 — Úzká nabídka místo seznamu všech ETF
 
-**Upřesnění rozsahu od uživatele, 9. října 2026:** projekt je výhradně testovací hiring assignment a nebude skutečně komerčně provozován. Jméno pro testovací konfiguraci je přesně `Matěj STýblo`. Kontakt `test@example.invalid` je výslovně nefunkční testovací hodnota, nikoli skutečný email uživatele. Používat syntetická testovací data; žádné skutečné kampaně, marketingové rozesílky ani nasazení. Produkční právní schválení a skutečná identita obchodního provozovatele nejsou součástí aktuálního dokončení; níže uvedené launch gates jsou podmínky pouze pro případnou budoucí změnu rozsahu, ne tvrzení připravenosti ke komerčnímu spuštění. Funkční persistence, výpočty, report a ochrana dat musí přesto zůstat skutečné a otestované.
+**Upřesnění rozsahu od uživatele, 9. října 2026:** projekt je výhradně testovací projekt a nebude skutečně komerčně provozován. Jméno pro testovací konfiguraci je přesně `Matěj STýblo`. Kontakt `test@example.invalid` je výslovně nefunkční testovací hodnota, nikoli skutečný email uživatele. Používat syntetická testovací data; žádné skutečné kampaně, marketingové rozesílky ani nasazení. Produkční právní schválení a skutečná identita obchodního provozovatele nejsou součástí aktuálního dokončení; níže uvedené launch gates jsou podmínky pouze pro případnou budoucí změnu rozsahu, ne tvrzení připravenosti ke komerčnímu spuštění. Funkční persistence, výpočty, report a ochrana dat musí přesto zůstat skutečné a otestované.
 
 **Rozhodnutí:** P0 porovná dvojici ze tří fondů S&P 500, zaměřenou na průběžné náklady. Publikum a motivace jsou hypotézy ze zadání, ne provedený kvalitativní výzkum. Nasdaq-100 až P1 po ověření dat.
 
@@ -213,10 +213,14 @@ Uživatel výslovně požaduje automatickou aktualizaci veřejného webu při pu
 
 Přímý /dashboard na správném HTTPS hostu nyní vrací redirect na /dashboard/login, pokud je remote přihlášení dostupné a chybí session. Původní 404 byla pro správce matoucí. Změna neodkrývá kontakty: redirect předchází filtru/DB čtení a export bez session zůstává 404. Vypnutý režim/cizí host se neoznamují přesměrováním.
 
-## D19 — finální výběrové demo
+## D19 — finální testovací demo
 
 14. října 2026 uživatel potvrdil testovací účel s realistickým profesionálním vzhledem. Výchozí GitHub větev je devel, stejně jako Vercel production branch. Úvodní velké testovací bannery nejsou potřeba; stručné upozornění se zobrazí v místě zadání emailu a technické chování je vysvětleno v soukromí. Nenahrazujeme test@example.invalid fiktivním kontaktem a nespouštíme skutečné rozesílání. Náhled reportu používá buildReport, aby odpovídal skutečnému doručenému PDF. Reklamy jsou hotové PNG/SVG návrhy se skutečným screenshotem srovnání; žádný koncept není spuštěná kampaň.
 
 ## D20 — reklamy pouze jako textové koncepty
 
 14. října 2026 uživatel výslovně požádal odstranit hotové reklamní obrázky. PNG/SVG a generátor byly odstraněny; odevzdání obsahuje dvě textové varianty s popisem vizuálu v ADS.md. Starší D19 a plán zachovávají historii předchozí práce; D20 je aktuální rozsah reklamních výstupů.
+
+## D21 — neutrální testovací označení
+
+Veřejný popis repozitáře popisuje produkt bez kontextu výběrového řízení. Web a dokumentace používají označení testovací verze/projekt. Jde o úpravu prezentace, nikoli změnu účelu zpracování dat nebo spuštění komerčního provozu.

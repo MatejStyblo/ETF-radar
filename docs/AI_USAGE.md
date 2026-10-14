@@ -91,3 +91,7 @@ Uživatel povolil navržené dokončení a změnu výchozí GitHub větve na dev
 ## Odstranění reklamních obrázků — 14. října 2026
 
 Na výslovný požadavek uživatele odstraněny oba PNG/SVG reklamní obrázky, jejich generátor a odkazy v aktuálním README/ADS/HANDOFF. Textové návrhy dvou reklam podle zadání zůstávají. Předchozí popis tvorby je historický záznam skutečné AI práce, nikoli tvrzení o aktuálně přiložených souborech. Webová aplikace a její funkce se nemění.
+
+## Neutrální označení projektu — 14. října 2026
+
+Na žádost uživatele zjednodušen popis GitHub repozitáře na produktový popis a sjednocena prezentace webu a dokumentace pouze na testovací verzi. Zachováno pravdivé technické chování a informace pro používání syntetických emailů. Autentické konverzační exporty a Git historie nejsou zpětně přepisované.

@@ -1,6 +1,6 @@
 # Analytics — skutečná implementace a čitelné metriky
 
-Stav podle kódu k 9. říjnu 2026. ETF Radar je výhradně testovací/hiring demo; používejte syntetické emaily a testovací data. Žádná komerční kampaň ani emailové rozesílání neběží. Tato dokumentace odlišuje uložená data od návrhů v PLAN/DECISIONS; níže uvedené SQL jsou reportingové příklady, nikoli naměřené konverze.
+Stav podle kódu k 9. říjnu 2026. ETF Radar je výhradně testovací demo; používejte syntetické emaily a testovací data. Žádná komerční kampaň ani emailové rozesílání neběží. Tato dokumentace odlišuje uložená data od návrhů v PLAN/DECISIONS; níže uvedené SQL jsou reportingové příklady, nikoli naměřené konverze.
 
 ## Autoritativní soubory
 
