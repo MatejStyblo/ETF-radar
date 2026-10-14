@@ -1,5 +1,7 @@
 # ETF Radar — Independent Final Production Audit
 
+**Historický audit:** následné dokončení po dodání originálního zadání, nové reklamy, report preview a aktuální veřejná ověření jsou v [HANDOFF](HANDOFF.md). Níže uvedené konkrétní screenshoty/stavy platí pro tehdy auditovaný deployment. Hranice testovacího dema oproti komerčnímu provozu zůstává relevantní.
+
 Datum: **14. října 2026**, Europe/Prague. Auditor: Codex v tomto pracovním prostředí, nezávislé nové běhy; historická QA tvrzení nejsou důkazem tohoto auditu. Zadání: uživatelem přiložený audit a aktuální AGENTS.md. Samostatný původní dokument zaměstnavatele „Assignment B“ nebyl dodán; shoda je posuzována proti dostupným požadavkům, nikoli proti neviděnému originálu.
 
 ## Executive Summary

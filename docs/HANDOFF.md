@@ -29,8 +29,18 @@ Browser suite obsahuje tři skutečné lokální browser → DB → report průc
 
 ## Produkce
 
-Následné ověření Git deploymentu a skutečného formuláře/PDF se doplní po nasazení. Sensitive cloud env nelze stáhnout jako skutečné hodnoty; nezávislý produkční SQL/cleanup není součástí tohoto běhu. Smoke používá pouze syntetický email a označenou QA kampaň; případné testovací řádky zůstanou v testovací DB a budou výslovně evidovány.
+Git commit `fe3d944249c94f5d5e4d4d8cd19351df9a6dca45` se automaticky nasadil jako production deployment `dpl_Bn8Deirp6mo3ci9ZMHzFHFPYpe3N`, stav READY. Vercel API potvrdilo branch `devel`, přesný commit a přiřazení aliasu `etf-radar-dun.vercel.app`. [Evidence deploymentu](qa/handoff/deployment.json).
+
+Na veřejné HTTPS URL následně prošly **oba skutečné formulářové průchody** (`scripts/verify-handoff.mjs`): A se souhlasem na 375 px a B bez souhlasu na 1440 px. Ověřena shoda headline, aktualizace náhledu po změně vkladu, chyba neplatného emailu, nezaškrtnutý marketing, HTTP 200 uložení, reload serverového reportu, skutečné PDF (5 stran v obou scénářích), HTML, opakování stejného attempt a žádné runtime chyby. Denied flow neposlal žádný analytics POST. [Výsledky a syntetické fixture](qa/handoff/production-funnel/results.json).
+
+Sensitive cloud env nelze stáhnout jako skutečné hodnoty; tento smoke proto není nezávislý produkční SQL audit/cleanup. Persistence je zde doložena serverovým reportem z uloženého snapshotu po reloadu; přímé DB dotazy a deduplikaci prokazují lokální integrace. Jediný syntetický email `handoff_7633ed780ffb447f80152af613605022@example.invalid` a kampaň stejného názvu zůstaly v testovací cloud DB pro dohledání. Nejde o obchodní lead ani reklamní konverzi; tato kohorta nesmí být zahrnuta do případných obchodních metrik. Žádná cizí data nebyla odstraněna.
+
+Veřejný browser audit na **375 / 390 / 768 / 1440 px**: 43 kontrol PASS, 0 failures, axe bez violations a bez horizontálního overflow. [Artefakty](qa/handoff/production-browser/results.json). Vizuálně zkontrolované reklamy a mobilní první obrazovka. Test byl proveden na konkrétním deploymentu, není obecnou zárukou všech zařízení.
+
+Nový **mobilní Lighthouse 13.5.0** na veřejném aliasu, 14. října 2026 v 18:55 CEST: Performance **98**, Accessibility **100**, Best Practices **100**, SEO **100**; LCP 2,28 s, TBT 96 ms, CLS 0. [JSON souhrn](qa/handoff/lighthouse-summary.json), [HTML report](qa/handoff/lighthouse-production.html). Žádný runtime error ani warning. Skóre popisuje jeden běh, nikoli SLA či naměřenou konverzi.
+
+Exact-value scan verzovaných textových souborů vůči dostupným lokálním/GitHub/Vercel tajemstvím: 4 známé hodnoty, 0 shod (počet souborů v JSON). [Rozsah a omezení](qa/handoff/secret-scan.json). Nejde o úplný sken historie ani DLP certifikaci.
 
 ## Hranice dokončení
 
-Funkční výběrové demo může být odevzdané s veřejným repozitářem a URL. Pro skutečné leady/kampaň zbývá provozní privacy kontakt, účel/právní základ, pravidelný výmaz a zálohy, spam ochrana, test/bot exclusions a hosting umožňující komerční provoz. Žádný z těchto bodů neprohlašujeme za hotový pouhou změnou textu. Nové Lighthouse měření se zveřejní jen pokud skutečně proběhne; starší skóre je historické.
+Funkční výběrové demo může být odevzdané s veřejným repozitářem a URL. Pro skutečné leady/kampaň zbývá provozní privacy kontakt, účel/právní základ, pravidelný výmaz a zálohy, spam ochrana, test/bot exclusions a hosting umožňující komerční provoz. Žádný z těchto bodů neprohlašujeme za hotový pouhou změnou textu. Pozitivní admin login nebyl v tomto novém běhu testován; existují starší deployment testy, aplikace ho v tomto milníku neměnila. Finální dokumentační commit využívá tentýž Git deployment; funkční kontrola výše odpovídá uvedenému aplikačnímu SHA.

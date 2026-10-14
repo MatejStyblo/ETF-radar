@@ -1,0 +1,34 @@
+{
+  "origin": "https://etf-radar-dun.vercel.app",
+  "checkedAt": "2026-10-14T16:54:39.139Z",
+  "campaign": "handoff_7633ed780ffb447f80152af613605022",
+  "email": "handoff_7633ed780ffb447f80152af613605022@example.invalid",
+  "flows": [
+    {
+      "variant": "a",
+      "consent": true,
+      "width": 375,
+      "reportReload": true,
+      "pdfPages": 5,
+      "idempotentRetry": true,
+      "invalidEmailRejected": true,
+      "previewRespondsToInputs": true,
+      "analyticsPosts": 10,
+      "runtimeErrors": []
+    },
+    {
+      "variant": "b",
+      "consent": false,
+      "width": 1440,
+      "reportReload": true,
+      "pdfPages": 5,
+      "idempotentRetry": true,
+      "invalidEmailRejected": true,
+      "previewRespondsToInputs": true,
+      "analyticsPosts": 0,
+      "runtimeErrors": []
+    }
+  ],
+  "persistenceEvidence": "Report reload and PDF from the server-stored snapshot; no independent production SQL query.",
+  "cleanup": "Synthetic demo fixtures retained under the campaign above; no unrelated data removed."
+}

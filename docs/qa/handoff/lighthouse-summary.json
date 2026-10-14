@@ -1,0 +1,73 @@
+{
+  "url": "https://etf-radar-dun.vercel.app/",
+  "checkedAt": "2026-10-14T16:55:07.313Z",
+  "version": "13.5.0",
+  "scores": {
+    "performance": 98,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+  },
+  "metrics": {
+    "largest-contentful-paint": {
+      "value": 2275.9475,
+      "unit": "millisecond"
+    },
+    "cumulative-layout-shift": {
+      "value": 0,
+      "unit": "unitless"
+    },
+    "total-blocking-time": {
+      "value": 96,
+      "unit": "millisecond"
+    },
+    "first-contentful-paint": {
+      "value": 925.9475,
+      "unit": "millisecond"
+    }
+  },
+  "warnings": [],
+  "runtimeError": null,
+  "failedAudits": [
+    {
+      "id": "largest-contentful-paint",
+      "title": "Largest Contentful Paint",
+      "score": 0.93
+    },
+    {
+      "id": "total-blocking-time",
+      "title": "Total Blocking Time",
+      "score": 0.98
+    },
+    {
+      "id": "max-potential-fid",
+      "title": "Max Potential First Input Delay",
+      "score": 0.66
+    },
+    {
+      "id": "interactive",
+      "title": "Time to Interactive",
+      "score": 0.99
+    },
+    {
+      "id": "unused-javascript",
+      "title": "Reduce unused JavaScript",
+      "score": 0
+    },
+    {
+      "id": "legacy-javascript-insight",
+      "title": "Legacy JavaScript",
+      "score": 0.5
+    },
+    {
+      "id": "network-dependency-tree-insight",
+      "title": "Network dependency tree",
+      "score": 0
+    },
+    {
+      "id": "render-blocking-insight",
+      "title": "Render-blocking requests",
+      "score": 0
+    }
+  ]
+}

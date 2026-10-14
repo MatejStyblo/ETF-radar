@@ -1,5 +1,7 @@
 # Vercel Hobby — testovací nasazení
 
+**Finální odevzdání:** GitHub default branch i Vercel production branch jsou nyní `devel`. Aktuální aplikační SHA, ověřený alias a výsledky veřejného formuláře/PDF/Lighthouse jsou v [HANDOFF](HANDOFF.md). Starší postupy níže zachovávají historii nasazování. Uživatel potvrdil výhradně testovací účel; neproběhl upgrade tarifu ani spuštění kampaně.
+
 ## Aktuální stav (14. října 2026)
 
 Uživatel autorizoval bezplatné nasazení do `matejstyblos-projects`.

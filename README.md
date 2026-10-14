@@ -7,6 +7,8 @@
 - **Reklamy:** [texty, cílení a hotové grafiky](docs/ADS.md).
 - **Ověření:** [aktuální závěrečný průchod](docs/HANDOFF.md), [historie testů](docs/TESTING.md).
 
+Ověření 14. října 2026: **102 unit / 43 DB integration / 28 browser testů prošlo** (4 explicitně opt-in scénáře přeskočeny). Oba skutečné veřejné formulářové průchody a PDF prošly samostatně. Mobilní Lighthouse na veřejném webu: **98 / 100 / 100 / 100** (Performance / Accessibility / Best Practices / SEO), CLS 0. Přesné podmínky a limity jsou v HANDOFF; nejde o naměřenou reklamní konverzi.
+
 ## Vyzkoušení za dvě minuty
 
 1. Otevřete web, vyberte dva fondy a upravte počáteční vklad, měsíční příspěvek, horizont nebo hypotetický výnos. Souhlas s měřením není nutný.

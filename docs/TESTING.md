@@ -278,3 +278,7 @@ Reprodukce před opravou: veřejný /dashboard 404, /dashboard/login 200. Nový 
 ## Vlastní heslo dashboardu — 14. října 2026
 
 Přidán test scrypt hesla kratšího než původní generovaný klíč, špatného/prázdného/příliš dlouhého vstupu a invalidace staré podepsané session po změně hashe. 97 unit testů, lint a build ověřeny před pushem. Skutečná hodnota uživatelského hesla není ve zdrojových souborech ani testovacím fixture; pouze serverový salted hash v produkčním env. Cloud se aktualizuje přes devel.
+
+## Finální odevzdání a veřejný retest — 14. října 2026
+
+Aktuální výsledky nového milníku jsou v HANDOFF.md: 102 unit, 43 PostgreSQL integration, 28 browser passed / 4 opt-in skipped, lint/typecheck/build PASS. Veřejný Git deployment fe3d944 READY, oba skutečné synthetic formulář/PDF průchody PASS, browser audit 43 kontrol bez failures a mobilní Lighthouse 98/100/100/100. Ověřená verze, rozsah SQL evidence, ponechaná explicitní QA kohorta a nové artefakty jsou tam přesně uvedeny; starší výsledky v tomto souboru jsou historické.

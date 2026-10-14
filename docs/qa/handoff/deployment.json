@@ -1,0 +1,32 @@
+{
+  "deployments": [
+    {
+      "id": "dpl_Bn8Deirp6mo3ci9ZMHzFHFPYpe3N",
+      "state": "READY",
+      "target": "production",
+      "branch": "devel",
+      "sha": "fe3d944249c94f5d5e4d4d8cd19351df9a6dca45",
+      "url": "etf-radar-k7f8lgvwu-matejstyblos-projects.vercel.app"
+    },
+    {
+      "id": "dpl_HNJ55VLMQMMu5uYwsgKubZVLV3oQ",
+      "state": "READY",
+      "target": "production",
+      "branch": "devel",
+      "sha": "dcf9f5ce5a8ff1d57012f1ab19be1c4dc2bf7a5a",
+      "url": "etf-radar-r6uhmqchl-matejstyblos-projects.vercel.app"
+    },
+    {
+      "id": "dpl_EB618uVzbtYGZrvSYRG9U5ep4ZBu",
+      "state": "READY",
+      "target": "production",
+      "branch": "devel",
+      "sha": "b0aa48a2bfe5ffa6e6524ce23985ac26c066cc5f",
+      "url": "etf-radar-f768fd34g-matejstyblos-projects.vercel.app"
+    }
+  ],
+  "alias": {
+    "name": "etf-radar-dun.vercel.app",
+    "deploymentId": "dpl_Bn8Deirp6mo3ci9ZMHzFHFPYpe3N"
+  }
+}
