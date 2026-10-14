@@ -1,5 +1,9 @@
 # ETF Radar — rozhodnutí a předpoklady
 
+## D25 — Plovoucí tmavá mobilní lišta (14. října 2026)
+
+Uživatel upravil referenci: navigace má ladit s tmavým nástrojem a lehce levitovat. Lišta nově používá stejné surface/line/muted/accent tokeny, zaoblení všech rohů, jemný stín, 8px boční mezery a 5px mezeru od spodku. Na zařízeních s větší safe-area zůstává nad bezpečnou oblastí. Mezi položkami je 4px mezera. Rezervovaný prostor a poloha cookie banneru zohledňují celý plovoucí blok. Funkce navigace se nemění; žádný push/deployment.
+
 ## D24 — Mobilní spodní navigace podle reference (14. října 2026)
 
 Na mobilu přidána světlá spodní lišta se čtyřmi odkazy Domů / Kalkulačka / Výsledky / Report a Lucide ikonami. Odkazy vedou do existujících sekcí; Report vede k nabídce vytvoření reportu, nepředstírá přístup k soukromému dokumentu. Scroll a změna layoutu aktualizují aria-current a zvýraznění aktivní sekce. Při neplatném scénáři je odkaz na chybějící výsledky označen aria-disabled. Lišta respektuje safe-area, rezervuje místo pod obsahem, na desktopu i při tisku je skrytá. Cookie lišta se na mobilu posune nad navigaci. Nová navigace neposílá analytics bez stávajícího souhlasu. Změna zůstává lokální, bez push a deploymentu.

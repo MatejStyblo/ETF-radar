@@ -1,5 +1,11 @@
 # Ověřování — průběžný záznam
 
+## Plovoucí tmavá navigace — 14. října 2026
+
+Produkční build po této CSS úpravě prošel (exit 0); nebyl nasazen.
+
+Skutečný lokální Chromium na 375×812 a 390×812 ověřil přesně 5px spodní a 8px boční mezery, nulový překryv s cookie bannerem a axe bez violations. Screenshot 375 byl vizuálně zkontrolovaný. Úprava pouze CSS tokenů a spacingu, bez změny matematického/backendového/navigačního kódu. Aktuální safe-area se respektuje přes max(5px, env(...)). Lokální náhled port3140, žádný push/deployment; artefakty `.vercel/mobile-navigation/floating-*.png`.
+
 ## Mobilní spodní navigace — 14. října 2026
 
 Lokální Next dev na portu 3140: čtyři skutečné navigační odkazy, aktuální sekce podle scrollu, cookie banner nad navigací bez překryvu, disabled výsledky při invalid scénáři a skrytí na desktopu. Screenshot na 375×812 byl vizuálně zkontrolovaný; axe celého landing page bez violations. Existující frontend/chart/cookie browser sada **12 passed**, typecheck/lint/build exit 0. Přidání lišty nemění backend ani matematiku. Neproběhl push, deployment, nové Lighthouse ani skutečný mobile-device test. Dočasné artefakty v `.vercel/mobile-navigation*` nejsou verzované. Red Next dev indicator v jednom warm screenshotu není aktuální uncaught chyba: nový browser context měl prázdné error/warning/pageerror záznamy.
