@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
-import { createHash, randomBytes } from 'node:crypto';
+import { createHash, randomBytes, scryptSync } from 'node:crypto';
 vi.mock('server-only',()=>({}));
 import { createDashboardSession, dashboardCookie, dashboardLoginAvailable, dashboardSessionValid, verifyDashboardKey } from '@/lib/dashboard/auth';
 import { dashboardAccessAllowed } from '@/lib/dashboard/access';
@@ -11,6 +11,17 @@ beforeEach(()=>{
  vi.stubEnv('DASHBOARD_SESSION_SECRET',randomBytes(32).toString('hex'));
 });
 afterEach(()=>{vi.unstubAllEnvs();vi.useRealTimers();});
+test('salted password hashes accept short passwords and invalidate previous signed sessions',()=>{
+ const token=createDashboardSession();
+ const salt=randomBytes(16).toString('hex');
+ vi.stubEnv('DASHBOARD_ACCESS_KEY_HASH',`scrypt:${salt}:${scryptSync('test',salt,64).toString('hex')}`);
+ expect(dashboardLoginAvailable(host)).toBe(true);
+ expect(verifyDashboardKey('test')).toBe(true);
+ expect(verifyDashboardKey('wrong')).toBe(false);
+ expect(verifyDashboardKey('')).toBe(false);
+ expect(verifyDashboardKey('x'.repeat(129))).toBe(false);
+ expect(dashboardSessionValid(new Headers({cookie:`${dashboardCookie}=${token}`}))).toBe(false);
+});
 test('remote opt-in alone never reveals dashboard and a correct key creates a bounded signed session',()=>{
  expect(dashboardLoginAvailable(host)).toBe(true);expect(dashboardAccessAllowed(host)).toBe(false);
  expect(verifyDashboardKey(key)).toBe(true);expect(verifyDashboardKey(randomBytes(32).toString('base64url'))).toBe(false);

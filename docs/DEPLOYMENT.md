@@ -58,3 +58,7 @@ git push origin devel
 ```
 
 Není potřeba ruční vercel deploy, GitHub Actions ani credentials v repozitáři. Cloudové proměnné a Neon connection zůstávají v projektu. Změny schématu DB vyžadují řízené aplikování nových SQL migrací, nejsou automaticky součástí Git buildu. Ostatní větve mohou mít Vercel preview, ale produkční secrets/DB jsou určené pouze production prostředí; preview se nevydává za plně nakonfigurovanou produkci.
+
+## Vlastní heslo správce
+
+Na výslovnou žádost uživatele bylo původní náhodné heslo nahrazeno jeho vlastním heslem pro testovací demo. Server podporuje `DASHBOARD_ACCESS_KEY_HASH` ve formátu `scrypt:<32 hex salt>:<128 hex hash>`; původní SHA-256 náhodné klíče zůstávají kompatibilní. Hash se porovnává constant-time, raw heslo je pouze v soukromém lokálním souboru a server obdrží jen hash. Změna hashe automaticky zneplatní staré podepsané sessions. Login throttle i HTTPS/cookie ochrany zůstávají. Pole se jmenuje Heslo.

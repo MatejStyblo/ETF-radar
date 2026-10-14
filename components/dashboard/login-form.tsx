@@ -16,7 +16,7 @@ export function DashboardLoginForm() {
   } catch {setError('Spojení se nezdařilo. Zkuste to znovu.');}
   finally {setPending(false);}
  }} aria-busy={pending}>
-  <label htmlFor="dashboard-key">Přístupový klíč</label>
+  <label htmlFor="dashboard-key">Heslo</label>
   <input id="dashboard-key" type="password" required autoComplete="current-password" value={key} onChange={event=>setKey(event.target.value)} aria-describedby={error?'dashboard-login-error':undefined} aria-invalid={Boolean(error)}/>
   {error&&<p id="dashboard-login-error" role="alert">{error}</p>}
   <button className="primary-button" disabled={pending} type="submit">{pending?'Přihlašuji…':'Otevřít dashboard'}</button>

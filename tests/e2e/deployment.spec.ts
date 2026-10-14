@@ -40,7 +40,7 @@ test('deployed HTTPS app saves a real lead, delivers report and protects dashboa
   const report=await context.request.get(base+'/report/download');expect(report.status()).toBe(200);expect(await report.text()).not.toContain(email);
   expect((await db.query('SELECT count(*)::int AS n FROM leads WHERE email=$1',[email])).rows[0].n).toBe(1);
   await page.goto(base+'/dashboard/login');
-  await page.getByLabel('Přístupový klíč',{exact:true}).fill(key);
+  await page.getByLabel('Heslo',{exact:true}).fill(key);
   await page.getByRole('button',{name:'Otevřít dashboard',exact:true}).click();
   await expect(page).toHaveURL(base+'/dashboard');
   await expect(page.getByRole('heading',{name:'Přehled ETF Radar',exact:true})).toBeVisible();

@@ -57,3 +57,7 @@ Dokončení Vercel: uživatel dokončil CLI login a přijal podmínky Neonu v pr
 ## Codex — Git deploymenty z devel (14. října 2026)
 
 Na výslovný požadavek uživatele nastaven produkční branch tracking na devel. Původní main zůstala beze změny. Nová větev obsahuje aktuální ověřený stav a byla pushnuta bez force. První push zahájil preview, protože změna produkční větve ještě nebyla dokončená; po potvrzení UI a nezávislého API další push zahájil skutečný production Git build a přepnul veřejný alias. Žádné GitHub Actions nebo nové credentials v repozitáři. Skutečná evidence v TESTING, screenshot nastavení v docs/qa a dílčí autentický runtime export v ai-log.
+
+## Vlastní heslo dashboardu — 14. října 2026
+
+Uživatel výslovně požádal nahradit generovaný klíč jím zvoleným krátkým heslem. Přidán salted scrypt pro běžná hesla, zachována kompatibilita generovaných klíčů, origin guard, rate limit a HttpOnly/Secure cookie. Heslo bylo nastavené mimo Git; zprávy tohoto turnu obsahují credential, proto je neexportujeme do verzovaného ai-log. Existující skutečné exporty předchozích nesenzitivních interakcí zůstávají.

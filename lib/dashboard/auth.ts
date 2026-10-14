@@ -1,12 +1,12 @@
 import 'server-only';
-import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
+import { createHash, createHmac, scryptSync, timingSafeEqual } from 'node:crypto';
 
 const duration = 8 * 60 * 60 * 1000;
 export const dashboardCookie = 'etf_dashboard';
 function credentials() {
  const hash = process.env.DASHBOARD_ACCESS_KEY_HASH ?? '';
  const secret = process.env.DASHBOARD_SESSION_SECRET ?? '';
- return /^[a-f0-9]{64}$/.test(hash) && secret.length >= 64 ? { hash, secret } : null;
+ return (/^[a-f0-9]{64}$/.test(hash) || /^scrypt:[a-f0-9]{32}:[a-f0-9]{128}$/.test(hash)) && secret.length >= 64 ? { hash, secret } : null;
 }
 export function dashboardLoginAvailable(headers: Headers): boolean {
  if (process.env.DASHBOARD_ENABLED !== 'true' || process.env.DASHBOARD_REMOTE_ENABLED !== 'true' || !credentials()) return false;
@@ -18,7 +18,13 @@ export function dashboardLoginAvailable(headers: Headers): boolean {
 }
 export function verifyDashboardKey(key: string): boolean {
  const config = credentials();
- if (!config || !/^[A-Za-z0-9_-]{43}$/.test(key)) return false;
+ if (!config || !key.length || key.length > 128) return false;
+ if (config.hash.startsWith('scrypt:')) {
+  const [,salt,hash] = config.hash.split(':');
+  return timingSafeEqual(scryptSync(key,salt,64),Buffer.from(hash,'hex'));
+ }
+ // Retain compatibility with the original generated, high-entropy access keys.
+ if (!/^[A-Za-z0-9_-]{43}$/.test(key)) return false;
  return timingSafeEqual(createHash('sha256').update(key).digest(), Buffer.from(config.hash, 'hex'));
 }
 function signature(expires: string) {

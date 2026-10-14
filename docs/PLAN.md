@@ -286,3 +286,7 @@ Automatické nasazení potvrzeno: Git build z devel přešel do READY a veřejn�
 ## Přímý vstup do dashboardu — 14. října 2026
 
 Uživatel narazil na 404 na veřejném /dashboard. Příčinou je záměrný auth guard, nikoli nefunkční DB. Upravit pouze vstupní UX: ve správně nakonfigurovaném remote režimu nepřihlášeného přesměrovat na /dashboard/login před načtením dat. Export, vypnutý režim a cizí Host stále 404. Ověřit SSR guard test, build a Git deploy z devel.
+
+## Heslo dashboardu — 14. října 2026
+
+Uživatel výslovně zvolil vlastní krátké heslo pro testovací demo. Přidat salted scrypt hash při zachování kompatibility původních generovaných klíčů, aktualizovat server env a lokální předání, přejmenovat pole na Heslo. Zachovat rate limit, origin guard a zabezpečenou cookie. Ověřit unit a build, pushnout do devel a skutečně ověřit přihlášení po automatickém deploymentu. Heslo se nevkládá do klientského bundle ani zdrojových souborů.

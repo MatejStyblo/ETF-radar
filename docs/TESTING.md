@@ -226,3 +226,7 @@ Výsledek ověření: push **ad16f054942d7b5b932d89af40d2337be3d27267** spustil 
 ## Dashboard bez session — 14. října 2026
 
 Reprodukce před opravou: veřejný /dashboard 404, /dashboard/login 200. Nový SSR guard test ověřuje přesměrování před načtením kontaktů a filtrů; původní disabled/foreign-host testy zůstávají. 96 unit testů a lint prošly, produkční build zkontrolován před pushem. Deployment smoke očekává pro /dashboard bez cookie 307 s /dashboard/login, export stále 404. Změna se nasazuje běžným pushem do devel.
+
+## Vlastní heslo dashboardu — 14. října 2026
+
+Přidán test scrypt hesla kratšího než původní generovaný klíč, špatného/prázdného/příliš dlouhého vstupu a invalidace staré podepsané session po změně hashe. 97 unit testů, lint a build ověřeny před pushem. Skutečná hodnota uživatelského hesla není ve zdrojových souborech ani testovacím fixture; pouze serverový salted hash v produkčním env. Cloud se aktualizuje přes devel.
