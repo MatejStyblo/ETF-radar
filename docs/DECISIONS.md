@@ -1,5 +1,9 @@
 # ETF Radar — rozhodnutí a předpoklady
 
+## D24 — Mobilní spodní navigace podle reference (14. října 2026)
+
+Na mobilu přidána světlá spodní lišta se čtyřmi odkazy Domů / Kalkulačka / Výsledky / Report a Lucide ikonami. Odkazy vedou do existujících sekcí; Report vede k nabídce vytvoření reportu, nepředstírá přístup k soukromému dokumentu. Scroll a změna layoutu aktualizují aria-current a zvýraznění aktivní sekce. Při neplatném scénáři je odkaz na chybějící výsledky označen aria-disabled. Lišta respektuje safe-area, rezervuje místo pod obsahem, na desktopu i při tisku je skrytá. Cookie lišta se na mobilu posune nad navigaci. Nová navigace neposílá analytics bez stávajícího souhlasu. Změna zůstává lokální, bez push a deploymentu.
+
 ## D23 — Lokální tmavý náhled podle reference (14. října 2026)
 
 Uživatel výslovně požádal vyzkoušet vzhled dodaného finančního dashboardu a nejdřív jej vidět lokálně, bez push. Nová obrazovková vrstva `app/terminal-preview.css` používá canvas #080d15, panely #0e1524, cyan #00d1ee, čitelné tlumené texty a monospace čísla. Úvod je kompaktní, desktop má přehled sazeb a rychlý výběr skutečných fondů, graf je výše. Na mobilu se redundantní horní přehled skrývá; oba selektory a parametry zůstávají dostupné. Print CSS a stažený HTML report si ponechávají světlý tiskový vzhled.

@@ -1,5 +1,9 @@
 # Ověřování — průběžný záznam
 
+## Mobilní spodní navigace — 14. října 2026
+
+Lokální Next dev na portu 3140: čtyři skutečné navigační odkazy, aktuální sekce podle scrollu, cookie banner nad navigací bez překryvu, disabled výsledky při invalid scénáři a skrytí na desktopu. Screenshot na 375×812 byl vizuálně zkontrolovaný; axe celého landing page bez violations. Existující frontend/chart/cookie browser sada **12 passed**, typecheck/lint/build exit 0. Přidání lišty nemění backend ani matematiku. Neproběhl push, deployment, nové Lighthouse ani skutečný mobile-device test. Dočasné artefakty v `.vercel/mobile-navigation*` nejsou verzované. Red Next dev indicator v jednom warm screenshotu není aktuální uncaught chyba: nový browser context měl prázdné error/warning/pageerror záznamy.
+
 ## Tmavý lokální designový náhled — 14. října 2026
 
 Produkční `npm run build` po této vizuální změně také prošel (exit 0). Náhled nadále běží jako Next dev; tento build nebyl nasazen.

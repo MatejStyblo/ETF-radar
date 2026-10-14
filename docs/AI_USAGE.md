@@ -1,5 +1,9 @@
 # Poctivé použití AI
 
+## Codex — mobilní navigace (14. října 2026)
+
+Navazující uživatelská reference vedla k přidání světlé mobilní spodní lišty s odkazy do existujících sekcí, bez nových finančních funkcí nebo backendových zápisů. Aktivní stav reaguje na scroll; cookie banner zůstává nad lištou. Skutečné browser a build výsledky jsou v TESTING. Dřívější zákaz push zůstává platný; nic se nenasazovalo. Tento turn není součástí dřívějšího dílčího auditového JSONL snapshotu.
+
 ## Codex — lokální tmavý design podle obrázku (14. října 2026)
 
 Uživatel chtěl vizuální zkoušku podle dark/cyan finančního dashboardu a výslovně zakázal push před lokální kontrolou. Codex upravil obrazovkovou CSS vrstvu a přidal přepínání skutečných katalogových ETF, bez generovaných finančních dat nebo radarových skóre. Tiskový/stažený HTML report zůstává světlý. Ověření a reálné chyby při prvních bězích jsou v TESTING. Žádný push/deployment ani změna produkční konfigurace. Tento navazující turn není součástí dřívějšího finálního auditového exportu, který je výslovně dílčí snapshot.
