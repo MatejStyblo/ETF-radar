@@ -33,23 +33,15 @@ export function MeasurementPanel({ variant }: { variant?: 'a' | 'b' }) {
   if (settingsOpen) closeSettings();
  }
  return <>
-  <section className="measurement" aria-labelledby="measurement-title">
-   <div><h2 id="measurement-title">Nastavení cookies</h2>
-    <p>Kalkulačka i report fungují bez souhlasu s měřením. Svou volbu můžete kdykoli změnit.</p>
-    <p className="measurement-state" role="status">{preference === 'allowed' ? 'Měření je povolené.' : preference === 'denied' ? 'Měření je odmítnuté.' : 'Měření je vypnuté, dokud jej nepovolíte.'}</p>
-   </div>
-   <div className="measurement-actions">
-    <button ref={settingsButton} aria-expanded={visible} aria-controls={visible ? 'cookie-banner' : undefined} onClick={() => setSettingsOpen(true)}>Změnit nastavení cookies</button>
-    {preference === 'allowed' && <button onClick={() => choose(false)}>Odvolat</button>}
-   </div>
-  </section>
+  <button ref={settingsButton} type="button" className="cookie-settings" aria-describedby="cookie-preference-status" aria-expanded={visible} aria-controls={visible ? 'cookie-banner' : undefined} onClick={() => setSettingsOpen(true)}>Nastavení cookies</button>
+  <span id="cookie-preference-status" className="sr-only" role="status">{preference === 'allowed' ? 'Měření je povolené.' : preference === 'denied' ? 'Měření je odmítnuté.' : 'Měření je vypnuté, dokud jej nepovolíte.'}</span>
   {visible && <aside ref={banner} id="cookie-banner" className="cookie-banner" aria-labelledby="cookie-banner-title" onKeyDown={event => { if (event.key === 'Escape' && preference !== 'unset') { event.preventDefault(); closeSettings(); } }}>
    <div className="cookie-banner-copy"><h2 id="cookie-banner-title">Cookies a měření návštěv</h2>
     <p>S vaším souhlasem měříme zdroj návštěvy a používání formuláře. Bez něj funguje kalkulačka i report. Do měření neposíláme email ani částky investice.</p>
     <a href="/privacy">Podrobnosti o soukromí</a>
    </div>
    <div className="cookie-banner-actions">
-    <button ref={firstChoice} type="button" onClick={() => choose(false)}>Odmítnout</button>
+    <button ref={firstChoice} type="button" onClick={() => choose(false)}>{preference === 'allowed' ? 'Odvolat' : 'Odmítnout'}</button>
     <button type="button" onClick={() => choose(true)}>Povolit</button>
     {preference !== 'unset' && <button type="button" className="cookie-banner-close" onClick={closeSettings}>Zavřít beze změny</button>}
    </div>

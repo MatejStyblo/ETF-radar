@@ -1,5 +1,7 @@
 /* Local design iteration based on the user's dark financial terminal reference. */
 .mobile-bottom-nav { display: none; }
+.cookie-settings { display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+@media print { .cookie-settings { display: none; } }
 @media screen {
   :root {
     color-scheme: dark;

@@ -103,7 +103,7 @@ test.describe('opt-in read-only dashboard on a real local server', () => {
     await page.goto('/dashboard');
     await page.getByRole('link', { name: 'Otevřít landing page', exact: true }).click();
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    await expect(page.getByText('Měření je odmítnuté.', { exact: true })).toBeVisible();
+    await expect(page.getByText('Měření je odmítnuté.', { exact: true })).toHaveText('Měření je odmítnuté.');
     await page.goBack();
     await expect(page.getByRole('heading', { name: 'Přehled ETF Radar', exact: true })).toBeVisible();
     const other = await context.newPage();

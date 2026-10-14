@@ -1,5 +1,9 @@
 # Poctivé použití AI
 
+## Codex — odstranění velké cookie sekce (14. října 2026)
+
+Na přímý požadavek uživatele odstraněn velký panel; zůstal nenápadný patičkový spouštěč stávajících voleb. Zachované chování souhlasu/revokace bylo skutečně znovu ověřeno, odpovídající UI testy i auditový skript nyní otevřou volby přes patičku. Jeden shellový pokus o změnu testovacích souborů selhal v parseru beze změn; úpravy dokončeny apply_patch. Výsledky a limity běhů jsou v TESTING. Žádný push/deployment; starý dílčí auditový runtime export tento pozdější turn neobsahuje.
+
 ## Codex — mobilní navigace (14. října 2026)
 
 Navazující uživatelská reference vedla k přidání světlé mobilní spodní lišty s odkazy do existujících sekcí, bez nových finančních funkcí nebo backendových zápisů. Aktivní stav reaguje na scroll; cookie banner zůstává nad lištou. Skutečné browser a build výsledky jsou v TESTING. Dřívější zákaz push zůstává platný; nic se nenasazovalo. Tento turn není součástí dřívějšího dílčího auditového JSONL snapshotu.

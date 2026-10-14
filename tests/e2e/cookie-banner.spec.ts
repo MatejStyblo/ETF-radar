@@ -25,9 +25,11 @@ for (const width of [375, 1280]) {
   await expect(banner).not.toBeVisible();
   expect(events).toEqual([]);
   await page.reload();
-  await expect(page.getByText('Měření je odmítnuté.',{exact:true})).toBeVisible();
+  await expect(page.getByText('Měření je odmítnuté.',{exact:true})).toHaveText('Měření je odmítnuté.');
   await expect(banner).not.toBeVisible();
-  const settings=page.getByRole('button',{name:'Změnit nastavení cookies',exact:true});
+  const settings=page.getByRole('button',{name:'Nastavení cookies',exact:true});
+  await expect(page.locator('footer').getByRole('button',{name:'Nastavení cookies',exact:true})).toBeVisible();
+  await expect(page.locator('.measurement')).toHaveCount(0);
   await settings.click();
   await expect(banner.getByRole('button',{name:'Odmítnout',exact:true})).toBeFocused();
   await page.keyboard.press('Escape');
@@ -38,8 +40,9 @@ for (const width of [375, 1280]) {
   await expect(banner).not.toBeVisible();
   await expect.poll(()=>events.some(event=>event.name==='landing_view')).toBe(true);
   await expect(settings).toBeFocused();
+  await settings.click();
   await page.getByRole('button',{name:'Odvolat',exact:true}).click();
-  await expect(page.getByText('Měření je odmítnuté.',{exact:true})).toBeVisible();
+  await expect(page.getByText('Měření je odmítnuté.',{exact:true})).toHaveText('Měření je odmítnuté.');
   await expect(banner).not.toBeVisible();
  });
 }

@@ -93,6 +93,7 @@ try {
       assert.equal(stored.filter(e => e.name === 'landing_view').length, 1);
       assert.equal(stored.filter(e => e.name === 'lead_submit_success').length, 1);
       assert.ok(!JSON.stringify(events).includes(email) && !JSON.stringify(events).includes('123456'));
+      await page.getByRole('button', { name: 'Nastavení cookies', exact: true }).click();
       await page.getByRole('button', { name: 'Odvolat', exact: true }).click();
       for (let i = 0; i < 50 && !(await db.query('SELECT revoked FROM analytics_sessions WHERE id=$1', [receipt.analytics_session_id])).rows[0].revoked; i++) await page.waitForTimeout(100);
       assert.equal((await db.query('SELECT revoked FROM analytics_sessions WHERE id=$1', [receipt.analytics_session_id])).rows[0].revoked, true);

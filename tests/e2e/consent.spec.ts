@@ -1,4 +1,5 @@
-import {test,expect} from '@playwright/test';
+import {test,expect,type Page} from '@playwright/test';
+async function openSettings(page:Page){await page.getByRole('button',{name:'Nastavení cookies',exact:true}).click();}
 test('failed withdrawal never blocks capture and submits current consent independently of cookies',async({page})=>{
  const submissions:{headers:Record<string,string>;body:Record<string,unknown>}[]=[];
  let deletes=0;
@@ -12,7 +13,7 @@ test('failed withdrawal never blocks capture and submits current consent indepen
  await page.getByRole('button',{name:'Získat moje srovnání'}).click();
  await expect.poll(()=>submissions.length).toBe(1);
  expect(submissions[0].headers['x-analytics-consent']).toBe('true');
- await page.getByRole('button',{name:'Odvolat',exact:true}).click(); await expect.poll(()=>deletes).toBe(1);
+ await openSettings(page);await page.getByRole('button',{name:'Odvolat',exact:true}).click(); await expect.poll(()=>deletes).toBe(1);
  await page.getByRole('button',{name:'Získat moje srovnání'}).click(); await expect.poll(()=>submissions.length).toBe(2);
  expect(submissions[1].headers['x-analytics-consent']).toBe('false');
  expect(submissions[1].body.attemptId).toBe(submissions[0].body.attemptId);
@@ -26,11 +27,11 @@ test('withdrawal synchronizes already initialized tabs',async({page,context})=>{
   await route.fulfill({status:200,json:{ok:true}});
  });
  await page.goto('/');await page.getByRole('button',{name:'Povolit',exact:true}).click();
- await expect(page.getByRole('button',{name:'Odvolat',exact:true})).toBeVisible();
+ await expect(page.getByRole('button',{name:'Nastavení cookies',exact:true})).toBeVisible();
  const other=await context.newPage();await other.goto('/');
- await expect(other.getByRole('button',{name:'Odvolat',exact:true})).toBeVisible();
- await page.getByRole('button',{name:'Odvolat',exact:true}).click();
- await expect(other.getByText('Měření je odmítnuté.',{exact:true})).toBeVisible();
+ await expect(other.getByRole('button',{name:'Nastavení cookies',exact:true})).toBeVisible();
+ await openSettings(page);await page.getByRole('button',{name:'Odvolat',exact:true}).click();
+ await expect(other.getByText('Měření je odmítnuté.',{exact:true})).toHaveText('Měření je odmítnuté.');
  const count=events.length;
  await other.getByLabel('Druhé ETF').selectOption('cspx');
  await other.getByLabel('Počáteční vklad').fill('220000');await other.getByLabel('Počáteční vklad').blur();
@@ -48,7 +49,7 @@ test('measurement starts only after explicit opt-in; revoke stops it',async({pag
  await page.getByLabel('Počáteční vklad').fill('300000');await page.getByLabel('Počáteční vklad').blur();
  await expect.poll(()=>events.some(e=>e.name==='calculator_interaction')).toBe(true);
  for(const event of events)expect(Object.keys(event).sort()).toEqual(event.name==='landing_view'?['acquisition','adVariant','consent','eventId','name']:['adVariant','consent','eventId','name']);
- await page.getByRole('button',{name:'Odvolat',exact:true}).click();await expect.poll(()=>deleted).toBe(1);
+ await openSettings(page);await page.getByRole('button',{name:'Odvolat',exact:true}).click();await expect.poll(()=>deleted).toBe(1);
  const count=events.length;await page.getByLabel('Druhé ETF').selectOption('cspx');await page.waitForTimeout(300);expect(events.length).toBe(count);
  expect(await page.evaluate(()=>localStorage.getItem('etf-radar-measurement'))).toBe('denied');
 });

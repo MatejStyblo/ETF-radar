@@ -1,5 +1,9 @@
 # ETF Radar — rozhodnutí a předpoklady
 
+## D26 — Pouze nenápadné cookie nastavení v patičce (14. října 2026)
+
+Uživatel požádal odstranit velký blok nastavení cookies. MeasurementPanel nyní vykresluje pouze textový spouštěč „Nastavení cookies“ v patičce landing page i reportu; samostatná sekce a viditelný stav měření byly odstraněny. Pro čtečky zůstává skrytý status. Spouštěč otevírá existující consent lištu; při již povoleném měření její první volba „Odvolat“ provede stejnou revokaci jako dřívější samostatné tlačítko. Odmítnutí/souhlas, serverový mechanismus, synchronizace mezi záložkami, retry a focus návrat zůstávají funkční. Žádný push/deployment.
+
 ## D25 — Plovoucí tmavá mobilní lišta (14. října 2026)
 
 Uživatel upravil referenci: navigace má ladit s tmavým nástrojem a lehce levitovat. Lišta nově používá stejné surface/line/muted/accent tokeny, zaoblení všech rohů, jemný stín, 8px boční mezery a 5px mezeru od spodku. Na zařízeních s větší safe-area zůstává nad bezpečnou oblastí. Mezi položkami je 4px mezera. Rezervovaný prostor a poloha cookie banneru zohledňují celý plovoucí blok. Funkce navigace se nemění; žádný push/deployment.

@@ -38,7 +38,7 @@ test('consented campaign visits, incomplete form and saved contact appear in the
    }
    if(contexts.length===1) {
     await page.goto(`${base}/?utm_source=changed&utm_campaign=changed`);
-    await expect(page.getByText('Měření je povolené.',{exact:true})).toBeVisible();
+    await expect(page.getByText('Měření je povolené.',{exact:true})).toHaveText('Měření je povolené.');
    }
   }
   expect((await db.query("SELECT count(*)::int AS n FROM analytics_sessions WHERE acquisition->>'utm_campaign'=$1",[campaign])).rows[0].n).toBe(2);
