@@ -1,5 +1,11 @@
 # ETF Radar — rozhodnutí a předpoklady
 
+## D23 — Lokální tmavý náhled podle reference (14. října 2026)
+
+Uživatel výslovně požádal vyzkoušet vzhled dodaného finančního dashboardu a nejdřív jej vidět lokálně, bez push. Nová obrazovková vrstva `app/terminal-preview.css` používá canvas #080d15, panely #0e1524, cyan #00d1ee, čitelné tlumené texty a monospace čísla. Úvod je kompaktní, desktop má přehled sazeb a rychlý výběr skutečných fondů, graf je výše. Na mobilu se redundantní horní přehled skrývá; oba selektory a parametry zůstávají dostupné. Print CSS a stažený HTML report si ponechávají světlý tiskový vzhled.
+
+Reference slouží vzhledu, nikoli finančním datům. Žádné smyšlené AUM, Sharpe, P/E, tržní kotace nebo radarové skóre nepřidány. Horní metriky vycházejí z katalogových sazeb, jejich rozdílu v procentních bodech a aktuálního scénáře. Rychlý výběr skutečně mění porovnání a při volbě druhého fondu prohodí dvojici, aby ji nezdvojil. Analytické události používají stávající taxonomii/souhlas. Náhled běží na `http://127.0.0.1:3140`; capture je pro tuto dočasnou preview instanci vypnutý. Žádný push ani deployment.
+
 ## D22 — Nezávislý audit a omezené opravy (14. října 2026)
 
 Nový audit nebere staré výsledky jako důkaz. Produkční syntetický zápis byl proveden až po výslovném souhlasu v aktuálním chatu; cleanup používá pouze přesná vlastní ID a ověřuje nulu. Lokální/produkční důkazy zůstávají oddělené. Runtime Zod konfigurace patří před všechny object schemas, protože acquisition může být vyhodnocena před hlavním schema modulem. Report zobrazuje značku jako „Značka / poskytovatel“, nikoli právní emitent. Kompaktní demo spacing opravuje změřenou mobilní polohu vstupu, bez odstranění pravdivého varování. Nic se automaticky nenasazuje. Detailní metodika, závady a retesty: [FINAL_AUDIT](FINAL_AUDIT.md).

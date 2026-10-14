@@ -1,5 +1,9 @@
 # Poctivé použití AI
 
+## Codex — lokální tmavý design podle obrázku (14. října 2026)
+
+Uživatel chtěl vizuální zkoušku podle dark/cyan finančního dashboardu a výslovně zakázal push před lokální kontrolou. Codex upravil obrazovkovou CSS vrstvu a přidal přepínání skutečných katalogových ETF, bez generovaných finančních dat nebo radarových skóre. Tiskový/stažený HTML report zůstává světlý. Ověření a reálné chyby při prvních bězích jsou v TESTING. Žádný push/deployment ani změna produkční konfigurace. Tento navazující turn není součástí dřívějšího finálního auditového exportu, který je výslovně dílčí snapshot.
+
 ## Codex — nezávislý finální audit (14. října 2026)
 
 Uživatel dodal execution zadání auditu. Codex sám, bez subagentů, nově ověřil repo/deployment/primární zdroje, testy a skutečný production DB/report funnel. Produkční testovací zápis byl proveden až po aktuálním výslovném povolení, vlastní data odstraněna a readback ověřen. Opravil doloženou import-order CSP regresi, zastaralou event assertion, změřený demo mobile spacing a reportový popisek značky. Neprovedl push/deploy ani změnu secrets. Důkazy, otevřené provozní/legal blokery a skutečné počáteční neúspěchy jsou v FINAL_AUDIT/TESTING. Jeden patch s chybnou kotvou do dokumentu byl odmítnut beze změny a znovu aplikován s přesnými kotvami. Automatická kontrola jednou odmítla shellový restart lokální repliky s pouhým „blocked by policy“; běžné spuštění z explicitního privátního env souboru následně prošlo, bez změny produkce.

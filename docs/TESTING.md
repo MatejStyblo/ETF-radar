@@ -1,5 +1,13 @@
 # Ověřování — průběžný záznam
 
+## Tmavý lokální designový náhled — 14. října 2026
+
+Produkční `npm run build` po této vizuální změně také prošel (exit 0). Náhled nadále běží jako Next dev; tento build nebyl nasazen.
+
+Na uživatelem dodanou referenci vznikla obrazovková CSS vrstva a skutečný rychlý výběr ETF; výpočet ani backend nebyly změněny. `http://127.0.0.1:3140`, Next dev, Windows/Node24. Typecheck/lint a **97 unit testů** prošly; cílená frontend/chart/cookie browser sada **12 passed**, včetně axe na 375/768/1440, invalid numerics, změny ETF, klávesnice a mobilního grafu. Samostatný browser ověřil rychlý výběr CSPX, bezpečné prohození dvojice při volbě STXG a absenci page errors. Na 375×812 documentWidth=375, počáteční vstup končí na 805,17 px. Desktop/mobilní screenshoty byly vizuálně zkontrolovány, soukromé preview artefakty jsou pod `.vercel/terminal-preview`.
+
+První browser běh odhalil nesprávný doplňkový p element přímo v dl skupině a příliš nízké mobilní vstupy. Popis byl přesunut do dd, mobilní redundantní summary skryta a rozestupy upraveny. Následující všechny kontroly prošly. Samostatný axe scratch běh nejprve použil browser.newPage namísto explicitního context a byl odmítnut knihovnou; správný context pak poskytl skutečné nálezy. Náhled nepředstavuje nové produkční ověření ani Lighthouse měření. Aktuální produkce se nezměnila.
+
 ## Independent final audit — 14. října 2026
 
 Návazné opakování enabled a disabled Playwright současně odhalilo kolizi společné `test-results` složky: 29 passed / 1 failed / 2 skipped, failure byl ENOENT při zavírání trace, nikoli aplikační assertion. Log uchován v `e2e-trace-collision.txt`, finální celá enabled suite dostala samostatný `--output=.vercel/final-audit-enabled-artifacts`. Dva dokumentační patch pokusy s nepřesnou kotvou byly odmítnuty atomicky; následné patche používají správné kotvy.
