@@ -16,7 +16,7 @@ Ověření 14. října 2026: **102 unit / 43 DB integration / 28 browser testů 
 3. Zadejte **syntetický email**, například `radar@example.invalid`. Marketing je volitelný a předem nezaškrtnutý; demo nic nerozesílá.
 4. Po skutečném databázovém zápisu se otevře report. Stáhněte PDF, HTML nebo použijte tisk. **Report nezasíláme emailem.**
 
-Dashboard `/dashboard` vyžaduje soukromé heslo správce; přístupové údaje nejsou součástí veřejného repozitáře. Odevzdání ani testování nevyžaduje zadání osobních údajů skutečných návštěvníků.
+Testovací dashboard je dostupný na [etf-radar-dun.vercel.app/dashboard](https://etf-radar-dun.vercel.app/dashboard). Heslo pro přístup: `123`. Odevzdání ani testování nevyžaduje zadání osobních údajů skutečných návštěvníků.
 
 ## Produkt a cílová skupina
 
@@ -149,4 +149,4 @@ Použil jsem Hermes/Codex jako podobný nástroj povolený zadáním, nikoli Cla
 
 Konkrétní chyby: původní interpretace NYSE Arca vyžadovala doplnit hlavní NYSE fondy; browser test odhalil Origin chybu odhlášení; změna analytické obálky vyžadovala opravit zastaralé testy; vizuální QA odhalila kontrast a mobilní rozestupy. Poslední kontrola našla starý README na výchozí `main`, proto je výchozí `devel`. Chyby a opravy jsou v [AI_USAGE](docs/AI_USAGE.md) a [TESTING](docs/TESTING.md).
 
-[ai-log](ai-log/README.md) obsahuje skutečné runtime exporty, ne rekonstruované rozhovory. Formát a rozsah vynechaných údajů jsou uvedeny u souborů. Není to Claude `/export`; tajemství a soukromé heslo nepublikujeme. Historické mezistavy jsou archivovány v [docs/history](docs/history/README-before-handoff.md); aktuální stav popisuje tento README a HANDOFF.
+[ai-log](ai-log/README.md) obsahuje skutečné runtime exporty, ne rekonstruované rozhovory. Formát a rozsah vynechaných údajů jsou uvedeny u souborů. Není to Claude `/export`; provozní tajemství nepublikujeme, heslo k testovacímu dashboardu je záměrně uvedeno výše. Historické mezistavy jsou archivovány v [docs/history](docs/history/README-before-handoff.md); aktuální stav popisuje tento README a HANDOFF.
